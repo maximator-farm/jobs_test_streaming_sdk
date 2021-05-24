@@ -78,22 +78,18 @@ def prepare_empty_reports(args, current_conf):
             test_case_report['test_group'] = args.test_group
             test_case_report['tool'] = 'StreamingSDK'
             test_case_report['execution_type'] = args.execution_type
-            test_case_report['keys'] = case['server_keys'] if execution_type == 'server' else case['client_keys']
+            test_case_report['keys'] = case['server_keys'] if args.execution_type == 'server' else case['client_keys']
             test_case_report['transport_protocol'] = case['transport_protocol']
-            test_case_report['tool_path'] = args.server_tool if execution_type == 'server' else args.client_tool
+            test_case_report['tool_path'] = args.server_tool if args.execution_type == 'server' else args.client_tool
             test_case_report['date_time'] = datetime.now().strftime(
                 '%m/%d/%Y %H:%M:%S')
             test_case_report[SCREENS_PATH_KEY] = os.path.join(args.output, "Color", case["case"])
 
             if case['status'] == 'skipped':
                 test_case_report['test_status'] = 'skipped'
-                test_case_report['file_name'] = case['case'] + case.get('extension', '.jpg')
-                test_case_report['render_color_path'] = os.path.join('Color', test_case_report['file_name'])
                 test_case_report['group_timeout_exceeded'] = False
             else:
                 test_case_report['test_status'] = 'error'
-                test_case_report['file_name'] = 'failed.jpg'
-                test_case_report['render_color_path'] = os.path.join('Color', 'failed.jpg')
 
             case_path = os.path.join(args.output, case['case'] + CASE_REPORT_SUFFIX)
 
@@ -142,7 +138,11 @@ def execute_tests(args, current_conf):
     with open(os.path.join(os.path.abspath(args.output), "test_cases.json"), "r") as json_file:
         cases = json.load(json_file)
 
+    tool_path = args.server_tool if args.execution_type == "server" else args.client_tool
+
     for case in [x for x in cases if not is_case_skipped(x, current_conf)]:
+
+        keys = case["server_keys"] if args.execution_type == "server" else case["client_keys"]
 
         screens_path = os.path.join(args.output, "Color", case["case"])
 
@@ -153,11 +153,12 @@ def execute_tests(args, current_conf):
         while current_try < args.retries:
             try:
                 if args.execution_type == "server":
-                    execution_script = "{tool} {keys}".format(tool=case["tool_path"], keys=case["keys"])
+                    execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
                 else:
-                    execution_script = "{tool} {keys} -connectionurl {transport_protocol}://{ip_address}:1235"
-                        .format(tool=case["tool_path"], keys=case["keys"], transport_protocol=case["transport_protocol"],
-                            ip_address=args.ip_address)
+                    execution_script = "{tool} {keys} -connectionurl {transport_protocol}://{ip_address}:1235".format(
+                        tool=tool_path, keys=keys, transport_protocol=case["transport_protocol"],
+                        ip_address=args.ip_address
+                    )
 
                 execution_script_path = os.path.join(args.output, "{}.bat".format(case["case"]))
        
@@ -166,7 +167,11 @@ def execute_tests(args, current_conf):
 
                 status = "error"
 
-                p = psutil.Popen(cmdScriptPath, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+                main_logger.info("Start StreamingSDK {}".format(args.execution_type))
+
+                p = psutil.Popen(execution_script_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+
+                main_logger.info("Start execution_type depended script")
 
                 if args.execution_type == "server":
                     start_client_side_tests(args, case, args.ip_address, SYNC_PORT)

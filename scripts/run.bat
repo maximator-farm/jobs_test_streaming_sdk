@@ -9,4 +9,4 @@ if not defined RETRIES set RETRIES=1
 
 python -m pip install -r ../jobs_launcher/install/requirements.txt
 
-python ..\jobs_launcher\executeTests.py --test_filter %TESTS_FILTER% --file_filter %FILE_FILTER% --tests_root ..\jobs --work_root ..\Work\Results --work_dir StreamingSDK --cmd_variables clientPath "..\StreamingSDK\RemoteGameClient.exe" serverPath "..\StreamingSDK\RemoteGameServer.exe" executionType %EXECUTION_TYPE% ipAddress %IP_ADDRESS% retries %RETRIES%
+python ..\jobs_launcher\executeTests.py --test_filter %TESTS_FILTER% --file_filter %FILE_FILTER% --tests_root ..\jobs --work_root ..\Work\Results --work_dir StreamingSDK --cmd_variables clientTool "..\StreamingSDK\RemoteGameClient.exe" serverTool "..\StreamingSDK\RemoteGameServer.exe" executionType %EXECUTION_TYPE% ipAddress %IP_ADDRESS% retries %RETRIES%
