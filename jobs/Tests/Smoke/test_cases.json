@@ -1,0 +1,13 @@
+[
+   {
+        "case": "STR_SM_001",
+        "status": "active",
+        "server_keys": "-campute 1, -resolution 1920, 1200",
+        "client_keys": "-fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys - -campute 1, -resolution 1920, 1200",
+            "Client keys - -fullscreen true"
+        ]
+   }
+]
