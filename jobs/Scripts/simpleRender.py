@@ -174,9 +174,9 @@ def execute_tests(args, current_conf):
                 main_logger.info("Start execution_type depended script")
 
                 if args.execution_type == "server":
-                    start_client_side_tests(args, case, args.ip_address, SYNC_PORT)
-                else:
                     start_server_side_tests(args, case, SYNC_PORT)
+                else:
+                    start_client_side_tests(args, case, args.ip_address, SYNC_PORT)
 
                 break
             except Exception as e:
