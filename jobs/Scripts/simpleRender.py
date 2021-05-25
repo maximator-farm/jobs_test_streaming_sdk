@@ -73,7 +73,6 @@ def prepare_empty_reports(args, current_conf):
             test_case_report = RENDER_REPORT_BASE.copy()
             test_case_report['test_case'] = case['case']
             test_case_report['render_device'] = get_gpu()
-            test_case_report['render_duration'] = -0.0
             test_case_report['script_info'] = case['script_info']
             test_case_report['test_group'] = args.test_group
             test_case_report['tool'] = 'StreamingSDK'
@@ -105,20 +104,16 @@ def prepare_empty_reports(args, current_conf):
         json.dump(cases, f, indent=4)
 
 
-def save_results(args, case, cases, test_case_status, render_time, error_messages = []):
+def save_results(args, case, cases, test_case_status, error_messages = []):
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "r") as file:
         test_case_report = json.loads(file.read())[0]
-        test_case_report["file_name"] = case["case"] + case.get("extension", '.jpg')
-        test_case_report["render_color_path"] = os.path.join("Color", test_case_report["file_name"])
         test_case_report["test_status"] = test_case_status
-        test_case_report["render_time"] = render_time
-        test_case_report["render_log"] = os.path.join("render_tool_logs", case["case"] + ".log")
+        test_case_report["{}_log".format(test_case_report["execution_type"])] = os.path.join(
+            "tool_logs", case["case"] + ".log")
         test_case_report["testing_start"] = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
         test_case_report["number_of_tries"] += 1
 
         if test_case_status != "passed":
-            copyfile(os.path.join(args.output, "Color", "failed.jpg"), 
-                os.path.join(args.output, "Color", case["case"] + ".jpg"))
             test_case_report["message"] = list(error_messages)
 
         if test_case_status == "passed" or test_case_status == "error":
@@ -179,13 +174,15 @@ def execute_tests(args, current_conf):
                 time.sleep(5)
 
                 if args.execution_type == "server":
-                    start_server_side_tests(args, case, SYNC_PORT)
+                    start_server_side_tests(args, case, SYNC_PORT, current_try)
                 else:
-                    start_client_side_tests(args, case, args.ip_address, SYNC_PORT, screens_path)
+                    start_client_side_tests(args, case, args.ip_address, SYNC_PORT, screens_path, current_try)
+
+                save_results(args, case, cases, "passed", error_messages = [])
 
                 break
             except Exception as e:
-                save_results(args, case, cases, "failed", -0.0, error_messages = error_messages)
+                save_results(args, case, cases, "failed", error_messages = error_messages)
                 error_messages.add(str(e))
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
@@ -194,10 +191,20 @@ def execute_tests(args, current_conf):
                     close_process(process)
 
                 current_try += 1
+
+                log_source_path = args.tool + ".log"
+                log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + ".log")
+
+                with open(log_path, "r", encoding="utf-8") as file:
+                    logs = file.read()
+
+                with open(log_destination_path, "a", encoding="utf-8") as file:
+                    file.write("\n---------- Try #{} ----------\n".format(current_try))
+                    file.write(logs)
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1
-            save_results(args, case, cases, "error", -0.0, error_messages = error_messages)
+            save_results(args, case, cases, "error", error_messages = error_messages)
 
     return rc
 
@@ -227,8 +234,8 @@ if __name__ == '__main__':
 
         if not os.path.exists(os.path.join(args.output, "Color")):
             os.makedirs(os.path.join(args.output, "Color"))
-        if not os.path.exists(os.path.join(args.output, "render_tool_logs")):
-            os.makedirs(os.path.join(args.output, "render_tool_logs"))
+        if not os.path.exists(os.path.join(args.output, "tool_logs")):
+            os.makedirs(os.path.join(args.output, "tool_logs"))
 
         render_device = get_gpu()
         system_pl = platform.system()

@@ -44,8 +44,9 @@ def click():
     pyautogui.click()
 
 
-def start_client_side_tests(args, case, ip_address, sync_port, screens_path):
-    current_image_num = 0
+def start_client_side_tests(args, case, ip_address, sync_port, screens_path, current_try):
+    if current_try == 0:
+        current_image_num = 0
 
     sock = socket.socket()
 
@@ -74,7 +75,7 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path):
                 elif command == "check_window":
                     check_window(sock, action)
                 elif command == "make_screen":
-                    make_screen(screens_path, action)
+                    make_screen(screens_path, "{}_try_{}".format(action, current_try))
                 elif command == "move":
                     move(action)
                 elif command == "click":

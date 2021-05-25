@@ -75,7 +75,7 @@ def finish(sock):
         sock.send("failed".encode())
 
 
-def start_server_side_tests(args, case, sync_port):
+def start_server_side_tests(args, case, sync_port, current_try):
     # configure socket
     sock = socket.socket()
     sock.bind(("", sync_port))
