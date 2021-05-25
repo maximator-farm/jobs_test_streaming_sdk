@@ -7,11 +7,11 @@ import platform
 from datetime import datetime
 from shutil import copyfile, move, which
 import sys
-from utils import is_case_skipped
+from utils import is_case_skipped, close_process
 from clientTests import start_client_side_tests
 from serverTests import start_server_side_tests
 from queue import Queue
-from subprocess import PIPE, Popen
+from subprocess import PIPE
 from threading import Thread
 import copy
 import traceback
@@ -151,6 +151,8 @@ def execute_tests(args, current_conf):
         error_messages = set()
 
         while current_try < args.retries:
+            process = None
+
             try:
                 if args.execution_type == "server":
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
@@ -169,14 +171,17 @@ def execute_tests(args, current_conf):
 
                 main_logger.info("Start StreamingSDK {}".format(args.execution_type))
 
-                p = psutil.Popen(execution_script_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
+                process = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
 
                 main_logger.info("Start execution_type depended script")
+
+                # Wait a bit to launch streaming SDK client/server
+                time.sleep(5)
 
                 if args.execution_type == "server":
                     start_server_side_tests(args, case, SYNC_PORT)
                 else:
-                    start_client_side_tests(args, case, args.ip_address, SYNC_PORT)
+                    start_client_side_tests(args, case, args.ip_address, SYNC_PORT, screens_path)
 
                 break
             except Exception as e:
@@ -185,6 +190,9 @@ def execute_tests(args, current_conf):
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
+                if process is not None:
+                    close_process(process)
+
                 current_try += 1
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
