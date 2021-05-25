@@ -104,7 +104,7 @@ def start_server_side_tests(args, case, sync_port):
                     execute_cmd(connection, *args)
                 elif command == "check_window":
                     check_window(connection, *args)
-                elif command = "finish":
+                elif command == "finish":
                     finish(connection)
                     break
                 else:
@@ -116,5 +116,5 @@ def start_server_side_tests(args, case, sync_port):
         main_logger.error("Fatal error. Case will be aborted:".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
         sock.send("abort".encode())
-    finally
+    finally:
         connection.close()

@@ -79,7 +79,7 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path):
                     move(action)
                 elif command == "click":
                     click()
-                else
+                else:
                     raise Exception("Unknown client command: {}".format(command))
 
                 if command in SERVER_ACTIONS:
@@ -100,7 +100,7 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path):
     except Exception as e:
         main_logger.error("Fatal error. Case will be aborted:".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
-    finally
+    finally:
         if not is_aborted:
             sock.send("finish".encode())
 
