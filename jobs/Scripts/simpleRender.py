@@ -69,11 +69,13 @@ def prepare_empty_reports(args, current_conf):
             if case["status"] == 'inprogress':
                 case['status'] = 'active'
 
+            test_case_report = {}
             test_case_report['test_case'] = case['case']
             test_case_report['render_device'] = args.server_gpu_name
             test_case_report['script_info'] = case['script_info']
             test_case_report['test_group'] = args.test_group
             test_case_report['tool'] = 'StreamingSDK'
+            test_case_report['render_time'] = 0.0
             test_case_report['execution_type'] = args.execution_type
             test_case_report['keys'] = case['server_keys'] if args.execution_type == 'server' else case['client_keys']
             test_case_report['transport_protocol'] = case['transport_protocol']
@@ -81,6 +83,7 @@ def prepare_empty_reports(args, current_conf):
             test_case_report['date_time'] = datetime.now().strftime(
                 '%m/%d/%Y %H:%M:%S')
             test_case_report[SCREENS_PATH_KEY] = os.path.join(args.output, "Color", case["case"])
+            test_case_report["number_of_tries"] = 0
 
             if case['status'] == 'skipped':
                 test_case_report['test_status'] = 'skipped'
