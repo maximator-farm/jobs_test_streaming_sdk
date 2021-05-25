@@ -70,7 +70,6 @@ def prepare_empty_reports(args, current_conf):
             if case["status"] == 'inprogress':
                 case['status'] = 'active'
 
-            test_case_report = RENDER_REPORT_BASE.copy()
             test_case_report['test_case'] = case['case']
             test_case_report['render_device'] = get_gpu()
             test_case_report['script_info'] = case['script_info']
@@ -192,13 +191,13 @@ def execute_tests(args, current_conf):
 
                 current_try += 1
 
-                log_source_path = args.tool + ".log"
+                log_source_path = tool_path + ".log"
                 log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + ".log")
 
-                with open(log_path, "r", encoding="utf-8") as file:
+                with open(log_source_path, "r") as file:
                     logs = file.read()
 
-                with open(log_destination_path, "a", encoding="utf-8") as file:
+                with open(log_destination_path, "a") as file:
                     file.write("\n---------- Try #{} ----------\n".format(current_try))
                     file.write(logs)
         else:

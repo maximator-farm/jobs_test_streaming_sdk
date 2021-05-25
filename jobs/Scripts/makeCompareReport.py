@@ -26,8 +26,8 @@ if __name__ == '__main__':
     for file in json_files:
         json_content = json.load(open(os.path.join(wd, file), 'r'))[0]
 
-        if img.get('group_timeout_exceeded', False):
-            img['message'].append('Test group timeout exceeded')
+        if json_content.get('group_timeout_exceeded', False):
+            json_content['message'].append('Test group timeout exceeded')
 
         reports.append(json_content)
 

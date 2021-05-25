@@ -6,8 +6,8 @@
         "client_keys": "-fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
-            "Server keys - -campute 1, -resolution 1920,1200",
-            "Client keys - -fullscreen true"
+            "Server keys: -campute 1, -resolution 1920,1200",
+            "Client keys: -fullscreen true"
         ],
         "client_actions": [
             "execute_cmd \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"",
