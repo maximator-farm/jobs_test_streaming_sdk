@@ -20,7 +20,6 @@ import time
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
-from jobs_launcher.core.system_info import get_gpu
 
 
 # port throuth which client and server communicate to synchronize execution of tests
@@ -71,7 +70,7 @@ def prepare_empty_reports(args, current_conf):
                 case['status'] = 'active'
 
             test_case_report['test_case'] = case['case']
-            test_case_report['render_device'] = get_gpu()
+            test_case_report['render_device'] = args.server_gpu_name
             test_case_report['script_info'] = case['script_info']
             test_case_report['test_group'] = args.test_group
             test_case_report['tool'] = 'StreamingSDK'
@@ -219,6 +218,7 @@ def createArgsParser():
     parser.add_argument("--retries", required=False, default=2, type=int)
     parser.add_argument('--execution_type', required=True)
     parser.add_argument('--ip_address', required=True)
+    parser.add_argument('--server_gpu_name', required=True)
 
     return parser
 
@@ -236,7 +236,7 @@ if __name__ == '__main__':
         if not os.path.exists(os.path.join(args.output, "tool_logs")):
             os.makedirs(os.path.join(args.output, "tool_logs"))
 
-        render_device = get_gpu()
+        render_device = args.server_gpu_name
         system_pl = platform.system()
         current_conf = set(platform.system()) if not render_device else {platform.system(), render_device}
         main_logger.info("Detected GPUs: {}".format(render_device))

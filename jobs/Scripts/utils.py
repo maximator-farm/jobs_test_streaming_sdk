@@ -4,8 +4,8 @@ from time import sleep
 def is_case_skipped(case, render_platform):
     if case['status'] == 'skipped':
         return True
-    else:
-        return False
+
+    return sum([render_platform & set(x) == set(x) for x in case.get('skip_on', '')])
 
 
 def close_process(process):
