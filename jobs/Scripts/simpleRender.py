@@ -109,8 +109,8 @@ def save_results(args, case, cases, test_case_status, error_messages = []):
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "r") as file:
         test_case_report = json.loads(file.read())[0]
         test_case_report["test_status"] = test_case_status
-        test_case_report["{}_log".format(test_case_report["execution_type"])] = os.path.join(
-            "tool_logs", case["case"] + ".log")
+        test_case_report["server_log"] = os.path.join("tool_logs", case["case"] + "_server.log")
+        test_case_report["client_log"] = os.path.join("tool_logs", case["case"] + "_client.log")
         test_case_report["testing_start"] = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
         test_case_report["number_of_tries"] += 1
 
@@ -197,7 +197,7 @@ def execute_tests(args, current_conf):
                 current_try += 1
 
                 log_source_path = tool_path + ".log"
-                log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + ".log")
+                log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + "_{}".format(args.execution_type) + ".log")
 
                 with open(log_source_path, "r") as file:
                     logs = file.read().replace('\0', '')

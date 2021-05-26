@@ -14,14 +14,14 @@ from jobs_launcher.core.config import *
 
 
 current_image_num = 0
-SERVER_ACTIONS = ["execute_cmd", "check_window"]
+SERVER_ACTIONS = ["execute_cmd", "check_game"]
 
 
 def execute_cmd(sock, action):
     sock.send(action.encode())
 
 
-def check_window(sock, action):
+def check_game(sock, action):
     sock.send(action.encode())
 
 
@@ -45,7 +45,7 @@ def click():
 
 
 def do_sleep(seconds):
-    sleep(seconds)
+    sleep(int(seconds))
 
 
 def start_client_side_tests(args, case, ip_address, sync_port, screens_path, current_try):
@@ -81,8 +81,8 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
 
                 if command == "execute_cmd":
                     execute_cmd(sock, action)
-                elif command == "check_window":
-                    check_window(sock, action)
+                elif command == "check_game":
+                    check_game(sock, action)
                 elif command == "make_screen":
                     make_screen(screens_path, "{}_try_{}".format(*args, current_try))
                 elif command == "move":

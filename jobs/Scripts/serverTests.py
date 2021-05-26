@@ -29,15 +29,27 @@ def execute_cmd(sock, cmd_command):
         sock.send("failed".encode())
 
 
-def check_window(sock, window_name):
+def check_game(sock, window_name, process_name):
     try:
         window = win32gui.FindWindow(None, window_name)
 
         if window is not None:
             main_logger.info("Window {} was succesfully found".format(window_name))
-            sock.send("done".encode())
         else:
             main_logger.error("Window {} wasn't found at all".format(window_name))
+            sock.send("failed".encode())
+            return
+
+        global PROCESSES
+
+        for process in psutil.process_iter():
+            if process_name in process.name():
+                main_logger.info("Process {} was succesfully found".format(process_name))
+                PROCESSES[process_name] = process
+                sock.send("done".encode())
+                break
+        else:
+            main_logger.info("Process {} wasn't found at all".format(process_name))
             sock.send("failed".encode())
     except Exception as e:
         main_logger.error("Failed to execute_cmd: {}".format(str(e)))
@@ -105,8 +117,8 @@ def start_server_side_tests(args, case, sync_port, current_try):
 
                 if command == "execute_cmd":
                     execute_cmd(connection, *args)
-                elif command == "check_window":
-                    check_window(connection, *args)
+                elif command == "check_game":
+                    check_game(connection, *args)
                 elif command == "finish":
                     finish(connection)
                     break

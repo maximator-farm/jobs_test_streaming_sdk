@@ -4,7 +4,7 @@
         "status": "active",
         "server_keys": "-capture 1, -resolution 1920,1200",
         "client_keys": "-fullscreen true",
-        "transport_protocol": "tcp",
+        "transport_protocol": "udp",
         "script_info": [
             "Server keys: -capture 1, -resolution 1920,1200",
             "Client keys: -fullscreen true"
@@ -12,8 +12,12 @@
         "client_actions": [
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
             "sleep 180",
-            "check_window \"Borderlands® 3\"",
-            "make_screen borderlands_menu"
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen borderlands_menu",
+            "move 300 290",
+            "click",
+            "sleep 120",
+            "make_screen start_borderlands_game"
         ]
    }
 ]
