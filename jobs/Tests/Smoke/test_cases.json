@@ -10,15 +10,10 @@
             "Client keys: -fullscreen true"
         ],
         "client_actions": [
-            "execute_cmd \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"",
-            "check_window \"Новая вкладка - Google Chrome\"",
-            "make_screen chrome_window",
-            "move 170 50",
-            "click",
-            "make_screen sample_move_and_click1",
-            "move 750 350",
-            "click",
-            "make_screen sample_move_and_click2"
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 180",
+            "check_window \"Borderlands® 3\"",
+            "make_screen borderlands_menu"
         ]
    }
 ]
