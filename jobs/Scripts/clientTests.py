@@ -13,8 +13,8 @@ sys.path.append(os.path.abspath(os.path.join(
 from jobs_launcher.core.config import *
 
 
-current_image_num = 0
-SERVER_ACTIONS = ["execute_cmd", "check_game"]
+current_image_num = 1
+SERVER_ACTIONS = ["execute_cmd", "check_game", "press_keys_server"]
 
 
 def execute_cmd(sock, action):
@@ -48,9 +48,37 @@ def do_sleep(seconds):
     sleep(int(seconds))
 
 
+def press_keys(keys_string):
+    keys = keys_string.split()
+
+    for key in keys:
+        main_logger.info("Press: {}".format(key))
+        pyautogui.press(key)
+        sleep(1)
+
+
+def press_keys_server(sock, action):
+    sock.send(action.encode())
+
+
+def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, screen_path):
+    sleep(int(initial_delay))
+
+    screen_number = 1
+
+    while True:
+        make_screen(screen_path, "{}_{:02}".format(screen_name, screen_number))
+        screen_number += 1
+
+        if screen_number > int(number_of_screens):
+            break
+        else:
+            sleep(int(delay))
+
+
 def start_client_side_tests(args, case, ip_address, sync_port, screens_path, current_try):
     if current_try == 0:
-        current_image_num = 0
+        current_image_num = 1
 
     sock = socket.socket()
 
@@ -91,6 +119,12 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
                     click()
                 elif command == "sleep":
                     do_sleep(*args)
+                elif command == "press_keys":
+                    press_keys(*args)
+                elif command == "press_keys_server":
+                    press_keys_server(sock, action)
+                elif command == "sleep_and_screen":
+                    sleep_and_screen(*args, screens_path)
                 else:
                     raise Exception("Unknown client command: {}".format(command))
 

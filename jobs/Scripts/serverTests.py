@@ -1,11 +1,13 @@
 import socket
 import sys
 import os
+from time import sleep
 import psutil
 from subprocess import PIPE
 import traceback
 import win32gui
 import shlex
+import pyautogui
 from utils import close_process
 sys.path.append(os.path.abspath(os.path.join(
 	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
@@ -74,6 +76,22 @@ def close_processes():
     return result
 
 
+def press_keys_server(sock, keys_string):
+    try:
+        keys = keys_string.split()
+
+        for key in keys:
+            main_logger.info("Press: {}".format(key))
+            pyautogui.press(key)
+            sleep(1)
+
+        sock.send("done".encode())
+    except Exception as e:
+        main_logger.error("Failed to press keys: {}".format(str(e)))
+        main_logger.error("Traceback: {}".format(traceback.format_exc()))
+        sock.send("failed".encode())
+
+
 def finish(sock):
     try:
         result = close_processes()
@@ -119,6 +137,8 @@ def start_server_side_tests(args, case, sync_port, current_try):
                     execute_cmd(connection, *args)
                 elif command == "check_game":
                     check_game(connection, *args)
+                elif command == "press_keys_server":
+                    press_keys_server(connection, *args)
                 elif command == "finish":
                     finish(connection)
                     break

@@ -2,22 +2,23 @@
    {
         "case": "STR_SM_001",
         "status": "active",
-        "server_keys": "-capture 1, -resolution 1920,1200",
-        "client_keys": "-fullscreen true",
+        "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 100000000 -QoS false -Resolution 1920,1200",
+        "client_keys": "-Fullscreen  true",
         "transport_protocol": "udp",
         "script_info": [
-            "Server keys: -capture 1, -resolution 1920,1200",
-            "Client keys: -fullscreen true"
+            "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 100000000 -QoS false -Resolution 1920,1200",
+            "Client keys: -Fullscreen true"
         ],
         "client_actions": [
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
             "sleep 180",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
-            "move 300 290",
+            "move 1000 1000",
             "click",
-            "sleep 120",
-            "make_screen start_borderlands_game"
+            "sleep 5",
+            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
+            "sleep_and_screen 15 10 10 borderlands_benchmark"
         ]
    }
 ]
