@@ -5,6 +5,7 @@ import psutil
 from subprocess import PIPE
 import traceback
 import win32gui
+import shlex
 from utils import close_process
 sys.path.append(os.path.abspath(os.path.join(
 	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
@@ -16,6 +17,7 @@ PROCESSES = {}
 
 def execute_cmd(sock, cmd_command):
     try:
+        global PROCESSES
         process = psutil.Popen(cmd_command, stdout=PIPE, stderr=PIPE, shell=True)
         PROCESSES[cmd_command] = process
 
@@ -44,11 +46,12 @@ def check_window(sock, window_name):
 
 
 def close_processes():
+    global PROCESSES
     result = True
 
-    for process in PROCESSES:
+    for process_name in PROCESSES:
         try:
-            close_process(process)
+            close_process(PROCESSES[process_name])
         except Exception as e:
             main_logger.error("Failed to close process: {}".format(str(e)))
             main_logger.error("Traceback: {}".format(traceback.format_exc()))

@@ -2,20 +2,23 @@
    {
         "case": "STR_SM_001",
         "status": "active",
-        "server_keys": "-campute 1, -resolution 1920,1200",
+        "server_keys": "-capture 1, -resolution 1920,1200",
         "client_keys": "-fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
-            "Server keys: -campute 1, -resolution 1920,1200",
+            "Server keys: -capture 1, -resolution 1920,1200",
             "Client keys: -fullscreen true"
         ],
         "client_actions": [
             "execute_cmd \"C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe\"",
             "check_window \"Новая вкладка - Google Chrome\"",
             "make_screen chrome_window",
-            "move 100 100",
+            "move 170 50",
             "click",
-            "make_screen sample_move_and_click"
+            "make_screen sample_move_and_click1",
+            "move 750 350",
+            "click",
+            "make_screen sample_move_and_click2"
         ]
    }
 ]

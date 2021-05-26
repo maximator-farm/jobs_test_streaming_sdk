@@ -142,6 +142,9 @@ def execute_tests(args, current_conf):
 
         screens_path = os.path.join(args.output, "Color", case["case"])
 
+        if not os.path.exists(screens_path):
+            os.makedirs(screens_path)
+
         current_try = 0
 
         error_messages = set()
@@ -197,10 +200,10 @@ def execute_tests(args, current_conf):
                 log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + ".log")
 
                 with open(log_source_path, "r") as file:
-                    logs = file.read()
+                    logs = file.read().replace('\0', '')
 
                 with open(log_destination_path, "a") as file:
-                    file.write("\n---------- Try #{} ----------\n".format(current_try))
+                    file.write("\n---------- Try #{} ----------\n\n".format(current_try))
                     file.write(logs)
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
