@@ -13,7 +13,7 @@
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "skip_if_done 2",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 120",
+            "sleep 150",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",

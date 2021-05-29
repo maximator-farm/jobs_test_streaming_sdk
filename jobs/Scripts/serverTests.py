@@ -97,7 +97,7 @@ def finish(sock):
         result = close_processes()
 
         if result:
-            main_logger.info("Processes was succesfully found")
+            main_logger.info("Processes was succesfully closed")
             sock.send("done".encode())
         else:
             main_logger.error("Failed to close processes")

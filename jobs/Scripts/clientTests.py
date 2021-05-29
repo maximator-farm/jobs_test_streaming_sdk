@@ -109,6 +109,7 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
     is_previous_command_done = True
     is_failed = False
     is_aborted = False
+    is_finished = False
     commands_to_skip = 0
 
     try:
@@ -145,6 +146,7 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
                 elif command == "sleep_and_screen":
                     sleep_and_screen(*args, screens_path)
                 elif command == "finish":
+                    is_finished = True
                     finish(sock)
                 elif command == "skip_if_done":
                     if is_previous_command_done:
@@ -179,6 +181,8 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
         if is_failed:
             finish(sock)
         elif is_aborted:
+            pass
+        elif is_finished:
             pass
         else:
             next_case(sock)
