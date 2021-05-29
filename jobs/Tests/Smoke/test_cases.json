@@ -11,7 +11,7 @@
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
-            "skip_if_done 2"
+            "skip_if_done 2",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
             "sleep 120",
             "make_screen borderlands_menu",
