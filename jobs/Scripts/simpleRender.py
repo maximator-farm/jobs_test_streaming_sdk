@@ -177,6 +177,12 @@ def execute_tests(args, current_conf):
                 # Wait a bit to launch streaming SDK client/server
                 time.sleep(5)
 
+                try:
+                    time.wait(timeout=0)
+                    raise Exception("StreamingSDK was down")
+                except psutil.TimeoutExpired as e:
+                    main_logger.info("StreamingSDK is alive") 
+
                 if args.execution_type == "server":
                     start_server_side_tests(args, case, SYNC_PORT, current_try)
                 else:
