@@ -23,7 +23,7 @@ from jobs_launcher.core.config import *
 
 
 # port throuth which client and server communicate to synchronize execution of tests
-SYNC_PORT = 10000
+SYNC_PORT = 80
 
 
 def copy_test_cases(args):
