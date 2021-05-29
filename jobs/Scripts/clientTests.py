@@ -76,6 +76,18 @@ def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, scree
             sleep(int(delay))
 
 
+def finish(sock):
+    sock.send("finish".encode())
+    response = sock.recv(1024).decode()
+    main_logger.info("Server response for 'finish' action: {}".format(response))
+
+
+def next_case(sock):
+    sock.send("next_case".encode())
+    response = sock.recv(1024).decode()
+    main_logger.info("Server response for 'next_case' action: {}".format(response))
+
+
 def start_client_side_tests(args, case, ip_address, sync_port, screens_path, current_try):
     if current_try == 0:
         current_image_num = 1
@@ -96,6 +108,7 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
 
     is_previous_command_done = True
     is_failed = False
+    is_aborted = False
     commands_to_skip = 0
 
     try:
@@ -131,6 +144,8 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
                     press_keys_server(sock, action)
                 elif command == "sleep_and_screen":
                     sleep_and_screen(*args, screens_path)
+                elif command == "finish":
+                    finish(sock)
                 elif command == "skip_if_done":
                     if is_previous_command_done:
                         commands_to_skip += int(args[0])
@@ -150,6 +165,7 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
                             is_failed = True
                             raise Exception("Action failed on server side")
                     elif response == "abort":
+                        is_aborted = True
                         raise Exception("Server sent abort status")
                     else:
                         raise Exception("Unknown server status: {}".format(response))
@@ -161,10 +177,10 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
     finally:
         if is_failed:
-            sock.send("finish".encode())
-
-        response = sock.recv(1024).decode()
-
-        main_logger.info("Server response for 'finish' action: {}".format(response))
+            finish(sock)
+        elif is_aborted:
+            pass
+        else:
+            next_case(sock)
 
         sock.close()

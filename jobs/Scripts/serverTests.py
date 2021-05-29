@@ -108,6 +108,10 @@ def finish(sock):
         sock.send("failed".encode())
 
 
+def next_case(sock):
+    sock.send("done".encode())
+
+
 def start_server_side_tests(args, case, sync_port, current_try):
     # configure socket
     sock = socket.socket()
@@ -139,6 +143,9 @@ def start_server_side_tests(args, case, sync_port, current_try):
                     check_game(connection, *args)
                 elif command == "press_keys_server":
                     press_keys_server(connection, *args)
+                elif command == "next_case":
+                    next_case(connection)
+                    break
                 elif command == "finish":
                     finish(connection)
                     break
