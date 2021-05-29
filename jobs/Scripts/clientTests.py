@@ -94,12 +94,18 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
     sock.send("ready".encode())
     response = sock.recv(1024).decode()
 
-    is_aborted = False
+    is_previous_command_done = True
+    is_failed = False
+    commands_to_skip = 0
 
     try:
         if response == "ready":
 
             for action in case["client_actions"]:
+                if commands_to_skip > 0:
+                    commands_to_skip -= 1
+                    continue
+
                 parts = action.split(' ', 1)
                 command = parts[0]
                 if len(parts) > 1:
@@ -125,6 +131,9 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
                     press_keys_server(sock, action)
                 elif command == "sleep_and_screen":
                     sleep_and_screen(*args, screens_path)
+                elif command == "skip_if_done":
+                    if is_previous_command_done:
+                        commands_to_skip += int(args[0])
                 else:
                     raise Exception("Unknown client command: {}".format(command))
 
@@ -132,11 +141,15 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
                     response = sock.recv(1024).decode()
 
                     if response == "done":
+                        is_previous_command_done = True
                         pass
                     elif response == "failed":
-                        raise Exception("Action failed on server side")
+                        is_previous_command_done = False
+
+                        if command != "check_game":
+                            is_failed = True
+                            raise Exception("Action failed on server side")
                     elif response == "abort":
-                        is_aborted = True
                         raise Exception("Server sent abort status")
                     else:
                         raise Exception("Unknown server status: {}".format(response))
@@ -147,7 +160,7 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
         main_logger.error("Fatal error. Case will be aborted:".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
     finally:
-        if not is_aborted:
+        if is_failed:
             sock.send("finish".encode())
 
         response = sock.recv(1024).decode()
