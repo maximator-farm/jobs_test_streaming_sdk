@@ -10,15 +10,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -32,15 +36,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -54,15 +62,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -76,15 +88,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -98,15 +114,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -120,15 +140,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -142,15 +166,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -164,15 +192,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -186,15 +218,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -208,15 +244,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -230,15 +270,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -252,15 +296,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -274,15 +322,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -296,15 +348,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -318,15 +374,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -340,15 +400,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -362,15 +426,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -384,15 +452,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -406,15 +478,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -428,15 +504,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -450,15 +530,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -472,15 +556,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -494,15 +582,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -516,15 +608,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -538,15 +634,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -560,15 +660,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -582,15 +686,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -604,15 +712,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -626,15 +738,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    },
    {
@@ -648,15 +764,19 @@
             "Client keys: -Fullscreen true"
         ],
         "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
-            "sleep 180",
+            "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
             "make_screen borderlands_menu",
             "move 1000 1000",
             "click",
             "sleep 5",
-            "press_keys_server \"down down enter   enter   c c   down enter\n\"",
-            "sleep_and_screen 15 10 10 borderlands_benchmark"
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 15 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10"
         ]
    }
 ]
