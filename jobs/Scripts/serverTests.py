@@ -112,7 +112,7 @@ def next_case(sock):
     sock.send("done".encode())
 
 
-def start_server_side_tests(args, case, sync_port, current_try):
+def start_server_side_tests(args, case, is_workable_condition, sync_port, current_try):
     # configure socket
     sock = socket.socket()
     sock.bind(("", sync_port))
@@ -122,10 +122,15 @@ def start_server_side_tests(args, case, sync_port, current_try):
 
     request = connection.recv(1024).decode()
 
+    is_aborted = False
+
     try:
         if request == "ready":
 
-            connection.send("ready".encode())
+            if is_workable_condition():
+                connection.send("ready".encode())
+            else:
+                connection.send("fail".encode())
 
             while True:
                 request = connection.recv(1024).decode()
@@ -149,14 +154,22 @@ def start_server_side_tests(args, case, sync_port, current_try):
                 elif command == "finish":
                     finish(connection)
                     break
+                elif command == "abort":
+                    is_aborted = True
+                    finish(connection)
+                    raise Exception("Client sent abort status")
                 else:
-                    raise Exception("Unknown commnad: {}".format(request))
+                    raise Exception("Unknown command: {}".format(request))
 
         else:
             raise Exception("Unknown client request: {}".format(request))
     except Exception as e:
         main_logger.error("Fatal error. Case will be aborted:".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
-        sock.send("abort".encode())
+
+        if not is_aborted:
+            sock.send("abort".encode())
+
+        raise e
     finally:
         connection.close()

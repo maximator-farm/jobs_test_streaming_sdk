@@ -82,13 +82,19 @@ def finish(sock):
     main_logger.info("Server response for 'finish' action: {}".format(response))
 
 
+def abort(sock):
+    sock.send("abort".encode())
+    response = sock.recv(1024).decode()
+    main_logger.info("Server response for 'abort' action: {}".format(response))
+
+
 def next_case(sock):
     sock.send("next_case".encode())
     response = sock.recv(1024).decode()
     main_logger.info("Server response for 'next_case' action: {}".format(response))
 
 
-def start_client_side_tests(args, case, ip_address, sync_port, screens_path, current_try):
+def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_port, screens_path, current_try):
     if current_try == 0:
         current_image_num = 1
 
@@ -102,18 +108,21 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
             main_logger.info("Could not connect to server. Try it again")
             sleep(5)
 
-    # try to communicate with server few times
-    sock.send("ready".encode())
-    response = sock.recv(1024).decode()
-
-    is_previous_command_done = True
-    is_failed = False
-    is_aborted = False
-    is_finished = False
-    commands_to_skip = 0
-
     try:
+        # try to communicate with server few times
+        sock.send("ready".encode())
+        response = sock.recv(1024).decode()
+
+        is_previous_command_done = True
+        is_failed = False
+        is_aborted = False
+        is_finished = False
+        commands_to_skip = 0
+
         if response == "ready":
+
+            if not is_workable_condition():
+                raise Exception("Client has non-workable state")
 
             for action in case["client_actions"]:
                 if commands_to_skip > 0:
@@ -164,7 +173,6 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
                         is_previous_command_done = False
 
                         if command != "check_game":
-                            is_failed = True
                             raise Exception("Action failed on server side")
                     elif response == "abort":
                         is_aborted = True
@@ -172,14 +180,19 @@ def start_client_side_tests(args, case, ip_address, sync_port, screens_path, cur
                     else:
                         raise Exception("Unknown server status: {}".format(response))
 
+        elif response == "fail":
+            raise Exception("Server has non-workable state")
         else:
             raise Exception("Unknown server answer: {}".format(response))
     except Exception as e:
+        is_failed = True
         main_logger.error("Fatal error. Case will be aborted:".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
+
+        raise e
     finally:
         if is_failed:
-            finish(sock)
+            abort(sock)
         elif is_aborted:
             pass
         elif is_finished:

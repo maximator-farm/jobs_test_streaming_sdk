@@ -24,6 +24,7 @@ from jobs_launcher.core.config import *
 
 # port throuth which client and server communicate to synchronize execution of tests
 SYNC_PORT = 80
+PROCESS = None
 
 
 def copy_test_cases(args):
@@ -128,6 +129,19 @@ def save_results(args, case, cases, test_case_status, error_messages = []):
         json.dump(cases, file, indent=4)
 
 
+def is_workable_condition():
+    try:
+        global PROCESS
+        PROCESS.wait(timeout=0)
+        main_logger.error("StreamingSDK was down")
+
+        return False
+    except psutil.TimeoutExpired as e:
+        main_logger.info("StreamingSDK is alive") 
+
+        return True
+
+
 def execute_tests(args, current_conf):
     rc = 0
 
@@ -150,7 +164,7 @@ def execute_tests(args, current_conf):
         error_messages = set()
 
         while current_try < args.retries:
-            process = None
+            global PROCESS
 
             try:
                 if args.execution_type == "server":
@@ -170,23 +184,17 @@ def execute_tests(args, current_conf):
 
                 main_logger.info("Start StreamingSDK {}".format(args.execution_type))
 
-                process = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
+                PROCESS = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
 
                 main_logger.info("Start execution_type depended script")
 
                 # Wait a bit to launch streaming SDK client/server
                 time.sleep(5)
 
-                try:
-                    time.wait(timeout=0)
-                    raise Exception("StreamingSDK was down")
-                except psutil.TimeoutExpired as e:
-                    main_logger.info("StreamingSDK is alive") 
-
                 if args.execution_type == "server":
-                    start_server_side_tests(args, case, SYNC_PORT, current_try)
+                    start_server_side_tests(args, case, is_workable_condition, SYNC_PORT, current_try)
                 else:
-                    start_client_side_tests(args, case, args.ip_address, SYNC_PORT, screens_path, current_try)
+                    start_client_side_tests(args, case, is_workable_condition, args.ip_address, SYNC_PORT, screens_path, current_try)
 
                 save_results(args, case, cases, "passed", error_messages = [])
 
@@ -197,8 +205,8 @@ def execute_tests(args, current_conf):
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
-                if process is not None:
-                    close_process(process)
+                if PROCESS is not None:
+                    close_process(PROCESS)
 
                 current_try += 1
 
