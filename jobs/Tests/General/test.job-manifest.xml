@@ -17,6 +17,7 @@
 
     <execute command='python "{ResourcesDir}/makeCompareReport.py"'>
         <argument>--work_dir "{OutputDir}"</argument>
+        <argument>--execution_type "{executionType}"</argument>
     </execute>
 
 </job-manifest>

@@ -20,6 +20,7 @@ import time
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
+from jobs_launcher.core.system_info import get_gpu
 
 
 # port throuth which client and server communicate to synchronize execution of tests
@@ -79,12 +80,28 @@ def prepare_empty_reports(args, current_conf):
             test_case_report['render_time'] = 0.0
             test_case_report['execution_type'] = args.execution_type
             test_case_report['keys'] = case['server_keys'] if args.execution_type == 'server' else case['client_keys']
-            test_case_report['transport_protocol'] = case['transport_protocol']
+            test_case_report['transport_protocol'] = case['transport_protocol'].upper()
             test_case_report['tool_path'] = args.server_tool if args.execution_type == 'server' else args.client_tool
             test_case_report['date_time'] = datetime.now().strftime(
                 '%m/%d/%Y %H:%M:%S')
+            min_latency_key = 'min_{}_latency'.format(args.execution_type)
+            test_case_report[min_latency_key] = -0.0
+            max_latency_key = 'max_{}_latency'.format(args.execution_type)
+            test_case_report[max_latency_key] = -0.0
             test_case_report[SCREENS_PATH_KEY] = os.path.join(args.output, "Color", case["case"])
             test_case_report["number_of_tries"] = 0
+            test_case_status["client_configuration"] = get_gpu() + " " + platform.system()
+            # FIXME: pass server os name as a param of run script (same as GPU name on server)
+            test_case_report["server_configuration"] = args.server_gpu_name + " " + platform.system()
+
+            for i in range(len(test_case_report["script_info"]))
+                if "Client keys" in test_case_report["script_info"][i]:
+                    test_case_report["script_info"][i] = "{base} -connectionurl {transport_protocol}://{ip_address}:1235".format(
+                        base=test_case_report["script_info"][i],
+                        transport_protocol=case["transport_protocol"],
+                        ip_address=args.ip_address
+                    )
+                    break
 
             if case['status'] == 'skipped':
                 test_case_report['test_status'] = 'skipped'
@@ -171,7 +188,9 @@ def execute_tests(args, current_conf):
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
                 else:
                     execution_script = "{tool} {keys} -connectionurl {transport_protocol}://{ip_address}:1235".format(
-                        tool=tool_path, keys=keys, transport_protocol=case["transport_protocol"],
+                        tool=tool_path,
+                        keys=keys,
+                        transport_protocol=case["transport_protocol"],
                         ip_address=args.ip_address
                     )
 
