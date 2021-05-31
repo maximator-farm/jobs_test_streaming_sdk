@@ -68,9 +68,9 @@ if __name__ == '__main__':
             json_content[latency_key] = max_latency
             
             if max_latency >= 10 and max_latency < 300:
-                json_content["status"] = "failed"
+                json_content["test_status"] = "failed"
             elif max_latency >= 300:
-                json_content["status"] = "error"
+                json_content["test_status"] = "error"
 
         reports.append(json_content)
 
