@@ -6,6 +6,7 @@ import psutil
 from subprocess import PIPE
 import traceback
 import win32gui
+import win32api
 import shlex
 import pyautogui
 from utils import close_process
