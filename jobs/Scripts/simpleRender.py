@@ -90,11 +90,11 @@ def prepare_empty_reports(args, current_conf):
             test_case_report[max_latency_key] = -0.0
             test_case_report[SCREENS_PATH_KEY] = os.path.join(args.output, "Color", case["case"])
             test_case_report["number_of_tries"] = 0
-            test_case_status["client_configuration"] = get_gpu() + " " + platform.system()
+            test_case_report["client_configuration"] = get_gpu() + " " + platform.system()
             # FIXME: pass server os name as a param of run script (same as GPU name on server)
             test_case_report["server_configuration"] = args.server_gpu_name + " " + platform.system()
 
-            for i in range(len(test_case_report["script_info"]))
+            for i in range(len(test_case_report["script_info"])):
                 if "Client keys" in test_case_report["script_info"][i]:
                     test_case_report["script_info"][i] = "{base} -connectionurl {transport_protocol}://{ip_address}:1235".format(
                         base=test_case_report["script_info"][i],

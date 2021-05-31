@@ -40,8 +40,8 @@ if __name__ == '__main__':
         max_latency = -1
         line_number = 0
 
-        if os.path.exists(os.path.join(work_dir, log_name)):
-            with open(os.path.join(render_logs_path, log_name), 'r') as log_file:
+        if os.path.exists(os.path.join(work_dir, json_content[log_key])):
+            with open(os.path.join(work_dir, json_content[log_key]), 'r') as log_file:
                 log = log_file.readlines()
                 for line in log:
                     if 'latency' in line:
