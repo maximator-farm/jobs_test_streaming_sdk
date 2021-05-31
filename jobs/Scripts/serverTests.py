@@ -78,6 +78,9 @@ def close_processes():
 
 def press_keys_server(sock, keys_string):
     try:
+        # switch keyboard language to English
+        win32api.LoadKeyboardLayout("00000409", 1)
+
         keys = keys_string.split()
 
         for key in keys:
