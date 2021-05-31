@@ -61,7 +61,7 @@ if __name__ == '__main__':
 
         if min_latency != -1:
             latency_key = 'min_{}_latency'.format(args.execution_type)
-            json_content[latency_key] = max_latency
+            json_content[latency_key] = min_latency
 
         if max_latency != -1:
             latency_key = 'max_{}_latency'.format(args.execution_type)
