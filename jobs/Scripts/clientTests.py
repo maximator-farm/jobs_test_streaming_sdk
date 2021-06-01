@@ -25,12 +25,13 @@ def check_game(sock, action):
     sock.send(action.encode())
 
 
-def make_screen(screen_path, screen_name):
+def make_screen(screen_path, screen_name=""):
     screen = pyscreenshot.grab()
-    screen = screen.convert("RGB")
-    global current_image_num
-    screen.save(os.path.join(screen_path, "{:03}_{}.jpg".format(current_image_num, screen_name)))
-    current_image_num += 1
+    if screen_name:
+        screen = screen.convert("RGB")
+        global current_image_num
+        screen.save(os.path.join(screen_path, "{:03}_{}.jpg".format(current_image_num, screen_name)))
+        current_image_num += 1
 
 
 def move(x, y):
