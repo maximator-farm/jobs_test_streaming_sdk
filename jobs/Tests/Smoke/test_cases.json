@@ -2,12 +2,40 @@
    {
         "case": "STR_SM_001",
         "status": "active",
-        "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 100000000 -QoS false -Resolution 1920,1200",
-        "client_keys": "-Fullscreen  true",
+        "server_keys": "-Resolution 1920,1200",
+        "client_keys": "",
         "transport_protocol": "udp",
         "script_info": [
-            "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 100000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Default settings with UDP",
+            "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
+            "Client keys: -ConnectionURL UDP://84.47.189.72:1235"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "press_keys_server \"esc\"",
+            "sleep 10",
+            "finish"
+        ]
+   },
+   {
+        "case": "STR_SM_002",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200",
+        "client_keys": "",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Default settings with TCP",
+            "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
+            "Client keys: -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
