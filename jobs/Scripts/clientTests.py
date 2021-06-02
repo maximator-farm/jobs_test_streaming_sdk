@@ -68,7 +68,7 @@ def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, scree
     screen_number = 1
 
     while True:
-        make_screen(screen_path, "{}_{:02}".format(screen_name, screen_number))
+        make_screen(screen_path, screen_name="{}_{:02}".format(screen_name, screen_number))
         screen_number += 1
 
         if screen_number > int(number_of_screens):
@@ -142,7 +142,10 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_
                 elif command == "check_game":
                     check_game(sock, action)
                 elif command == "make_screen":
-                    make_screen(screens_path, "{}_try_{}".format(*args, current_try))
+                    if len(args) > 0:
+                        make_screen(screens_path)
+                    else:
+                        make_screen(screens_path, screen_name="{}_try_{}".format(*args, current_try))
                 elif command == "move":
                     move(*args)
                 elif command == "click":
