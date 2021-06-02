@@ -142,7 +142,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_
                 elif command == "check_game":
                     check_game(sock, action)
                 elif command == "make_screen":
-                    if len(args) > 0:
+                    if args is not None:
                         make_screen(screens_path)
                     else:
                         make_screen(screens_path, screen_name="{}_try_{}".format(*args, current_try))
