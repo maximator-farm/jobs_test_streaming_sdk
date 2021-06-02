@@ -7,7 +7,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Render DX11",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235"
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -34,7 +34,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Render OpenGL",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235"
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -61,7 +61,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Render Vulkan",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235"
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -88,7 +88,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235 -Render DX11"
+            "Client keys: -Render DX11"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -115,7 +115,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235 -Render OpenGL"
+            "Client keys: -Render OpenGL"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -142,7 +142,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235 -Render Vulkan"
+            "Client keys: -Render Vulkan"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -169,7 +169,7 @@
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Render DX11",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235"
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -196,7 +196,7 @@
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Render OpenGL",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235"
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -223,7 +223,7 @@
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Render Vulkan",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235"
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -250,7 +250,7 @@
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235 -Render DX11"
+            "Client keys: -Render DX11"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -277,7 +277,7 @@
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235 -Render OpenGL"
+            "Client keys: -Render OpenGL"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -304,7 +304,7 @@
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235 -Render Vulkan"
+            "Client keys: -Render Vulkan"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",

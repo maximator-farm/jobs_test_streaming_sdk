@@ -7,7 +7,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235 -Stereo false"
+            "Client keys: -Stereo false"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -32,7 +32,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235 -Stereo true"
+            "Client keys: -Stereo true"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -57,7 +57,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -AudioFile <<FILE>>",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235"
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -82,7 +82,7 @@
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235 -Stereo false"
+            "Client keys: -Stereo false"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -107,7 +107,7 @@
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235 -Stereo true"
+            "Client keys: -Stereo true"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -132,7 +132,7 @@
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -AudioFile <<FILE>>",
-            "Client keys: -ConnectionURL tcp://84.47.189.72:1235"
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",

@@ -6,8 +6,8 @@
         "client_keys": "",
         "transport_protocol": "udp",
         "script_info": [
-            "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Capture false",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235"
+            "Server keys: -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Capture dd",
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -33,8 +33,8 @@
         "client_keys": "",
         "transport_protocol": "tcp",
         "script_info": [
-            "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Capture false",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235"
+            "Server keys: -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Capture dd",
+            "Client keys: "
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
