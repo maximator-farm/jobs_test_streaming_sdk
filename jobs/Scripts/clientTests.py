@@ -1,13 +1,14 @@
 import socket
 import sys
 import os
-from time import sleep
+from time import sleep, strftime, gmtime
 import shlex
 import traceback
 import win32gui
 import pyautogui
 import pyscreenshot
 import shlex
+from pyffmpeg import FFmpeg
 sys.path.append(os.path.abspath(os.path.join(
 	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
@@ -32,6 +33,16 @@ def make_screen(screen_path, screen_name=""):
         global current_image_num
         screen.save(os.path.join(screen_path, "{:03}_{}.jpg".format(current_image_num, screen_name)))
         current_image_num += 1
+
+
+def record_video(video_path, video_name, duration)
+    video_full_path = os.path.join(video_path, video_name)
+    time_flag_value = strftime("%H:%M:%S", gmtime(int(duration)))
+
+    recorder = FFmpeg()
+    recorder.options("""-f gdigrab -video_size 1920x1080 -framerate 60 
+        -i desktop -f dshow -i audio="Stereo Mix (2- Realtek High Definition Audio)" 
+        -t {time} {video}""".format(time=time_flag_value, video=video_full_path))
 
 
 def move(x, y):
@@ -95,7 +106,9 @@ def next_case(sock):
     main_logger.info("Server response for 'next_case' action: {}".format(response))
 
 
-def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_port, screens_path, current_try):
+def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_port, output_path, current_try):
+    screens_path = os.path.join(output_path, case["case"])
+
     if current_try == 0:
         current_image_num = 1
 
@@ -143,9 +156,11 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_
                     check_game(sock, action)
                 elif command == "make_screen":
                     if args is None:
-                        make_screen(screens_path)
+                        make_screen(output_path)
                     else:
                         make_screen(screens_path, screen_name="{}_try_{}".format(*args, current_try))
+                elif commnad == "record_video":
+                    record_video(output_path, case["case"] + ".mp4", *args)
                 elif command == "move":
                     move(*args)
                 elif command == "click":

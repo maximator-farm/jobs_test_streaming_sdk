@@ -138,6 +138,11 @@ def save_results(args, case, cases, test_case_status, error_messages = []):
         if test_case_status == "passed" or test_case_status == "error":
             test_case_report["group_timeout_exceeded"] = False
 
+        video_path = os.path.join(args.output, "Color", case["case"] + ".mp4")
+
+        if os.path.exists(video_path):
+            test_case_report["video_path"] = video_path
+
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "w") as file:
         json.dump([test_case_report], file, indent=4)
 
@@ -171,7 +176,8 @@ def execute_tests(args, current_conf):
 
         keys = case["server_keys"] if args.execution_type == "server" else case["client_keys"]
 
-        screens_path = os.path.join(args.output, "Color", case["case"])
+        output_path = os.path.join(args.output, "Color")
+        screens_path = os.path.join(output_path, case["case"])
 
         if not os.path.exists(screens_path):
             os.makedirs(screens_path)
@@ -213,7 +219,7 @@ def execute_tests(args, current_conf):
                 if args.execution_type == "server":
                     start_server_side_tests(args, case, is_workable_condition, SYNC_PORT, current_try)
                 else:
-                    start_client_side_tests(args, case, is_workable_condition, args.ip_address, SYNC_PORT, screens_path, current_try)
+                    start_client_side_tests(args, case, is_workable_condition, args.ip_address, SYNC_PORT, output_path, current_try)
 
                 save_results(args, case, cases, "passed", error_messages = [])
 
