@@ -138,10 +138,10 @@ def save_results(args, case, cases, test_case_status, error_messages = []):
         if test_case_status == "passed" or test_case_status == "error":
             test_case_report["group_timeout_exceeded"] = False
 
-        video_path = os.path.join(args.output, "Color", case["case"] + ".mp4")
+        video_path = os.path.join("Color", case["case"] + ".mp4")
 
-        if os.path.exists(video_path):
-            test_case_report["video_path"] = video_path
+        if os.path.exists(os.path.join(args.output, video_path)):
+            test_case_report[VIDEO_KEY] = video_path
 
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "w") as file:
         json.dump([test_case_report], file, indent=4)
