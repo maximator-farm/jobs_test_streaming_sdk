@@ -40,7 +40,7 @@ if __name__ == '__main__':
         max_latency = -1
         line_number = 0
 
-        if os.path.exists(os.path.join(work_dir, json_content[log_key])):
+        if log_key in json_content and os.path.exists(os.path.join(work_dir, json_content[log_key])):
             with open(os.path.join(work_dir, json_content[log_key]), 'r') as log_file:
                 log = log_file.readlines()
                 for line in log:
