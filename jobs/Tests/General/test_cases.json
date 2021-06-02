@@ -1,5 +1,5 @@
 [
-   {
+    {
         "case": "STR_GEN_001",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 10000000 -QoS false -Resolution 1920,1200",
@@ -7,7 +7,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 10000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -25,8 +25,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_002",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 20000000 -QoS false -Resolution 1920,1200",
@@ -34,7 +34,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 20000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -52,8 +52,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_003",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 30000000 -QoS false -Resolution 1920,1200",
@@ -61,7 +61,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 30000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -79,8 +79,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_004",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 40000000 -QoS false -Resolution 1920,1200",
@@ -88,7 +88,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 40000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -106,8 +106,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_005",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 50000000 -QoS false -Resolution 1920,1200",
@@ -115,7 +115,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 50000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -133,8 +133,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_006",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 75000000 -QoS false -Resolution 1920,1200",
@@ -142,7 +142,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 75000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -160,8 +160,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_007",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 100000000 -QoS false -Resolution 1920,1200",
@@ -169,7 +169,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 100000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -187,8 +187,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_008",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 10000000 -QoS false -Resolution 1920,1200",
@@ -196,7 +196,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 10000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -214,8 +214,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_009",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 20000000 -QoS false -Resolution 1920,1200",
@@ -223,7 +223,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 20000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -241,8 +241,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_010",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 30000000 -QoS false -Resolution 1920,1200",
@@ -250,7 +250,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 30000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -268,8 +268,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_011",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 40000000 -QoS false -Resolution 1920,1200",
@@ -277,7 +277,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 40000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -295,8 +295,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_012",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 50000000 -QoS false -Resolution 1920,1200",
@@ -304,7 +304,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 50000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -322,8 +322,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_013",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 75000000 -QoS false -Resolution 1920,1200",
@@ -331,7 +331,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 75000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -349,8 +349,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_014",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 100000000 -QoS false -Resolution 1920,1200",
@@ -358,7 +358,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 100000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -376,8 +376,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_015",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -QoS true -Resolution 1920,1200",
@@ -385,7 +385,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -QoS true -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -403,8 +403,8 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_GEN_016",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -QoS true -Resolution 1920,1200",
@@ -412,7 +412,7 @@
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -QoS true -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL UDP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -430,16 +430,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_018",
+    },
+    {
+        "case": "STR_GEN_017",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 10000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 10000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -457,16 +457,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_019",
+    },
+    {
+        "case": "STR_GEN_018",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 20000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 20000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -484,16 +484,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_020",
+    },
+    {
+        "case": "STR_GEN_019",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 30000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 30000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -511,16 +511,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_021",
+    },
+    {
+        "case": "STR_GEN_020",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 40000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 40000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -538,16 +538,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_022",
+    },
+    {
+        "case": "STR_GEN_021",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 50000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 50000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -565,16 +565,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_023",
+    },
+    {
+        "case": "STR_GEN_022",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 75000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 75000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -592,16 +592,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_024",
+    },
+    {
+        "case": "STR_GEN_023",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 30 -bitrate 100000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 30 -bitrate 100000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -619,16 +619,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_025",
+    },
+    {
+        "case": "STR_GEN_024",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 10000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 10000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -646,16 +646,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_026",
+    },
+    {
+        "case": "STR_GEN_025",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 20000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 20000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -673,16 +673,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_027",
+    },
+    {
+        "case": "STR_GEN_026",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 30000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 30000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -700,16 +700,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_028",
+    },
+    {
+        "case": "STR_GEN_027",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 40000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 40000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -727,16 +727,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_029",
+    },
+    {
+        "case": "STR_GEN_028",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 50000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 50000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -754,16 +754,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_030",
+    },
+    {
+        "case": "STR_GEN_029",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 75000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 75000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -781,16 +781,16 @@
             "press_keys_server \"esc\"",
             "sleep 10"
         ]
-   },
-   {
-        "case": "STR_GEN_031",
+    },
+    {
+        "case": "STR_GEN_030",
         "status": "active",
         "server_keys": "-Capture 1 -extStats true -Framerate 60 -bitrate 100000000 -QoS false -Resolution 1920,1200",
         "client_keys": "-Fullscreen  true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture 1 -extStats true -Framerate 60 -bitrate 100000000 -QoS false -Resolution 1920,1200",
-            "Client keys: -Fullscreen true"
+            "Client keys: -Fullscreen true -ConnectionURL TCP://84.47.189.72:1235"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -809,5 +809,5 @@
             "sleep 10",
             "finish"
         ]
-   }
+    }
 ]
