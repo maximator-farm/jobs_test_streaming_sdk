@@ -1,5 +1,5 @@
 [
-   {
+    {
         "case": "STR_CPT_001",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -Capture false",
@@ -15,16 +15,18 @@
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
             "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
             "click",
             "sleep 5",
             "make_screen borderlands_menu",
             "press_keys_server \"down down enter   enter   c c   down enter\"",
             "sleep_and_screen 30 5 5 borderlands_benchmark",
             "press_keys_server \"esc\"",
-            "sleep 10" 
+            "sleep 10"
         ]
-   },
-   {
+    },
+    {
         "case": "STR_CPT_002",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -Capture false",
@@ -40,6 +42,8 @@
             "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
             "sleep 150",
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
             "click",
             "sleep 5",
             "make_screen borderlands_menu",
@@ -49,5 +53,5 @@
             "sleep 10",
             "finish"
         ]
-   }
+    }
 ]
