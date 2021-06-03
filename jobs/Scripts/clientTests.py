@@ -159,7 +159,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_
                         make_screen(output_path)
                     else:
                         make_screen(screens_path, screen_name="{}_try_{}".format(*args, current_try))
-                elif commnad == "record_video":
+                elif command == "record_video":
                     record_video(output_path, case["case"] + ".mp4", *args)
                 elif command == "move":
                     move(*args)
