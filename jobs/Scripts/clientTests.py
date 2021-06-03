@@ -35,7 +35,7 @@ def make_screen(screen_path, screen_name=""):
         current_image_num += 1
 
 
-def record_video(video_path, video_name, duration)
+def record_video(video_path, video_name, duration):
     video_full_path = os.path.join(video_path, video_name)
     time_flag_value = strftime("%H:%M:%S", gmtime(int(duration)))
 
