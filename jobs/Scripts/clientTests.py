@@ -40,9 +40,13 @@ def record_video(video_path, video_name, duration):
     time_flag_value = strftime("%H:%M:%S", gmtime(int(duration)))
 
     recorder = FFmpeg()
+    main_logger.info("Start to record video")
+
     recorder.options("""-f gdigrab -video_size 1920x1080 -framerate 60 
         -i desktop -f dshow -i audio="Stereo Mix (2- Realtek High Definition Audio)" 
         -t {time} {video}""".format(time=time_flag_value, video=video_full_path))
+
+    main_logger.info("Finish to record video")
 
 
 def move(x, y):
