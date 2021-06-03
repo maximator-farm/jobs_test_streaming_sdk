@@ -185,6 +185,16 @@ def execute_tests(args, current_conf):
 
             try:
                 if args.execution_type == "server":
+                    copyfile(
+                        os.path.realpath(
+                            os.path.join(os.path.dirname(__file__),
+                            "..",
+                            "Configs",
+                            "settings_{}.json".format(case["transport_protocol"].upper()))
+                        ), 
+                        os.path.join(os.getenv("APPDATA"), "..", "Local", "AMD", "RemoteGameServer", "settings", "settings.json")
+                    )
+
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
                 else:
                     execution_script = "{tool} {keys} -connectionurl {transport_protocol}://{ip_address}:1235".format(
