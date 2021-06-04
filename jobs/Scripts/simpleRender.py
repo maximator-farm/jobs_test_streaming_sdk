@@ -91,8 +91,7 @@ def prepare_empty_reports(args, current_conf):
             test_case_report[SCREENS_PATH_KEY] = os.path.join(args.output, "Color", case["case"])
             test_case_report["number_of_tries"] = 0
             test_case_report["client_configuration"] = get_gpu() + " " + platform.system()
-            # FIXME: pass server os name as a param of run script (same as GPU name on server)
-            test_case_report["server_configuration"] = args.server_gpu_name + " " + platform.system()
+            test_case_report["server_configuration"] = args.server_gpu_name + " " + args.server_os_name
 
             for i in range(len(test_case_report["script_info"])):
                 if "Client keys" in test_case_report["script_info"][i]:
@@ -268,6 +267,7 @@ def createArgsParser():
     parser.add_argument('--execution_type', required=True)
     parser.add_argument('--ip_address', required=True)
     parser.add_argument('--server_gpu_name', required=True)
+    parser.add_argument('--server_os_name', required=True)
 
     return parser
 
@@ -286,8 +286,8 @@ if __name__ == '__main__':
             os.makedirs(os.path.join(args.output, "tool_logs"))
 
         render_device = args.server_gpu_name
-        system_pl = platform.system()
-        current_conf = set(platform.system()) if not render_device else {platform.system(), render_device}
+        system_pl = args.server_os_name
+        current_conf = set(system_pl) if not render_device else {system_pl, render_device}
         main_logger.info("Detected GPUs: {}".format(render_device))
         main_logger.info("PC conf: {}".format(current_conf))
         main_logger.info("Creating predefined errors json...")
