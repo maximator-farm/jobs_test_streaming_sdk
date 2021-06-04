@@ -68,9 +68,17 @@ if __name__ == '__main__':
             json_content[latency_key] = max_latency
             
             if max_latency >= 100 and max_latency < 300:
+                json_content["message"].append("Max {} latency is more than or equal to 100 and less than 300".format(args.execution_type))
                 json_content["test_status"] = "failed"
-            elif max_latency >= 300 or max_latency == 0:
+            elif max_latency >= 300:
+                json_content["message"].append("Max {} latency is more than 300".format(args.execution_type))
                 json_content["test_status"] = "error"
+            elif max_latency == 0:
+                json_content["message"].append("Max {} latency is equal to 0".format(args.execution_type))
+                json_content["test_status"] = "error"
+        else:
+            json_content["message"].append("Could not find mentions of {} latency in log".format(args.execution_type))
+            json_content["test_status"] = "error"
 
         reports.append(json_content)
 

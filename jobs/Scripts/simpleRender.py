@@ -122,7 +122,7 @@ def prepare_empty_reports(args, current_conf):
         json.dump(cases, f, indent=4)
 
 
-def save_results(args, case, cases, test_case_status, error_messages = []):
+def save_results(args, case, cases, test_case_status = "", error_messages = []):
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "r") as file:
         test_case_report = json.loads(file.read())[0]
         test_case_report["test_status"] = test_case_status
@@ -140,7 +140,9 @@ def save_results(args, case, cases, test_case_status, error_messages = []):
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "w") as file:
         json.dump([test_case_report], file, indent=4)
 
-    case["status"] = test_case_status
+    if test_case_status:
+       case["status"] = test_case_status
+
     with open(os.path.join(args.output, "test_cases.json"), "w") as file:
         json.dump(cases, file, indent=4)
 
@@ -177,10 +179,10 @@ def execute_tests(args, current_conf):
 
         current_try = 0
 
-        error_messages = set()
-
         while current_try < args.retries:
             global PROCESS
+
+            error_messages = set()
 
             try:
                 if args.execution_type == "server":
@@ -224,11 +226,11 @@ def execute_tests(args, current_conf):
                 else:
                     start_client_side_tests(args, case, is_workable_condition, args.ip_address, SYNC_PORT, screens_path, current_try)
 
-                save_results(args, case, cases, "passed", error_messages = [])
+                save_results(args, case, cases, status = "passed", error_messages = [])
 
                 break
             except Exception as e:
-                save_results(args, case, cases, "failed", error_messages = error_messages)
+                save_results(args, case, cases, status = "failed", error_messages = error_messages)
                 error_messages.add(str(e))
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
@@ -244,13 +246,18 @@ def execute_tests(args, current_conf):
                 with open(log_source_path, "r") as file:
                     logs = file.read().replace('\0', '')
 
+                if "Error:" in logs:
+                    error_messages.append("Error was mentioned in {} log".format(args.execution_type))
+
+                    save_results(args, case, cases, status = "passed", error_messages = [])
+
                 with open(log_destination_path, "a") as file:
                     file.write("\n---------- Try #{} ----------\n\n".format(current_try))
                     file.write(logs)
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1
-            save_results(args, case, cases, "error", error_messages = error_messages)
+            save_results(args, case, cases, status = "error", error_messages = error_messages)
 
     return rc
 
