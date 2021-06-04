@@ -13,7 +13,7 @@ KEYS_TO_COPY = ["min_server_latency", "max_server_latency"]
 
 
 def get_test_status(latency):
-    if latency < 100:
+    if latency > 0 and latency < 100:
         return "passed"
     elif latency >= 100 and latency < 300:
         return "failed"
@@ -49,7 +49,9 @@ if __name__ == '__main__':
                                 target_file_content[i][key] = source_file_content[i][key]
 
                         if "max_client_latency" in target_file_content[i] and "max_server_latency" in target_file_content[i]:
-                            if target_file_content[i]["max_server_latency"] > target_file_content[i]["max_client_latency"]:
+                            if target_file_content[i]["max_server_latency"] > target_file_content[i]["max_client_latency"] 
+                                and target_file_content[i]["max_client_latency"] != 0:
+
                                 target_file_content[i]["test_status"] = get_test_status(target_file_content[i]["max_server_latency"])
 
                     with open(target_file_path, "w", encoding="utf8") as f:
@@ -80,7 +82,9 @@ if __name__ == '__main__':
                                     target_group_data["render_results"][i][key] = source_group_data["render_results"][i][key]
 
                             if "max_client_latency" in target_group_data["render_results"][i] and "max_server_latency" in target_group_data["render_results"][i]:
-                                if target_group_data["render_results"][i]["max_server_latency"] > target_group_data["render_results"][i]["max_client_latency"]:
+                                if target_group_data["render_results"][i]["max_server_latency"] > target_group_data["render_results"][i]["max_client_latency"] 
+                                    and target_group_data["render_results"][i]["max_client_latency"] != 0:
+
                                     new_test_status = get_test_status(target_group_data["render_results"][i]["max_server_latency"])
                                     old_test_status = target_group_data["render_results"][i]["test_status"]
 
