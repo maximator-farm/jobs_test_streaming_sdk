@@ -67,6 +67,9 @@ if __name__ == '__main__':
                     with open(source_file_path, "r") as f:
                         source_file_content = json.load(f)
 
+                    if "machine_info" in source_file_content:
+                    	target_file_content["machine_info"] = source_file_content["machine_info"]
+
                     for test_group in target_file_content["results"]:
                         target_group_data = target_file_content["results"][test_group][""]
                         source_group_data = source_file_content["results"][test_group][""]
