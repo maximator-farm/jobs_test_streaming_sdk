@@ -77,20 +77,16 @@ if __name__ == '__main__':
                                 if key in source_group_data["render_results"][i]:
                                     target_group_data["render_results"][i][key] = source_group_data["render_results"][i][key]
 
-                            if "max_client_latency" in target_group_data["render_results"][i] and "max_server_latency" in target_group_data["render_results"][i]:
-                                if target_group_data["render_results"][i]["max_server_latency"] > target_group_data["render_results"][i]["max_client_latency"] 
-                                    and target_group_data["render_results"][i]["max_client_latency"] != 0:
+                            new_test_status = get_test_status(target_group_data["render_results"][i]["test_status"], source_group_data["render_results"][i]["test_status"])
+                            old_test_status = target_group_data["render_results"][i]["test_status"]
 
-                                    new_test_status = get_test_status(target_group_data["render_results"][i]["test_status"], source_group_data["render_results"][i]["test_status"])
-                                    old_test_status = target_group_data["render_results"][i]["test_status"]
+                            target_group_data[new_test_status] += 1
+                            target_group_data[old_test_status] -= 1
 
-                                    target_group_data[new_test_status] += 1
-                                    target_group_data[old_test_status] -= 1
+                            target_file_content["summary"][new_test_status] += 1
+                            target_file_content["summary"][old_test_status] -= 1
 
-                                    target_file_content["summary"][new_test_status] += 1
-                                    target_file_content["summary"][old_test_status] -= 1
-
-                                    target_group_data["render_results"][i]["test_status"] = new_test_status
+                            target_group_data["render_results"][i]["test_status"] = new_test_status
 
                             if "message" in target_group_data["render_results"][i]:
                                 target_group_data["render_results"][i]["message"] += source_group_data["render_results"][i]["message"]
