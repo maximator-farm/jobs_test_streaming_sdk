@@ -92,6 +92,7 @@ def prepare_empty_reports(args, current_conf):
             test_case_report["number_of_tries"] = 0
             test_case_report["client_configuration"] = get_gpu() + " " + platform.system()
             test_case_report["server_configuration"] = args.server_gpu_name + " " + args.server_os_name
+            test_case_report["message"] = []
 
             for i in range(len(test_case_report["script_info"])):
                 if "Client keys" in test_case_report["script_info"][i]:
