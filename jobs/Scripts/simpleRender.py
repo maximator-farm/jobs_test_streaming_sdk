@@ -210,8 +210,6 @@ def execute_tests(args, current_conf):
                 with open(execution_script_path, "w") as f:
                     f.write(execution_script)
 
-                status = "error"
-
                 main_logger.info("Start StreamingSDK {}".format(args.execution_type))
 
                 PROCESS = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
@@ -226,11 +224,11 @@ def execute_tests(args, current_conf):
                 else:
                     start_client_side_tests(args, case, is_workable_condition, args.ip_address, SYNC_PORT, screens_path, current_try)
 
-                save_results(args, case, cases, status = "passed", error_messages = [])
+                save_results(args, case, cases, test_case_status = "passed", error_messages = [])
 
                 break
             except Exception as e:
-                save_results(args, case, cases, status = "failed", error_messages = error_messages)
+                save_results(args, case, cases, test_case_status = "failed", error_messages = error_messages)
                 error_messages.add(str(e))
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
@@ -249,7 +247,7 @@ def execute_tests(args, current_conf):
                 if "Error:" in logs:
                     error_messages.append("Error was mentioned in {} log".format(args.execution_type))
 
-                    save_results(args, case, cases, status = "passed", error_messages = [])
+                    save_results(args, case, cases, test_case_status = "passed", error_messages = [])
 
                 with open(log_destination_path, "a") as file:
                     file.write("\n---------- Try #{} ----------\n\n".format(current_try))
@@ -257,7 +255,7 @@ def execute_tests(args, current_conf):
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1
-            save_results(args, case, cases, status = "error", error_messages = error_messages)
+            save_results(args, case, cases, test_case_status = "error", error_messages = error_messages)
 
     return rc
 
