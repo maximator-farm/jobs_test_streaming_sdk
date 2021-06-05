@@ -36,17 +36,14 @@ def make_screen(screen_path, screen_name=""):
 
 
 def record_video(video_path, video_name, duration):
-    video_full_path = os.path.join(video_path, video_name + ".avi")
-    converted_video_full_path = os.path.join(video_path, video_name + ".mp4")
+    video_full_path = os.path.join(video_path, video_name + ".mp4")
     time_flag_value = strftime("%H:%M:%S", gmtime(int(duration)))
 
     recorder = FFmpeg()
     main_logger.info("Start to record video")
 
-    recorder.options("-f gdigrab -video_size 1920x1080 -r 60 -i desktop -f dshow -i audio=\"Stereo Mix (Realtek High Definition Audio)\" -t {time} -q:v 3 {video}"
+    recorder.options("-f gdigrab -video_size 1920x1080 -r 60 -i desktop -f dshow -i audio=\"Stereo Mix (Realtek High Definition Audio)\" -t {time} -q:v 3 -pix_fmt yuv420p {video}"
         .format(time=time_flag_value, video=video_full_path))
-
-    recorder.options("-i {} -c:v copy -c:a copy {}".format(video_full_path, converted_video_full_path))
 
     main_logger.info("Finish to record video")
 
