@@ -36,7 +36,8 @@ def make_screen(screen_path, screen_name=""):
 
 
 def record_video(video_path, video_name, duration):
-    video_full_path = os.path.join(video_path, video_name)
+    video_full_path = os.path.join(video_path, video_name + ".avi")
+    converted_video_full_path = os.path.join(video_path, video_name + ".mp4")
     time_flag_value = strftime("%H:%M:%S", gmtime(int(duration)))
 
     recorder = FFmpeg()
@@ -44,6 +45,8 @@ def record_video(video_path, video_name, duration):
 
     recorder.options("-f gdigrab -video_size 1920x1080 -framerate 60 -i desktop -f dshow -i audio=\"Stereo Mix (Realtek High Definition Audio)\" -t {time} {video}"
         .format(time=time_flag_value, video=video_full_path))
+
+    recorder.options("-i {} -c:v copy -c:a copy {}".format(video_full_path, converted_video_full_path))
 
     main_logger.info("Finish to record video")
 
@@ -163,7 +166,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_
                     else:
                         make_screen(screens_path, screen_name="{}_try_{}".format(*args, current_try))
                 elif command == "record_video":
-                    record_video(output_path, case["case"] + ".webm", *args)
+                    record_video(output_path, case["case"], *args)
                 elif command == "move":
                     move(*args)
                 elif command == "click":
