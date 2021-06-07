@@ -3,11 +3,11 @@
         "case": "STR_QOS_001",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -QoS false",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS false",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -30,11 +30,11 @@
         "case": "STR_QOS_002",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -AdjustFramerate false",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -AdjustFramerate false",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -57,11 +57,11 @@
         "case": "STR_QOS_003",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -AdjustBitrate false",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -AdjustBitrate false",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -84,11 +84,11 @@
         "case": "STR_QOS_004",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -FrameratePeriod 2",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -FrameratePeriod 2",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -111,11 +111,11 @@
         "case": "STR_QOS_005",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -BitratePeriod 5000000",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -BitratePeriod 5000000",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -138,11 +138,11 @@
         "case": "STR_QOS_006",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -FramerateStep 2",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -FramerateStep 2",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -165,11 +165,11 @@
         "case": "STR_QOS_007",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -BitrateStep 5000000",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -BitrateStep 5000000",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -192,11 +192,11 @@
         "case": "STR_QOS_008",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -MinFramerate 100",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -MinFramerate 100",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -219,11 +219,11 @@
         "case": "STR_QOS_009",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -MinBitrate 10000000",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -MinBitrate 10000000",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -246,11 +246,11 @@
         "case": "STR_QOS_010",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -QoS false",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS false",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -273,11 +273,11 @@
         "case": "STR_QOS_011",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -AdjustFramerate false",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -AdjustFramerate false",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -300,11 +300,11 @@
         "case": "STR_QOS_012",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -AdjustBitrate false",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -AdjustBitrate false",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -327,11 +327,11 @@
         "case": "STR_QOS_013",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -FrameratePeriod 2",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -FrameratePeriod 2",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -354,11 +354,11 @@
         "case": "STR_QOS_014",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -BitratePeriod 5000000",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -BitratePeriod 5000000",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -381,11 +381,11 @@
         "case": "STR_QOS_015",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -FramerateStep 2",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -FramerateStep 2",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -408,11 +408,11 @@
         "case": "STR_QOS_016",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -BitrateStep 5000000",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -BitrateStep 5000000",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -435,11 +435,11 @@
         "case": "STR_QOS_017",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -MinFramerate 100",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -MinFramerate 100",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -462,11 +462,11 @@
         "case": "STR_QOS_018",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -MinBitrate 10000000",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -Resolution 1920,1200 -QoS true -MinBitrate 10000000",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
