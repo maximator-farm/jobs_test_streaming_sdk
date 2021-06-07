@@ -88,7 +88,7 @@ if __name__ == '__main__':
 
                             target_group_data["render_results"][i]["test_status"] = new_test_status
 
-                            if "message" in target_group_data["render_results"][i]:
+                            if "message" in source_group_data["render_results"][i]:
                                 target_group_data["render_results"][i]["message"] += source_group_data["render_results"][i]["message"]
 
                     with open(target_file_path, "w", encoding="utf8") as f:
