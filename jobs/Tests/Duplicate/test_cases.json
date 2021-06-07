@@ -22,7 +22,6 @@
             "make_screen borderlands_menu",
             "press_keys_server \"down down enter   enter   c c   down enter\"",
             "sleep_and_screen 30 5 5 borderlands_benchmark",
-            "press_keys_server \"esc\"",
             "sleep 10"
         ]
     },
@@ -49,7 +48,6 @@
             "make_screen borderlands_menu",
             "press_keys_server \"down down enter   enter   c c   down enter\"",
             "sleep_and_screen 30 5 5 borderlands_benchmark",
-            "press_keys_server \"esc\"",
             "sleep 10"
         ]
     }
