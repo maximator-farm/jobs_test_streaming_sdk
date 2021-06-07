@@ -246,7 +246,7 @@ def execute_tests(args, current_conf):
                     logs = file.read().replace('\0', '')
 
                 if "Error:" in logs:
-                    error_messages.append("Error was mentioned in {} log".format(args.execution_type))
+                    error_messages.add("Error was mentioned in {} log".format(args.execution_type))
 
                     save_results(args, case, cases, test_case_status = "passed", error_messages = [])
 
