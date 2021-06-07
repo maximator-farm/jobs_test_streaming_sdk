@@ -42,7 +42,7 @@ def record_video(video_path, video_name, resolution, duration):
     recorder = FFmpeg()
     main_logger.info("Start to record video")
 
-    recorder.options("-f gdigrab -video_size {resolution} -r 60 -i desktop -f dshow -i audio=\"Stereo Mix (Realtek High Definition Audio)\" -t {time} -q:v 3 -pix_fmt yuv420p {video}"
+    recorder.options("-f gdigrab -video_size {resolution} -i desktop -f dshow -i audio=\"Stereo Mix (Realtek High Definition Audio)\" -t {time} -q:v 3 -pix_fmt yuv420p {video}"
         .format(resolution=resolution, time=time_flag_value, video=video_full_path))
 
     main_logger.info("Finish to record video")
