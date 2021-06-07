@@ -2,15 +2,13 @@ import sys
 import json
 import os
 import argparse
+from statistics import median
 
 sys.path.append(
     os.path.abspath(
         os.path.join(os.path.dirname(__file__), os.path.pardir, os.path.pardir)
         )
     )
-
-
-SEVERITY_LATENCY_MAPPING = {'100': 0, '300': 2, 'inf': 4}
 
 
 if __name__ == '__main__':
@@ -38,6 +36,7 @@ if __name__ == '__main__':
 
         min_latency = -1
         max_latency = -1
+        latencies = []
         line_number = 0
 
         if log_key in json_content and os.path.exists(os.path.join(work_dir, json_content[log_key])):
@@ -51,6 +50,8 @@ if __name__ == '__main__':
 
                         # skip first line with latency (it always contain latency value equals to 0.0)
                         if line_number != 0:
+                            latencies.append(current_latency)
+
                             if min_latency == -1 or current_latency < min_latency:
                                 min_latency = current_latency
 
@@ -60,6 +61,10 @@ if __name__ == '__main__':
                         line_number += 1
 
         if json_content["test_status"] != "skipped":
+            if len(latencies) > 0:
+                median_latency_key = 'median_{}_latency'.format(args.execution_type)
+                json_content[median_latency_key] = median(latencies)
+
             if min_latency != -1:
                 latency_key = 'min_{}_latency'.format(args.execution_type)
                 json_content[latency_key] = min_latency
@@ -69,11 +74,9 @@ if __name__ == '__main__':
                 json_content[latency_key] = max_latency
                 
                 if max_latency >= 100 and max_latency < 300:
-                    json_content["message"].append("Max {} latency is more than or equal to 100 and less than 300".format(args.execution_type))
                     json_content["test_status"] = "failed"
                 elif max_latency >= 300:
-                    json_content["message"].append("Max {} latency is more than 300".format(args.execution_type))
-                    json_content["test_status"] = "error"
+                    json_content["test_status"] = "failed"
                 elif max_latency == 0:
                     json_content["message"].append("Max {} latency is equal to 0".format(args.execution_type))
                     json_content["test_status"] = "error"

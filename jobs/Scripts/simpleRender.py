@@ -88,6 +88,8 @@ def prepare_empty_reports(args, current_conf):
             test_case_report[min_latency_key] = -0.0
             max_latency_key = 'max_{}_latency'.format(args.execution_type)
             test_case_report[max_latency_key] = -0.0
+            median_latency_key = 'median_{}_latency'.format(args.execution_type)
+            test_case_report[median_latency_key] = -0.0
             test_case_report[SCREENS_PATH_KEY] = os.path.join(args.output, "Color", case["case"])
             test_case_report["number_of_tries"] = 0
             test_case_report["client_configuration"] = get_gpu() + " " + platform.system()
