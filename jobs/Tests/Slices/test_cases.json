@@ -3,11 +3,11 @@
         "case": "STR_SL_001",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -Slices 5",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Slices 5",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -22,7 +22,6 @@
         "make_screen borderlands_menu",
         "press_keys_server \"down down enter   enter   c c   down enter\"",
         "sleep_and_screen 30 5 5 borderlands_benchmark",
-        "press_keys_server \"esc\"",
         "sleep 10"
         ]
     },
@@ -30,11 +29,11 @@
         "case": "STR_SL_002",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -Slices 1000",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Slices 1000",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -49,7 +48,6 @@
         "make_screen borderlands_menu",
         "press_keys_server \"down down enter   enter   c c   down enter\"",
         "sleep_and_screen 30 5 5 borderlands_benchmark",
-        "press_keys_server \"esc\"",
         "sleep 10"
         ]
     },
@@ -57,11 +55,11 @@
         "case": "STR_SL_003",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -Slices 5",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Slices 5",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -76,7 +74,6 @@
         "make_screen borderlands_menu",
         "press_keys_server \"down down enter   enter   c c   down enter\"",
         "sleep_and_screen 30 5 5 borderlands_benchmark",
-        "press_keys_server \"esc\"",
         "sleep 10"
         ]
     },
@@ -84,11 +81,11 @@
         "case": "STR_SL_004",
         "status": "active",
         "server_keys": "-Resolution 1920,1200 -Slices 1000",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
          "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -Slices 1000",
-         "Client keys: "
+         "Client keys: -Fullscreen true"
         ],
         "client_actions": [
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -103,9 +100,7 @@
         "make_screen borderlands_menu",
         "press_keys_server \"down down enter   enter   c c   down enter\"",
         "sleep_and_screen 30 5 5 borderlands_benchmark",
-        "press_keys_server \"esc\"",
-        "sleep 10",
-        "finish"
+        "sleep 10"
         ]
     }
  ]
