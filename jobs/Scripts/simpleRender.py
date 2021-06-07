@@ -230,7 +230,6 @@ def execute_tests(args, current_conf):
                 break
             except Exception as e:
                 save_results(args, case, cases, test_case_status = "failed", error_messages = error_messages)
-                error_messages.add(str(e))
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
