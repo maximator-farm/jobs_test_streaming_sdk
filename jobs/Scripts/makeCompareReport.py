@@ -59,26 +59,27 @@ if __name__ == '__main__':
 
                         line_number += 1
 
-        if min_latency != -1:
-            latency_key = 'min_{}_latency'.format(args.execution_type)
-            json_content[latency_key] = min_latency
+        if json_content["test_status"] != "skipped":
+            if min_latency != -1:
+                latency_key = 'min_{}_latency'.format(args.execution_type)
+                json_content[latency_key] = min_latency
 
-        if max_latency != -1:
-            latency_key = 'max_{}_latency'.format(args.execution_type)
-            json_content[latency_key] = max_latency
-            
-            if max_latency >= 100 and max_latency < 300:
-                json_content["message"].append("Max {} latency is more than or equal to 100 and less than 300".format(args.execution_type))
-                json_content["test_status"] = "failed"
-            elif max_latency >= 300:
-                json_content["message"].append("Max {} latency is more than 300".format(args.execution_type))
+            if max_latency != -1:
+                latency_key = 'max_{}_latency'.format(args.execution_type)
+                json_content[latency_key] = max_latency
+                
+                if max_latency >= 100 and max_latency < 300:
+                    json_content["message"].append("Max {} latency is more than or equal to 100 and less than 300".format(args.execution_type))
+                    json_content["test_status"] = "failed"
+                elif max_latency >= 300:
+                    json_content["message"].append("Max {} latency is more than 300".format(args.execution_type))
+                    json_content["test_status"] = "error"
+                elif max_latency == 0:
+                    json_content["message"].append("Max {} latency is equal to 0".format(args.execution_type))
+                    json_content["test_status"] = "error"
+            else:
+                json_content["message"].append("Could not find mentions of {} latency in log".format(args.execution_type))
                 json_content["test_status"] = "error"
-            elif max_latency == 0:
-                json_content["message"].append("Max {} latency is equal to 0".format(args.execution_type))
-                json_content["test_status"] = "error"
-        else:
-            json_content["message"].append("Could not find mentions of {} latency in log".format(args.execution_type))
-            json_content["test_status"] = "error"
 
         reports.append(json_content)
 
