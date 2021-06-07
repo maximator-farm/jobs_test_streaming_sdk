@@ -3,11 +3,11 @@
         "case": "STR_AUD_001",
         "status": "active",
         "server_keys": "-Resolution 1920,1200",
-        "client_keys": "-Stereo false",
+        "client_keys": "-Fullscreen true -Stereo false",
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235 -Stereo false"
+            "Client keys: -Fullscreen true -Stereo false"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -20,7 +20,6 @@
             "make_screen borderlands_menu",
             "press_keys_server \"down down enter   enter   c c   down enter\"",
             "sleep_and_screen 30 5 5 borderlands_benchmark",
-            "press_keys_server \"esc\"",
             "sleep 10" 
         ]
     },
@@ -28,11 +27,11 @@
         "case": "STR_AUD_002",
         "status": "active",
         "server_keys": "-Resolution 1920,1200",
-        "client_keys": "-Stereo true",
+        "client_keys": "-Fullscreen true -Stereo true",
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235 -Stereo true"
+            "Client keys: -Fullscreen true -Stereo true"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -45,7 +44,6 @@
             "make_screen borderlands_menu",
             "press_keys_server \"down down enter   enter   c c   down enter\"",
             "sleep_and_screen 30 5 5 borderlands_benchmark",
-            "press_keys_server \"esc\"",
             "sleep 10" 
         ]
     },
@@ -53,11 +51,11 @@
         "case": "STR_AUD_003",
         "status": "skipped",
         "server_keys": "-Resolution 1920,1200 -AudioFile <<FILE>>",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -AudioFile <<FILE>>",
-            "Client keys: -ConnectionURL UDP://84.47.189.72:1235"
+            "Client keys: -Fullscreen true"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -70,7 +68,6 @@
             "make_screen borderlands_menu",
             "press_keys_server \"down down enter   enter   c c   down enter\"",
             "sleep_and_screen 30 5 5 borderlands_benchmark",
-            "press_keys_server \"esc\"",
             "sleep 10" 
         ]
     },
@@ -78,11 +75,11 @@
         "case": "STR_AUD_004",
         "status": "active",
         "server_keys": "-Resolution 1920,1200",
-        "client_keys": "-Stereo false",
+        "client_keys": "-Fullscreen true -Stereo false",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235 -Stereo false"
+            "Client keys: -Fullscreen true -Stereo false"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -95,7 +92,6 @@
             "make_screen borderlands_menu",
             "press_keys_server \"down down enter   enter   c c   down enter\"",
             "sleep_and_screen 30 5 5 borderlands_benchmark",
-            "press_keys_server \"esc\"",
             "sleep 10" 
         ]
     },
@@ -103,11 +99,11 @@
         "case": "STR_AUD_005",
         "status": "active",
         "server_keys": "-Resolution 1920,1200",
-        "client_keys": "-Stereo true",
+        "client_keys": "-Fullscreen true -Stereo true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200",
-            "Client keys: -ConnectionURL TCP://84.47.189.72:1235 -Stereo true"
+            "Client keys: -Fullscreen true -Stereo true"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -120,7 +116,6 @@
             "make_screen borderlands_menu",
             "press_keys_server \"down down enter   enter   c c   down enter\"",
             "sleep_and_screen 30 5 5 borderlands_benchmark",
-            "press_keys_server \"esc\"",
             "sleep 10" 
         ]
     },
@@ -128,11 +123,11 @@
         "case": "STR_AUD_006",
         "status": "skipped",
         "server_keys": "-Resolution 1920,1200 -AudioFile <<FILE>>",
-        "client_keys": "",
+        "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
         "script_info": [
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution 1920,1200 -AudioFile <<FILE>>",
-            "Client keys: -ConnectionURL tcp://84.47.189.72:1235"
+            "Client keys: -Fullscreen true"
         ],
         "client_actions": [
             "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
@@ -145,9 +140,7 @@
             "make_screen borderlands_menu",
             "press_keys_server \"down down enter   enter   c c   down enter\"",
             "sleep_and_screen 30 5 5 borderlands_benchmark",
-            "press_keys_server \"esc\"",
-            "sleep 10",
-            "finish"
+            "sleep 10"
         ]
     }
 ]

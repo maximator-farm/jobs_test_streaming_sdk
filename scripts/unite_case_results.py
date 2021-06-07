@@ -9,16 +9,16 @@ sys.path.append(os.path.abspath(os.path.join(
 from jobs_launcher.core.config import SESSION_REPORT, TEST_REPORT_NAME_COMPARED
 
 
-KEYS_TO_COPY = ["min_server_latency", "max_server_latency"]
+KEYS_TO_COPY = ["min_server_latency", "max_server_latency", "median_server_latency"]
 
 
-def get_test_status(latency):
-    if latency < 100:
-        return "passed"
-    elif latency >= 100 and latency < 300:
-        return "failed"
-    else:
-        return "error"
+def get_test_status(test_status_one, test_status_two):
+    test_statuses = (test_status_one, test_status_two)
+    statuses = ("skipped", "error", "failed", "passed")
+
+    for status in statuses:
+    	if status in test_statuses:
+    		return status
 
 
 if __name__ == '__main__':
@@ -48,9 +48,7 @@ if __name__ == '__main__':
                             if key in source_file_content[i]:
                                 target_file_content[i][key] = source_file_content[i][key]
 
-                        if "max_client_latency" in target_file_content[i] and "max_server_latency" in target_file_content[i]:
-                            if target_file_content[i]["max_server_latency"] > target_file_content[i]["max_client_latency"]:
-                                target_file_content[i]["test_status"] = get_test_status(target_file_content[i]["max_server_latency"])
+                        target_file_content[i]["test_status"] = get_test_status(target_file_content[i]["test_status"], target_file_content[i]["test_status"])
 
                     with open(target_file_path, "w", encoding="utf8") as f:
                         json.dump(target_file_content, f, indent=4, sort_keys=True)
@@ -67,6 +65,9 @@ if __name__ == '__main__':
                     with open(source_file_path, "r") as f:
                         source_file_content = json.load(f)
 
+                    if "machine_info" in source_file_content:
+                    	target_file_content["machine_info"] = source_file_content["machine_info"]
+
                     for test_group in target_file_content["results"]:
                         target_group_data = target_file_content["results"][test_group][""]
                         source_group_data = source_file_content["results"][test_group][""]
@@ -76,18 +77,19 @@ if __name__ == '__main__':
                                 if key in source_group_data["render_results"][i]:
                                     target_group_data["render_results"][i][key] = source_group_data["render_results"][i][key]
 
-                            if "max_client_latency" in target_group_data["render_results"][i] and "max_server_latency" in target_group_data["render_results"][i]:
-                                if target_group_data["render_results"][i]["max_server_latency"] > target_group_data["render_results"][i]["max_client_latency"]:
-                                    new_test_status = get_test_status(target_group_data["render_results"][i]["max_server_latency"])
-                                    old_test_status = target_group_data["render_results"][i]["test_status"]
+                            new_test_status = get_test_status(target_group_data["render_results"][i]["test_status"], source_group_data["render_results"][i]["test_status"])
+                            old_test_status = target_group_data["render_results"][i]["test_status"]
 
-                                    target_group_data[new_test_status] += 1
-                                    target_group_data[old_test_status] -= 1
+                            target_group_data[new_test_status] += 1
+                            target_group_data[old_test_status] -= 1
 
-                                    target_file_content["summary"][new_test_status] += 1
-                                    target_file_content["summary"][old_test_status] -= 1
+                            target_file_content["summary"][new_test_status] += 1
+                            target_file_content["summary"][old_test_status] -= 1
 
-                                    target_group_data["render_results"][i]["test_status"] = new_test_status
+                            target_group_data["render_results"][i]["test_status"] = new_test_status
+
+                            if "message" in source_group_data["render_results"][i]:
+                                target_group_data["render_results"][i]["message"] += source_group_data["render_results"][i]["message"]
 
                     with open(target_file_path, "w", encoding="utf8") as f:
                         json.dump(target_file_content, f, indent=4, sort_keys=True)

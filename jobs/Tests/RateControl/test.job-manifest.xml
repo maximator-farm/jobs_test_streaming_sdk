@@ -7,12 +7,13 @@
         <argument>--client_tool "{clientTool}"</argument>
         <argument>--server_tool "{serverTool}"</argument>
         <argument>--output "{OutputDir}"</argument>
-        <argument>--test_group Protocol</argument>
+        <argument>--test_group RateControl</argument>
         <argument>--test_cases "{TestCases}"</argument>
         <argument>--retries {retries}</argument>
         <argument>--execution_type "{executionType}"</argument>
         <argument>--ip_address "{ipAddress}"</argument>
         <argument>--server_gpu_name "{serverGPUName}"</argument>
+        <argument>--server_os_name "{serverOSName}"</argument>
     </execute>
 
     <execute command='python "{ResourcesDir}/makeCompareReport.py"'>

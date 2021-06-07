@@ -88,11 +88,13 @@ def prepare_empty_reports(args, current_conf):
             test_case_report[min_latency_key] = -0.0
             max_latency_key = 'max_{}_latency'.format(args.execution_type)
             test_case_report[max_latency_key] = -0.0
+            median_latency_key = 'median_{}_latency'.format(args.execution_type)
+            test_case_report[median_latency_key] = -0.0
             test_case_report[SCREENS_PATH_KEY] = os.path.join(args.output, "Color", case["case"])
             test_case_report["number_of_tries"] = 0
             test_case_report["client_configuration"] = get_gpu() + " " + platform.system()
-            # FIXME: pass server os name as a param of run script (same as GPU name on server)
-            test_case_report["server_configuration"] = args.server_gpu_name + " " + platform.system()
+            test_case_report["server_configuration"] = args.server_gpu_name + " " + args.server_os_name
+            test_case_report["message"] = []
 
             for i in range(len(test_case_report["script_info"])):
                 if "Client keys" in test_case_report["script_info"][i]:
@@ -123,7 +125,7 @@ def prepare_empty_reports(args, current_conf):
         json.dump(cases, f, indent=4)
 
 
-def save_results(args, case, cases, test_case_status, error_messages = []):
+def save_results(args, case, cases, test_case_status = "", error_messages = []):
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "r") as file:
         test_case_report = json.loads(file.read())[0]
         test_case_report["test_status"] = test_case_status
@@ -146,7 +148,9 @@ def save_results(args, case, cases, test_case_status, error_messages = []):
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "w") as file:
         json.dump([test_case_report], file, indent=4)
 
-    case["status"] = test_case_status
+    if test_case_status:
+       case["status"] = test_case_status
+
     with open(os.path.join(args.output, "test_cases.json"), "w") as file:
         json.dump(cases, file, indent=4)
 
@@ -184,13 +188,23 @@ def execute_tests(args, current_conf):
 
         current_try = 0
 
-        error_messages = set()
-
         while current_try < args.retries:
             global PROCESS
 
+            error_messages = set()
+
             try:
                 if args.execution_type == "server":
+                    copyfile(
+                        os.path.realpath(
+                            os.path.join(os.path.dirname(__file__),
+                            "..",
+                            "Configs",
+                            "settings_{}.json".format(case["transport_protocol"].upper()))
+                        ), 
+                        os.path.join(os.getenv("APPDATA"), "..", "Local", "AMD", "RemoteGameServer", "settings", "settings.json")
+                    )
+
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
                 else:
                     execution_script = "{tool} {keys} -connectionurl {transport_protocol}://{ip_address}:1235".format(
@@ -204,8 +218,6 @@ def execute_tests(args, current_conf):
        
                 with open(execution_script_path, "w") as f:
                     f.write(execution_script)
-
-                status = "error"
 
                 main_logger.info("Start StreamingSDK {}".format(args.execution_type))
 
@@ -221,12 +233,11 @@ def execute_tests(args, current_conf):
                 else:
                     start_client_side_tests(args, case, is_workable_condition, args.ip_address, SYNC_PORT, output_path, current_try)
 
-                save_results(args, case, cases, "passed", error_messages = [])
+                save_results(args, case, cases, test_case_status = "passed", error_messages = [])
 
                 break
             except Exception as e:
-                save_results(args, case, cases, "failed", error_messages = error_messages)
-                error_messages.add(str(e))
+                save_results(args, case, cases, test_case_status = "failed", error_messages = error_messages)
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
@@ -241,13 +252,18 @@ def execute_tests(args, current_conf):
                 with open(log_source_path, "r") as file:
                     logs = file.read().replace('\0', '')
 
+                if "Error:" in logs:
+                    error_messages.add("Error was mentioned in {} log".format(args.execution_type))
+
+                    save_results(args, case, cases, test_case_status = "passed", error_messages = [])
+
                 with open(log_destination_path, "a") as file:
                     file.write("\n---------- Try #{} ----------\n\n".format(current_try))
                     file.write(logs)
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1
-            save_results(args, case, cases, "error", error_messages = error_messages)
+            save_results(args, case, cases, test_case_status = "error", error_messages = error_messages)
 
     return rc
 
@@ -264,6 +280,7 @@ def createArgsParser():
     parser.add_argument('--execution_type', required=True)
     parser.add_argument('--ip_address', required=True)
     parser.add_argument('--server_gpu_name', required=True)
+    parser.add_argument('--server_os_name', required=True)
 
     return parser
 
@@ -282,8 +299,8 @@ if __name__ == '__main__':
             os.makedirs(os.path.join(args.output, "tool_logs"))
 
         render_device = args.server_gpu_name
-        system_pl = platform.system()
-        current_conf = set(platform.system()) if not render_device else {platform.system(), render_device}
+        system_pl = args.server_os_name
+        current_conf = set(system_pl) if not render_device else {system_pl, render_device}
         main_logger.info("Detected GPUs: {}".format(render_device))
         main_logger.info("PC conf: {}".format(current_conf))
         main_logger.info("Creating predefined errors json...")
