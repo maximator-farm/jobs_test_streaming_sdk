@@ -69,7 +69,11 @@ def press_keys(keys_string):
     for key in keys:
         main_logger.info("Press: {}".format(key))
         pyautogui.press(key)
-        sleep(1)
+
+        if "enter" in key:
+            sleep(2)
+        else:
+            sleep(1)
 
 
 def press_keys_server(sock, action):
