@@ -25,7 +25,6 @@ from jobs_launcher.core.system_info import get_gpu
 
 
 # port throuth which client and server communicate to synchronize execution of tests
-SYNC_PORT = 80
 PROCESS = None
 
 
@@ -260,10 +259,10 @@ def execute_tests(args, current_conf):
                 time.sleep(5)
 
                 if args.execution_type == "server":
-                    start_server_side_tests(args, case, is_workable_condition, SYNC_PORT, current_try)
+                    start_server_side_tests(args, case, is_workable_condition, args.communication_port, current_try)
                 else:
                     audio_device_name = get_audio_device_name()
-                    start_client_side_tests(args, case, is_workable_condition, args.ip_address, SYNC_PORT, output_path, audio_device_name, current_try)
+                    start_client_side_tests(args, case, is_workable_condition, args.ip_address, args.communication_port, output_path, audio_device_name, current_try)
 
                 save_results(args, case, cases, test_case_status = "passed", error_messages = [])
 
@@ -311,6 +310,7 @@ def createArgsParser():
     parser.add_argument("--retries", required=False, default=2, type=int)
     parser.add_argument('--execution_type', required=True)
     parser.add_argument('--ip_address', required=True)
+    parser.add_argument('--communication_port', required=True)
     parser.add_argument('--server_gpu_name', required=True)
     parser.add_argument('--server_os_name', required=True)
 

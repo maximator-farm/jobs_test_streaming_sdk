@@ -116,10 +116,10 @@ def next_case(sock):
     sock.send("done".encode())
 
 
-def start_server_side_tests(args, case, is_workable_condition, sync_port, current_try):
+def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
     # configure socket
     sock = socket.socket()
-    sock.bind(("", sync_port))
+    sock.bind(("", communication_port))
     # max one connection
     sock.listen(1)
     connection, address = sock.accept()

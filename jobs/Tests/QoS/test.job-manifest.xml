@@ -12,6 +12,7 @@
         <argument>--retries {retries}</argument>
         <argument>--execution_type "{executionType}"</argument>
         <argument>--ip_address "{ipAddress}"</argument>
+        <argument>--communication_port "{communicationPort}"</argument>
         <argument>--server_gpu_name "{serverGPUName}"</argument>
         <argument>--server_os_name "{serverOSName}"</argument>
     </execute>

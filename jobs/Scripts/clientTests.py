@@ -113,7 +113,7 @@ def next_case(sock):
     main_logger.info("Server response for 'next_case' action: {}".format(response))
 
 
-def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_port, output_path, audio_device_name, current_try):
+def start_client_side_tests(args, case, is_workable_condition, ip_address, communication_port, output_path, audio_device_name, current_try):
     screens_path = os.path.join(output_path, case["case"])
 
     if current_try == 0:
@@ -123,7 +123,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_
 
     while True:
         try:
-            sock.connect((ip_address, sync_port))
+            sock.connect((ip_address, communication_port))
             break
         except Exception:
             main_logger.info("Could not connect to server. Try it again")
