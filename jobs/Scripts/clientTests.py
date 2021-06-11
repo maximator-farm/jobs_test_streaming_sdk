@@ -123,7 +123,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
 
     while True:
         try:
-            sock.connect((ip_address, communication_port))
+            sock.connect((ip_address, int(communication_port)))
             break
         except Exception:
             main_logger.info("Could not connect to server. Try it again")

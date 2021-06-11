@@ -119,7 +119,7 @@ def next_case(sock):
 def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
     # configure socket
     sock = socket.socket()
-    sock.bind(("", communication_port))
+    sock.bind(("", int(communication_port)))
     # max one connection
     sock.listen(1)
     connection, address = sock.accept()
