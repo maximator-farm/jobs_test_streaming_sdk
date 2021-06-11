@@ -35,15 +35,15 @@ def make_screen(screen_path, screen_name=""):
         current_image_num += 1
 
 
-def record_video(video_path, video_name, resolution, duration):
+def record_video(video_path, audio_device_name, video_name, resolution, duration):
     video_full_path = os.path.join(video_path, video_name + ".mp4")
     time_flag_value = strftime("%H:%M:%S", gmtime(int(duration)))
 
     recorder = FFmpeg()
     main_logger.info("Start to record video")
 
-    recorder.options("-f gdigrab -video_size {resolution} -i desktop -f dshow -i audio=\"Stereo Mix (Realtek High Definition Audio)\" -t {time} -q:v 3 -pix_fmt yuv420p {video}"
-        .format(resolution=resolution, time=time_flag_value, video=video_full_path))
+    recorder.options("-f gdigrab -video_size {resolution} -i desktop -f dshow -i audio=\"{audio_device_name}\" -t {time} -q:v 3 -pix_fmt yuv420p {video}"
+        .format(resolution=resolution, audio_device_name=audio_device_name, time=time_flag_value, video=video_full_path))
 
     main_logger.info("Finish to record video")
 
@@ -113,7 +113,7 @@ def next_case(sock):
     main_logger.info("Server response for 'next_case' action: {}".format(response))
 
 
-def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_port, output_path, current_try):
+def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_port, output_path, audio_device_name, current_try):
     screens_path = os.path.join(output_path, case["case"])
 
     if current_try == 0:
@@ -167,7 +167,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, sync_
                     else:
                         make_screen(screens_path, screen_name="{}_try_{}".format(*args, current_try))
                 elif command == "record_video":
-                    record_video(output_path, case["case"], *args)
+                    record_video(output_path, audio_device_name, case["case"], *args)
                 elif command == "move":
                     move(*args)
                 elif command == "click":
