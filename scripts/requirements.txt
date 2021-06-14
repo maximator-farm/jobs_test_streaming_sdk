@@ -1,0 +1,3 @@
+pywin32==300
+PyAutoGUI==0.9.52
+pyffmpeg==2.0.5.1
