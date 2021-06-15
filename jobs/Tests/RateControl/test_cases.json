@@ -1,0 +1,618 @@
+[
+    {
+        "case": "STR_RC_001",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -Framerate 30",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -Framerate 30",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_002",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -Framerate 60",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -Framerate 60",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_003",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -Framerate 120",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -Framerate 120",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_004",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -Framerate 144",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -Framerate 144",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_005",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -RateControl cbr -Framerate 30",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_006",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Framerate 60",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -RateControl cbr -Framerate 60",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_007",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Framerate 120",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -RateControl cbr -Framerate 120",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_008",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Framerate 144",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -RateControl cbr -Framerate 144",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_009",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Bitrate 10000000",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -Framerate 30 -QoS true -Resolution 1920,1200 -RateControl cbr -Bitrate 10000000",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_010",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Bitrate 1000000",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -Framerate 30 -QoS true -Resolution 1920,1200 -RateControl cbr -Bitrate 1000000",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_011",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200",
+        "client_keys": "-Fullscreen true -ForceDisplayFrameRate",
+        "transport_protocol": "udp",
+        "script_info": [
+            "Server keys: -Capture amd -Framerate 30 -Bitrate 5000000 -QoS true -Resolution 1920,1200",
+            "Client keys: -Fullscreen true -ForceDisplayFrameRate "
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_012",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -Framerate 30",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -Framerate 30",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_013",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -Framerate 60",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -Framerate 60",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_014",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -Framerate 120",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -Framerate 120",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_015",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -Framerate 144",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -Framerate 144",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_016",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -RateControl cbr -Framerate 30",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_017",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Framerate 60",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -RateControl cbr -Framerate 60",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_018",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Framerate 120",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -RateControl cbr -Framerate 120",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_019",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Framerate 144",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -bitrate 50000000 -QoS true -Resolution 1920,1200 -RateControl cbr -Framerate 144",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_020",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Bitrate 10000000",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -Framerate 30 -QoS true -Resolution 1920,1200 -RateControl cbr -Bitrate 10000000",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_021",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200 -RateControl cbr -Bitrate 1000000",
+        "client_keys": "-Fullscreen true",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -Framerate 30 -QoS true -Resolution 1920,1200 -RateControl cbr -Bitrate 1000000",
+            "Client keys: -Fullscreen true"
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    },
+    {
+        "case": "STR_RC_022",
+        "status": "active",
+        "server_keys": "-Resolution 1920,1200",
+        "client_keys": "-Fullscreen true -ForceDisplayFrameRate",
+        "transport_protocol": "tcp",
+        "script_info": [
+            "Server keys: -Capture amd -Framerate 30 -Bitrate 5000000 -QoS true -Resolution 1920,1200",
+            "Client keys: -Fullscreen true -ForceDisplayFrameRate "
+        ],
+        "client_actions": [
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "skip_if_done 3",
+            "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
+            "sleep 150",
+            "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+            "make_screen",
+            "move 1000 1000",
+            "click",
+            "sleep 5",
+            "make_screen borderlands_menu",
+            "press_keys_server \"down down enter   enter   c c   down enter\"",
+            "sleep_and_screen 30 5 5 borderlands_benchmark",
+            "record_video 1920x1200 10",
+            "press_keys_server \"esc\"",
+            "sleep 10"
+        ]
+    }
+]

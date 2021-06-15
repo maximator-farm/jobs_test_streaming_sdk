@@ -83,7 +83,11 @@ def press_keys_server(sock, keys_string):
         for key in keys:
             main_logger.info("Press: {}".format(key))
             pyautogui.press(key)
-            sleep(1)
+
+            if "enter" in key:
+                sleep(2)
+            else:
+                sleep(1)
 
         sock.send("done".encode())
     except Exception as e:
@@ -97,7 +101,7 @@ def finish(sock):
         result = close_processes()
 
         if result:
-            main_logger.info("Processes was succesfully found")
+            main_logger.info("Processes was succesfully closed")
             sock.send("done".encode())
         else:
             main_logger.error("Failed to close processes")
@@ -108,20 +112,29 @@ def finish(sock):
         sock.send("failed".encode())
 
 
-def start_server_side_tests(args, case, sync_port, current_try):
+def next_case(sock):
+    sock.send("done".encode())
+
+
+def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
     # configure socket
     sock = socket.socket()
-    sock.bind(("", sync_port))
+    sock.bind(("", int(communication_port)))
     # max one connection
     sock.listen(1)
     connection, address = sock.accept()
 
     request = connection.recv(1024).decode()
 
+    is_aborted = False
+
     try:
         if request == "ready":
 
-            connection.send("ready".encode())
+            if is_workable_condition():
+                connection.send("ready".encode())
+            else:
+                connection.send("fail".encode())
 
             while True:
                 request = connection.recv(1024).decode()
@@ -139,17 +152,28 @@ def start_server_side_tests(args, case, sync_port, current_try):
                     check_game(connection, *args)
                 elif command == "press_keys_server":
                     press_keys_server(connection, *args)
+                elif command == "next_case":
+                    next_case(connection)
+                    break
                 elif command == "finish":
                     finish(connection)
                     break
+                elif command == "abort":
+                    is_aborted = True
+                    finish(connection)
+                    raise Exception("Client sent abort status")
                 else:
-                    raise Exception("Unknown commnad: {}".format(request))
+                    raise Exception("Unknown command: {}".format(request))
 
         else:
             raise Exception("Unknown client request: {}".format(request))
     except Exception as e:
         main_logger.error("Fatal error. Case will be aborted:".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
-        sock.send("abort".encode())
+
+        if not is_aborted:
+            sock.send("abort".encode())
+
+        raise e
     finally:
         connection.close()

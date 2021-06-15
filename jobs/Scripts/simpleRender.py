@@ -11,19 +11,51 @@ from utils import is_case_skipped, close_process
 from clientTests import start_client_side_tests
 from serverTests import start_server_side_tests
 from queue import Queue
-from subprocess import PIPE
+from subprocess import PIPE, STDOUT
 from threading import Thread
 import copy
 import traceback
 import time
+from pyffmpeg import FFmpeg
 
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
+from jobs_launcher.core.system_info import get_gpu
 
 
 # port throuth which client and server communicate to synchronize execution of tests
-SYNC_PORT = 10000
+PROCESS = None
+
+
+def get_audio_device_name():
+    try:
+        ff = FFmpeg()
+        ffmpeg_exe = ff.get_ffmpeg_bin()
+
+        ffmpeg_command = "{} -list_devices true -f dshow -i dummy".format(ffmpeg_exe)
+
+        ffmpeg_process = psutil.Popen(ffmpeg_command, stdout=PIPE, stderr=STDOUT, shell=True)
+
+        audio_device = None
+
+        for line in ffmpeg_process.stdout:
+            line = line.decode("utf8")
+            if "Stereo Mix" in line:
+                audio_device = line.split("\"")[1]
+                break
+        else:
+            raise Exception("Audio device wasn't found")
+
+        main_logger.info("Found audio device: {}".format(audio_device))
+
+        return audio_device
+    except Exception as e:
+        main_logger.error("Can't get audio device name. Use default name instead")
+        main_logger.error(str(e))
+        main_logger.error("Traceback: {}".format(traceback.format_exc()))
+
+        return "Stereo Mix (Realtek High Definition Audio)"
 
 
 def copy_test_cases(args):
@@ -78,12 +110,30 @@ def prepare_empty_reports(args, current_conf):
             test_case_report['render_time'] = 0.0
             test_case_report['execution_type'] = args.execution_type
             test_case_report['keys'] = case['server_keys'] if args.execution_type == 'server' else case['client_keys']
-            test_case_report['transport_protocol'] = case['transport_protocol']
+            test_case_report['transport_protocol'] = case['transport_protocol'].upper()
             test_case_report['tool_path'] = args.server_tool if args.execution_type == 'server' else args.client_tool
             test_case_report['date_time'] = datetime.now().strftime(
                 '%m/%d/%Y %H:%M:%S')
+            min_latency_key = 'min_{}_latency'.format(args.execution_type)
+            test_case_report[min_latency_key] = -0.0
+            max_latency_key = 'max_{}_latency'.format(args.execution_type)
+            test_case_report[max_latency_key] = -0.0
+            median_latency_key = 'median_{}_latency'.format(args.execution_type)
+            test_case_report[median_latency_key] = -0.0
             test_case_report[SCREENS_PATH_KEY] = os.path.join(args.output, "Color", case["case"])
             test_case_report["number_of_tries"] = 0
+            test_case_report["client_configuration"] = get_gpu() + " " + platform.system()
+            test_case_report["server_configuration"] = args.server_gpu_name + " " + args.server_os_name
+            test_case_report["message"] = []
+
+            for i in range(len(test_case_report["script_info"])):
+                if "Client keys" in test_case_report["script_info"][i]:
+                    test_case_report["script_info"][i] = "{base} -connectionurl {transport_protocol}://{ip_address}:1235".format(
+                        base=test_case_report["script_info"][i],
+                        transport_protocol=case["transport_protocol"],
+                        ip_address=args.ip_address
+                    )
+                    break
 
             if case['status'] == 'skipped':
                 test_case_report['test_status'] = 'skipped'
@@ -105,7 +155,7 @@ def prepare_empty_reports(args, current_conf):
         json.dump(cases, f, indent=4)
 
 
-def save_results(args, case, cases, test_case_status, error_messages = []):
+def save_results(args, case, cases, test_case_status = "", error_messages = []):
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "r") as file:
         test_case_report = json.loads(file.read())[0]
         test_case_report["test_status"] = test_case_status
@@ -120,12 +170,32 @@ def save_results(args, case, cases, test_case_status, error_messages = []):
         if test_case_status == "passed" or test_case_status == "error":
             test_case_report["group_timeout_exceeded"] = False
 
+        video_path = os.path.join("Color", case["case"] + ".mp4")
+
+        if os.path.exists(os.path.join(args.output, video_path)):
+            test_case_report[VIDEO_KEY] = video_path
+
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "w") as file:
         json.dump([test_case_report], file, indent=4)
 
-    case["status"] = test_case_status
+    if test_case_status:
+       case["status"] = test_case_status
+
     with open(os.path.join(args.output, "test_cases.json"), "w") as file:
         json.dump(cases, file, indent=4)
+
+
+def is_workable_condition():
+    try:
+        global PROCESS
+        PROCESS.wait(timeout=0)
+        main_logger.error("StreamingSDK was down")
+
+        return False
+    except psutil.TimeoutExpired as e:
+        main_logger.info("StreamingSDK is alive") 
+
+        return True
 
 
 def execute_tests(args, current_conf):
@@ -140,24 +210,37 @@ def execute_tests(args, current_conf):
 
         keys = case["server_keys"] if args.execution_type == "server" else case["client_keys"]
 
-        screens_path = os.path.join(args.output, "Color", case["case"])
+        output_path = os.path.join(args.output, "Color")
+        screens_path = os.path.join(output_path, case["case"])
 
         if not os.path.exists(screens_path):
             os.makedirs(screens_path)
 
         current_try = 0
 
-        error_messages = set()
-
         while current_try < args.retries:
-            process = None
+            global PROCESS
+
+            error_messages = set()
 
             try:
                 if args.execution_type == "server":
+                    copyfile(
+                        os.path.realpath(
+                            os.path.join(os.path.dirname(__file__),
+                            "..",
+                            "Configs",
+                            "settings_{}.json".format(case["transport_protocol"].upper()))
+                        ), 
+                        os.path.join(os.getenv("APPDATA"), "..", "Local", "AMD", "RemoteGameServer", "settings", "settings.json")
+                    )
+
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
                 else:
                     execution_script = "{tool} {keys} -connectionurl {transport_protocol}://{ip_address}:1235".format(
-                        tool=tool_path, keys=keys, transport_protocol=case["transport_protocol"],
+                        tool=tool_path,
+                        keys=keys,
+                        transport_protocol=case["transport_protocol"],
                         ip_address=args.ip_address
                     )
 
@@ -166,11 +249,9 @@ def execute_tests(args, current_conf):
                 with open(execution_script_path, "w") as f:
                     f.write(execution_script)
 
-                status = "error"
-
                 main_logger.info("Start StreamingSDK {}".format(args.execution_type))
 
-                process = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
+                PROCESS = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
 
                 main_logger.info("Start execution_type depended script")
 
@@ -178,21 +259,21 @@ def execute_tests(args, current_conf):
                 time.sleep(5)
 
                 if args.execution_type == "server":
-                    start_server_side_tests(args, case, SYNC_PORT, current_try)
+                    start_server_side_tests(args, case, is_workable_condition, args.communication_port, current_try)
                 else:
-                    start_client_side_tests(args, case, args.ip_address, SYNC_PORT, screens_path, current_try)
+                    audio_device_name = get_audio_device_name()
+                    start_client_side_tests(args, case, is_workable_condition, args.ip_address, args.communication_port, output_path, audio_device_name, current_try)
 
-                save_results(args, case, cases, "passed", error_messages = [])
+                save_results(args, case, cases, test_case_status = "passed", error_messages = [])
 
                 break
             except Exception as e:
-                save_results(args, case, cases, "failed", error_messages = error_messages)
-                error_messages.add(str(e))
+                save_results(args, case, cases, test_case_status = "failed", error_messages = error_messages)
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
-                if process is not None:
-                    close_process(process)
+                if PROCESS is not None:
+                    close_process(PROCESS)
 
                 current_try += 1
 
@@ -202,13 +283,18 @@ def execute_tests(args, current_conf):
                 with open(log_source_path, "r") as file:
                     logs = file.read().replace('\0', '')
 
+                if "Error:" in logs:
+                    error_messages.add("Error was mentioned in {} log".format(args.execution_type))
+
+                    save_results(args, case, cases, test_case_status = "passed", error_messages = [])
+
                 with open(log_destination_path, "a") as file:
                     file.write("\n---------- Try #{} ----------\n\n".format(current_try))
                     file.write(logs)
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1
-            save_results(args, case, cases, "error", error_messages = error_messages)
+            save_results(args, case, cases, test_case_status = "error", error_messages = error_messages)
 
     return rc
 
@@ -224,7 +310,9 @@ def createArgsParser():
     parser.add_argument("--retries", required=False, default=2, type=int)
     parser.add_argument('--execution_type', required=True)
     parser.add_argument('--ip_address', required=True)
+    parser.add_argument('--communication_port', required=True)
     parser.add_argument('--server_gpu_name', required=True)
+    parser.add_argument('--server_os_name', required=True)
 
     return parser
 
@@ -243,8 +331,8 @@ if __name__ == '__main__':
             os.makedirs(os.path.join(args.output, "tool_logs"))
 
         render_device = args.server_gpu_name
-        system_pl = platform.system()
-        current_conf = set(platform.system()) if not render_device else {platform.system(), render_device}
+        system_pl = args.server_os_name
+        current_conf = set(system_pl) if not render_device else {system_pl, render_device}
         main_logger.info("Detected GPUs: {}".format(render_device))
         main_logger.info("PC conf: {}".format(current_conf))
         main_logger.info("Creating predefined errors json...")

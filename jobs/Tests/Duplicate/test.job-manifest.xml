@@ -3,11 +3,11 @@
 
     <outpath value="{OutputDir}"/>
 
-    <execute command='python "{ResourcesDir}/simpleRender.py"' timeout="900">
+    <execute command='python "{ResourcesDir}/simpleRender.py"' timeout="1800">
         <argument>--client_tool "{clientTool}"</argument>
         <argument>--server_tool "{serverTool}"</argument>
         <argument>--output "{OutputDir}"</argument>
-        <argument>--test_group Smoke</argument>
+        <argument>--test_group Duplicate</argument>
         <argument>--test_cases "{TestCases}"</argument>
         <argument>--retries {retries}</argument>
         <argument>--execution_type "{executionType}"</argument>
