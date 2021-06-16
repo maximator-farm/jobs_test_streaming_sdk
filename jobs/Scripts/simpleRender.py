@@ -17,6 +17,7 @@ import copy
 import traceback
 import time
 from pyffmpeg import FFmpeg
+import win32api
 
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
@@ -257,6 +258,8 @@ def execute_tests(args, current_conf):
 
                 # Wait a bit to launch streaming SDK client/server
                 time.sleep(5)
+
+                main_logger.info("Screen resolution: width = {}, height = {}".format(win32api.GetSystemMetrics(0), win32api.GetSystemMetrics(1)))
 
                 if args.execution_type == "server":
                     start_server_side_tests(args, case, is_workable_condition, args.communication_port, current_try)
