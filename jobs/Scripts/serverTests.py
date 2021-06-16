@@ -13,6 +13,8 @@ sys.path.append(os.path.abspath(os.path.join(
 	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
 
+pyautogui.FAILSAFE = False
+
 
 PROCESSES = {}
 
