@@ -112,6 +112,10 @@ def finish(sock):
         sock.send("failed".encode())
 
 
+def retry(sock):
+    sock.send("done".encode())
+
+
 def next_case(sock):
     sock.send("done".encode())
 
@@ -127,6 +131,7 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
     request = connection.recv(1024).decode()
 
     is_aborted = False
+    is_non_workable = False
 
     try:
         if request == "ready":
@@ -161,7 +166,11 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 elif command == "abort":
                     is_aborted = True
                     finish(connection)
-                    raise Exception("Client sent abort status")
+                    raise Exception("Client sent abort command")
+                elif command == "retry":
+                    is_aborted = True
+                    retry(connection)
+                    raise Exception("Client sent retry command")
                 else:
                     raise Exception("Unknown command: {}".format(request))
 

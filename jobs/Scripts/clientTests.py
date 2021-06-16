@@ -107,6 +107,12 @@ def abort(sock):
     main_logger.info("Server response for 'abort' action: {}".format(response))
 
 
+def retry(sock):
+    sock.send("retry".encode())
+    response = sock.recv(1024).decode()
+    main_logger.info("Server response for 'retry' action: {}".format(response))
+
+
 def next_case(sock):
     sock.send("next_case".encode())
     response = sock.recv(1024).decode()
@@ -136,6 +142,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
 
         is_previous_command_done = True
         is_failed = False
+        is_non_workable = False
         is_aborted = False
         is_finished = False
         commands_to_skip = 0
@@ -143,6 +150,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
         if response == "ready":
 
             if not is_workable_condition():
+                is_non_workable = True
                 raise Exception("Client has non-workable state")
 
             for action in case["client_actions"]:
@@ -207,6 +215,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                         raise Exception("Unknown server status: {}".format(response))
 
         elif response == "fail":
+            is_non_workable = True
             raise Exception("Server has non-workable state")
         else:
             raise Exception("Unknown server answer: {}".format(response))
@@ -218,7 +227,10 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
         raise e
     finally:
         if is_failed:
-            abort(sock)
+            if is_non_workable:
+                retry(sock)
+            else:
+                abort(sock)
         elif is_aborted:
             pass
         elif is_finished:
