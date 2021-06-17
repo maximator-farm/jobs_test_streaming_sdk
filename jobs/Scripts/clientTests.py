@@ -84,7 +84,7 @@ def press_keys_server(sock, action):
     sock.send(action.encode())
 
 
-def sleep_and_screen(initial_delay, number_of_screens, delay, sock, screen_name, screen_path, archive_path, archive_name):
+def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, sock, screen_path, archive_path, archive_name):
     sleep(int(initial_delay))
 
     try:
