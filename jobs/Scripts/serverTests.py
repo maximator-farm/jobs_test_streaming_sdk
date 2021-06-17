@@ -122,6 +122,20 @@ def next_case(sock):
     sock.send("done".encode())
 
 
+def gpuview(sock, archive_full_path):
+    sock.send("done".encode())
+
+    try:
+        archive_full_path = os.path.join(archive_path, archive_name)
+
+        gpu_view_thread = Thread(target=collect_traces, args=(archive_full_path + "_server.zip"))
+        gpu_view_thread.daemon = True
+        gpu_view_thread.start()
+    except Exception as e:
+        main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
+        main_logger.warning("Traceback: {}".format(traceback.format_exc()))
+
+
 def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
     # configure socket
     sock = socket.socket()
@@ -159,6 +173,8 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                     check_game(connection, *args)
                 elif command == "press_keys_server":
                     press_keys_server(connection, *args)
+                elif command == "gpuview":
+                    gpuview(connection, *args)
                 elif command == "next_case":
                     next_case(connection)
                     break

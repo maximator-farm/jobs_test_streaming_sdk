@@ -88,13 +88,13 @@ def sleep_and_screen(initial_delay, number_of_screens, delay, sock, screen_name,
     sleep(int(initial_delay))
 
     try:
-        archive_full_path = os.path.join(archive_path, archive_name + ".zip")
+        archive_full_path = os.path.join(archive_path, archive_name)
 
         sock.send("gpuview {}".format(archive_full_path).encode())
         response = sock.recv(1024).decode()
         main_logger.info("Server response for 'gpuview' action: {}".format(response))
 
-        gpu_view_thread = Thread(target=collect_traces, args=(archive_full_path))
+        gpu_view_thread = Thread(target=collect_traces, args=(archive_full_path + "_client.zip"))
         gpu_view_thread.daemon = True
         gpu_view_thread.start()
     except Exception as e:
