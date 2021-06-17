@@ -126,9 +126,7 @@ def gpuview(sock, archive_full_path):
     sock.send("done".encode())
 
     try:
-        archive_full_path = os.path.join(archive_path, archive_name)
-
-        gpu_view_thread = Thread(target=collect_traces, args=(archive_full_path + "_server.zip"))
+        gpu_view_thread = Thread(target=collect_traces, args=(archive_full_path + "_server.zip",))
         gpu_view_thread.daemon = True
         gpu_view_thread.start()
     except Exception as e:
