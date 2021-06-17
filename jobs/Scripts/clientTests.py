@@ -9,6 +9,8 @@ import pyautogui
 import pyscreenshot
 import shlex
 from pyffmpeg import FFmpeg
+from threading import Thread
+from utils import collect_traces
 sys.path.append(os.path.abspath(os.path.join(
 	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
@@ -82,8 +84,22 @@ def press_keys_server(sock, action):
     sock.send(action.encode())
 
 
-def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, screen_path):
+def sleep_and_screen(initial_delay, number_of_screens, delay, sock, screen_name, screen_path, archive_path, archive_name):
     sleep(int(initial_delay))
+
+    try:
+        archive_full_path = os.path.join(archive_path, archive_name + ".zip")
+
+        sock.send("gpuview {}".format(archive_full_path).encode())
+        response = sock.recv(1024).decode()
+        main_logger.info("Server response for 'gpuview' action: {}".format(response))
+
+        gpu_view_thread = Thread(target=collect_traces, args=(archive_full_path))
+        gpu_view_thread.daemon = True
+        gpu_view_thread.start()
+    except Exception as e:
+        main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
+        main_logger.warning("Traceback: {}".format(traceback.format_exc()))
 
     screen_number = 1
 
@@ -123,6 +139,10 @@ def next_case(sock):
 
 def start_client_side_tests(args, case, is_workable_condition, ip_address, communication_port, output_path, audio_device_name, current_try):
     screens_path = os.path.join(output_path, case["case"])
+    archive_path = os.path.join(args.output, "gpuview")
+
+    if not os.path.exists(archive_path):
+        os.makedirs(archive_path)
 
     if current_try == 0:
         current_image_num = 1
@@ -189,7 +209,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                 elif command == "press_keys_server":
                     press_keys_server(sock, action)
                 elif command == "sleep_and_screen":
-                    sleep_and_screen(*args, screens_path)
+                    sleep_and_screen(*args, sock, screens_path, archive_path, case["case"])
                 elif command == "finish":
                     is_finished = True
                     finish(sock)
@@ -223,7 +243,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
             raise Exception("Unknown server answer: {}".format(response))
     except Exception as e:
         is_failed = True
-        main_logger.error("Fatal error. Case will be aborted:".format(str(e)))
+        main_logger.error("Fatal error. Case will be aborted: {}".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
 
         raise e

@@ -1,5 +1,10 @@
 from time import sleep
 import psutil
+import os
+from glob import glob
+from zipfile import ZipFile
+import psutil
+from subprocess import PIPE
 
 
 def is_case_skipped(case, render_platform):
@@ -35,3 +40,22 @@ def close_process(process):
         status = process.status()
     except psutil.NoSuchProcess:
         pass
+
+
+def collect_traces(archive_path):
+    traces_base_path = "C:\\JN\\GPUViewTraces"
+    executable_name = "log_extended.cmd - Shortcut.lnk"
+    target_name = "Merged.etl"
+
+    for filename in glob(os.path.join(traces_base_path, "*.etl")):
+        os.remove(filename)
+
+    for filename in glob(os.path.join(traces_base_path, "*.zip")):
+        os.remove(filename)
+
+    proc = psutil.Popen(os.path.join(traces_base_path, executable_name), stdout=PIPE, stderr=PIPE, shell=True)
+
+    proc.communicate()
+
+    with ZipFile(archive_path, 'w') as archive:
+        archive.write(os.path.join(traces_base_path, target_name))
