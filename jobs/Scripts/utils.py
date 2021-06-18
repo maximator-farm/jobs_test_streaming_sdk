@@ -2,7 +2,7 @@ from time import sleep
 import psutil
 import os
 from glob import glob
-from zipfile import ZipFile
+import zipfile
 import psutil
 from subprocess import PIPE
 
@@ -57,5 +57,5 @@ def collect_traces(archive_path):
 
     proc.communicate()
 
-    with ZipFile(archive_path, 'w') as archive:
+    with zipfile.ZipFile(archive_path, 'w', zipfile.ZIP_DEFLATED) as archive:
         archive.write(os.path.join(traces_base_path, target_name))
