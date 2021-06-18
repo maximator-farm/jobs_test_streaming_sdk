@@ -123,11 +123,11 @@ def next_case(sock):
     sock.send("done".encode())
 
 
-def gpuview(sock, archive_full_path):
+def gpuview(sock, archive_path, archive_name):
     sock.send("done".encode())
 
     try:
-        gpu_view_thread = Thread(target=collect_traces, args=(archive_full_path + "_server.zip",))
+        gpu_view_thread = Thread(target=collect_traces, args=(archive_path, archive_name + "_server.zip"))
         gpu_view_thread.daemon = True
         gpu_view_thread.start()
     except Exception as e:
@@ -136,6 +136,8 @@ def gpuview(sock, archive_full_path):
 
 
 def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
+    archive_path = os.path.join(args.output, "gpuview")
+
     # configure socket
     sock = socket.socket()
     sock.bind(("", int(communication_port)))
@@ -173,7 +175,7 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 elif command == "press_keys_server":
                     press_keys_server(connection, *args)
                 elif command == "gpuview":
-                    gpuview(connection, *args)
+                    gpuview(connection, archive_path, case["case"])
                 elif command == "next_case":
                     next_case(connection)
                     break

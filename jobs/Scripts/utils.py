@@ -42,7 +42,7 @@ def close_process(process):
         pass
 
 
-def collect_traces(archive_path):
+def collect_traces(archive_path, archive_name):
     traces_base_path = "C:\\JN\\GPUViewTraces"
     executable_name = "log_extended.cmd - Shortcut.lnk"
     target_name = "Merged.etl"
@@ -57,5 +57,5 @@ def collect_traces(archive_path):
 
     proc.communicate()
 
-    with zipfile.ZipFile(archive_path, 'w', zipfile.ZIP_DEFLATED) as archive:
-        archive.write(os.path.join(traces_base_path, target_name))
+    with zipfile.ZipFile(os.path.join(archive_path, archive_name), 'w', zipfile.ZIP_DEFLATED) as archive:
+        archive.write(os.path.join(traces_base_path, target_name), arcname=archive_name)
