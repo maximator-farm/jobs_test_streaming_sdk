@@ -84,18 +84,18 @@ def press_keys_server(sock, action):
     sock.send(action.encode())
 
 
-def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, sock, screen_path, archive_path, archive_name):
+def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, sock, collect_traces, screen_path, archive_path, archive_name):
     sleep(int(initial_delay))
 
     try:
-
         sock.send("gpuview".encode())
         response = sock.recv(1024).decode()
         main_logger.info("Server response for 'gpuview' action: {}".format(response))
 
-        gpu_view_thread = Thread(target=collect_traces, args=(archive_path, archive_name + "_client.zip"))
-        gpu_view_thread.daemon = True
-        gpu_view_thread.start()
+        if collect_traces == "True":
+            gpu_view_thread = Thread(target=collect_traces, args=(archive_path, archive_name + "_client.zip"))
+            gpu_view_thread.daemon = True
+            gpu_view_thread.start()
     except Exception as e:
         main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
         main_logger.warning("Traceback: {}".format(traceback.format_exc()))
@@ -208,7 +208,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                 elif command == "press_keys_server":
                     press_keys_server(sock, action)
                 elif command == "sleep_and_screen":
-                    sleep_and_screen(*args, sock, screens_path, archive_path, case["case"])
+                    sleep_and_screen(*args, sock, args.collect_traces, screens_path, archive_path, case["case"])
                 elif command == "finish":
                     is_finished = True
                     finish(sock)

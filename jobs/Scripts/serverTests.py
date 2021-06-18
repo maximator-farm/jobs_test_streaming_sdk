@@ -123,16 +123,19 @@ def next_case(sock):
     sock.send("done".encode())
 
 
-def gpuview(sock, archive_path, archive_name):
-    sock.send("done".encode())
+def gpuview(sock, collect_traces, archive_path, archive_name):
+    if collect_traces == "True":
+        sock.send("start".encode())
 
-    try:
-        gpu_view_thread = Thread(target=collect_traces, args=(archive_path, archive_name + "_server.zip"))
-        gpu_view_thread.daemon = True
-        gpu_view_thread.start()
-    except Exception as e:
-        main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
-        main_logger.warning("Traceback: {}".format(traceback.format_exc()))
+        try:
+            gpu_view_thread = Thread(target=collect_traces, args=(archive_path, archive_name + "_server.zip"))
+            gpu_view_thread.daemon = True
+            gpu_view_thread.start()
+        except Exception as e:
+            main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
+            main_logger.warning("Traceback: {}".format(traceback.format_exc()))
+    else:
+        sock.send("skip".encode())
 
 
 def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
@@ -175,7 +178,7 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 elif command == "press_keys_server":
                     press_keys_server(connection, *args)
                 elif command == "gpuview":
-                    gpuview(connection, archive_path, case["case"])
+                    gpuview(connection, args.collect_traces, archive_path, case["case"])
                 elif command == "next_case":
                     next_case(connection)
                     break
