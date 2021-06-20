@@ -54,5 +54,7 @@ def collect_traces(archive_path, archive_name):
 
     proc.communicate()
 
+    sleep(5)
+
     with zipfile.ZipFile(os.path.join(archive_path, archive_name), "w", zipfile.ZIP_DEFLATED) as archive:
         archive.write(os.path.join(traces_base_path, target_name), arcname=target_name)
