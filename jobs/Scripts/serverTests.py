@@ -141,6 +141,9 @@ def gpuview(sock, start_collect_traces, archive_path, archive_name):
 def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
     archive_path = os.path.join(args.output, "gpuview")
 
+    if not os.path.exists(archive_path):
+        os.makedirs(archive_path)
+
     # configure socket
     sock = socket.socket()
     sock.bind(("", int(communication_port)))
