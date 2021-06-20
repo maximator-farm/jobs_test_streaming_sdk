@@ -123,8 +123,8 @@ def next_case(sock):
     sock.send("done".encode())
 
 
-def gpuview(sock, collect_traces, archive_path, archive_name):
-    if collect_traces == "True":
+def gpuview(sock, start_collect_traces, archive_path, archive_name):
+    if start_collect_traces == "True":
         sock.send("start".encode())
 
         try:
