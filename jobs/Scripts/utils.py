@@ -50,12 +50,9 @@ def collect_traces(archive_path, archive_name):
     for filename in glob(os.path.join(traces_base_path, "*.etl")):
         os.remove(filename)
 
-    for filename in glob(os.path.join(traces_base_path, "*.zip")):
-        os.remove(filename)
-
     proc = psutil.Popen(os.path.join(traces_base_path, executable_name), stdout=PIPE, stderr=PIPE, shell=True)
 
     proc.communicate()
 
-    with zipfile.ZipFile(os.path.join(archive_path, archive_name), 'w', zipfile.ZIP_DEFLATED) as archive:
-        archive.write(os.path.join(traces_base_path, target_name), arcname=archive_name)
+    with zipfile.ZipFile(os.path.join(archive_path, archive_name), "w", zipfile.ZIP_DEFLATED) as archive:
+        archive.write(os.path.join(traces_base_path, target_name), arcname=target_name)
