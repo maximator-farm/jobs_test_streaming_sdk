@@ -199,7 +199,7 @@ def is_workable_condition():
         PROCESS.wait(timeout=0)
         main_logger.error("StreamingSDK was down")
 
-        return False
+        return True
     except psutil.TimeoutExpired as e:
         main_logger.info("StreamingSDK is alive") 
 
