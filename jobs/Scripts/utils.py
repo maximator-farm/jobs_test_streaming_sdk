@@ -49,11 +49,17 @@ def collect_traces(archive_path, archive_name):
     executable_name = "log_extended.cmd - Shortcut.lnk"
     target_name = "Merged.etl"
 
-    for filename in glob(os.path.join(traces_base_path, "*.etl")):
-        os.remove(filename)
+    try:
+        for filename in glob(os.path.join(traces_base_path, "*.etl")):
+            os.remove(filename)
+    except Exception:
+        pass
 
-    for filename in glob(os.path.join(gpuview_path, "*.etl")):
-        os.remove(filename)
+    try:
+        for filename in glob(os.path.join(gpuview_path, "*.etl")):
+            os.remove(filename)
+    except Exception:
+        pass
 
     proc = psutil.Popen(os.path.join(traces_base_path, executable_name), stdout=PIPE, stderr=PIPE, shell=True)
 
