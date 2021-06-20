@@ -167,16 +167,16 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 parts = request.split(' ', 1)
                 command = parts[0]
                 if len(parts) > 1:
-                    args = shlex.split(parts[1])
+                    arguments = shlex.split(parts[1])
                 else:
-                    args = None
+                    arguments = None
 
                 if command == "execute_cmd":
-                    execute_cmd(connection, *args)
+                    execute_cmd(connection, *arguments)
                 elif command == "check_game":
-                    check_game(connection, *args)
+                    check_game(connection, *arguments)
                 elif command == "press_keys_server":
-                    press_keys_server(connection, *args)
+                    press_keys_server(connection, *arguments)
                 elif command == "gpuview":
                     gpuview(connection, args.collect_traces, archive_path, case["case"])
                 elif command == "next_case":
