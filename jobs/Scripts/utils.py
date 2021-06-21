@@ -65,7 +65,7 @@ def collect_traces(archive_path, archive_name):
 
     proc.communicate()
 
-    sleep(3)
+    sleep(2)
 
     target_path = os.path.join(traces_base_path, target_name)
 

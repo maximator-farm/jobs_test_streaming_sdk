@@ -12,7 +12,7 @@ from pyffmpeg import FFmpeg
 from threading import Thread
 from utils import collect_traces
 sys.path.append(os.path.abspath(os.path.join(
-	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
+    os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
 
 pyautogui.FAILSAFE = False
@@ -87,19 +87,6 @@ def press_keys_server(sock, action):
 def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, sock, start_collect_traces, screen_path, archive_path, archive_name):
     sleep(int(initial_delay))
 
-    try:
-        sock.send("gpuview".encode())
-        response = sock.recv(1024).decode()
-        main_logger.info("Server response for 'gpuview' action: {}".format(response))
-
-        if start_collect_traces == "True":
-            gpu_view_thread = Thread(target=collect_traces, args=(archive_path, archive_name + "_client.zip"))
-            gpu_view_thread.daemon = True
-            gpu_view_thread.start()
-    except Exception as e:
-        main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
-        main_logger.warning("Traceback: {}".format(traceback.format_exc()))
-
     screen_number = 1
 
     while True:
@@ -110,6 +97,17 @@ def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, sock,
             break
         else:
             sleep(int(delay))
+
+    try:
+        sock.send("gpuview".encode())
+        response = sock.recv(1024).decode()
+        main_logger.info("Server response for 'gpuview' action: {}".format(response))
+
+        if start_collect_traces == "True":
+            collect_traces(archive_path, archive_name + "_client.zip")
+    except Exception as e:
+        main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
+        main_logger.warning("Traceback: {}".format(traceback.format_exc()))
 
 
 def finish(sock):

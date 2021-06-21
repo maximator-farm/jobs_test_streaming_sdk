@@ -1,3 +1,4 @@
+
 import socket
 import sys
 import os
@@ -11,7 +12,7 @@ import pyautogui
 from utils import close_process, collect_traces
 from threading import Thread
 sys.path.append(os.path.abspath(os.path.join(
-	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
+    os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
 
 pyautogui.FAILSAFE = False
@@ -128,9 +129,7 @@ def gpuview(sock, start_collect_traces, archive_path, archive_name):
         sock.send("start".encode())
 
         try:
-            gpu_view_thread = Thread(target=collect_traces, args=(archive_path, archive_name + "_server.zip"))
-            gpu_view_thread.daemon = True
-            gpu_view_thread.start()
+            collect_traces(archive_path, archive_name + "_server.zip")
         except Exception as e:
             main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
             main_logger.warning("Traceback: {}".format(traceback.format_exc()))
