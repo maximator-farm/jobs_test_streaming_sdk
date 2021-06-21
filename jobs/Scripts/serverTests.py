@@ -6,6 +6,7 @@ import psutil
 from subprocess import PIPE
 import traceback
 import win32gui
+import win32api
 import shlex
 import pyautogui
 from utils import close_process
@@ -122,18 +123,85 @@ def next_case(sock):
     sock.send("done".encode())
 
 
+def click_server(sock, x_description, y_description):
+    try:
+        if "center_" in x_description:
+            x = win32api.GetSystemMetrics(0) / 2 + int(x_description.replace("center_", ""))
+        elif "edge_" in x_description:
+            x = win32api.GetSystemMetrics(0) + int(x_description.replace("edge_", ""))
+        else:
+            x = int(x_description)
+
+        if "center_" in y_description:
+            y = win32api.GetSystemMetrics(1) / 2 + int(y_description.replace("center_", ""))
+        elif "edge_" in y_description:
+            y = win32api.GetSystemMetrics(1) + int(y_description.replace("edge_", ""))
+        else:
+            y = int(y_description)
+
+        pyautogui.click(x=x, y=y)
+
+        sock.send("done".encode())
+    except Exception as e:
+        main_logger.error("Failed to click: {}".format(str(e)))
+        main_logger.error("Traceback: {}".format(traceback.format_exc()))
+        sock.send("failed".encode())
+
+
+def do_test_actions(game_name):
+    try:
+        continue_actions = True
+
+        if game_name == "borderlands3":
+            pass
+        elif game_name == "valorant":
+            while continue_actions:
+                pyautogui.keyDown("a")
+                sleep(0.5)
+                pyautogui.keyUp("a")
+
+                pyautogui.click()
+                sleep(0.5)
+                pyautogui.click()
+
+                pyautogui.keyDown("d")
+                sleep(0.5)
+                pyautogui.keyUp("d")
+
+                pyautogui.keyDown("d")
+                sleep(0.5)
+                pyautogui.keyUp("d")
+
+                pyautogui.click()
+                sleep(0.5)
+                pyautogui.click()
+
+                pyautogui.keyDown("a")
+                sleep(0.5)
+                pyautogui.keyUp("a")
+
+    except Exception as e:
+        main_logger.error("Failed to do test actions: {}".format(str(e)))
+        main_logger.error("Traceback: {}".format(traceback.format_exc()))
+
+
 def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
     # configure socket
     sock = socket.socket()
     sock.bind(("", int(communication_port)))
     # max one connection
     sock.listen(1)
+    # non-blocking usage
+    sock.setblocking(False)
     connection, address = sock.accept()
 
     request = connection.recv(1024).decode()
 
     is_aborted = False
     is_non_workable = False
+    execute_test_actions = False
+
+    game_name = args.game_name
 
     try:
         if request == "ready":
@@ -144,7 +212,15 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 connection.send("fail".encode())
 
             while True:
-                request = connection.recv(1024).decode()
+                try:
+                    request = connection.recv(1024).decode()
+                    execute_test_actions = False
+                except Exception as e:
+                    if execute_test_actions:
+                        start_test_actions(game_name.lower())
+                    else:
+                        sleep(1)
+                    continue
 
                 parts = request.split(' ', 1)
                 command = parts[0]
@@ -159,6 +235,12 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                     check_game(connection, *args)
                 elif command == "press_keys_server":
                     press_keys_server(connection, *args)
+                elif command == "click_server":
+                    click_server(connection, *args)
+                elif command == "start_test_actions":
+                    sock.send("done".encode())
+                    start_test_actions(game_name.lower())
+                    execute_test_actions = True
                 elif command == "next_case":
                     next_case(connection)
                     break

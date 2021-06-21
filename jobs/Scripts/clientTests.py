@@ -121,6 +121,14 @@ def next_case(sock):
     main_logger.info("Server response for 'next_case' action: {}".format(response))
 
 
+def click_server(sock, action):
+    sock.send(action.encode())
+
+
+def start_test_actions(sock, action):
+    sock.send(action.encode())
+
+
 def start_client_side_tests(args, case, is_workable_condition, ip_address, communication_port, output_path, audio_device_name, current_try):
     screens_path = os.path.join(output_path, case["case"])
 
@@ -128,6 +136,8 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
         current_image_num = 1
 
     sock = socket.socket()
+
+    game_name = args.game_name
 
     while True:
         try:
@@ -155,7 +165,15 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                 is_non_workable = True
                 raise Exception("Client has non-workable state")
 
-            for action in case["client_actions"]:
+            actions_key = "{}_actions".format(game_name.lower())
+            if actions_key in case:
+                actions = case[actions_key]
+            else:
+                # use default list of actions if some specific list of actions doesn't exist
+                with open(os.path.abspath(args.common_actions_path), "r") as common_actions_file:
+                    actions = json.load(common_actions_file)[actions_key]
+
+            for action in actions:
                 if commands_to_skip > 0:
                     commands_to_skip -= 1
                     continue
@@ -188,6 +206,10 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                     press_keys(*args)
                 elif command == "press_keys_server":
                     press_keys_server(sock, action)
+                elif command == "click_server":
+                    click_server(sock, action)
+                elif command == "start_test_actions":
+                    start_test_actions(sock, action)
                 elif command == "sleep_and_screen":
                     sleep_and_screen(*args, screens_path)
                 elif command == "finish":
