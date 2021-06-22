@@ -135,28 +135,24 @@ def start_test_actions(sock, action):
 def do_test_actions(game_name):
     try:
         if game_name == "apexlegends":
-            for i in range(2):
+            for i in range(40):
                 pydirectinput.press("q")
 
-                sleep(5)
+                pydirectinput.keyDown("a")
+                pydirectinput.keyDown("space")
+                pydirectinput.move(200, None)
+                sleep(0.5)
+                pydirectinput.keyUp("a")
+                pydirectinput.keyUp("space")
+                pydirectinput.move(200, None)
 
-                # i = 0 -> 25 times. i = 1 -> 10 times
-                for j in range(25 - i * 15):
-                    pydirectinput.keyDown("a")
-                    pydirectinput.keyDown("space")
-                    pydirectinput.move(200, None)
-                    sleep(0.5)
-                    pydirectinput.keyUp("a")
-                    pydirectinput.keyUp("space")
-                    pydirectinput.move(200, None)
-
-                    pydirectinput.keyDown("d")
-                    pydirectinput.keyDown("space")
-                    pydirectinput.move(200, None)
-                    sleep(0.5)
-                    pydirectinput.keyUp("d")
-                    pydirectinput.keyUp("space")
-                    pydirectinput.move(200, None)
+                pydirectinput.keyDown("d")
+                pydirectinput.keyDown("space")
+                pydirectinput.move(200, None)
+                sleep(0.5)
+                pydirectinput.keyUp("d")
+                pydirectinput.keyUp("space")
+                pydirectinput.move(200, None)
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))
