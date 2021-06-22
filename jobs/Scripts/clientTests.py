@@ -9,6 +9,7 @@ import pyautogui
 import pyscreenshot
 import shlex
 import json
+import keyboard
 from pyffmpeg import FFmpeg
 sys.path.append(os.path.abspath(os.path.join(
 	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
@@ -130,6 +131,33 @@ def start_test_actions(sock, action):
     sock.send(action.encode())
 
 
+def do_test_actions(game_name):
+    try:
+        if game_name == "apexlegends":
+            for i in range(2):
+                keyboard.send("q")
+
+                sleep(5)
+
+                # i = 0 -> 25 times. i = 1 -> 10 times
+                for j in range(25 - i * 15):
+                    keyboard.press("a+space")
+                    pyautogui.click(button="right")
+                    sleep(0.5)
+                    keyboard.release("a+space")
+                    pyautogui.click(button="right")
+
+                    keyboard.press("d+space")
+                    pyautogui.click(button="right")
+                    sleep(0.5)
+                    keyboard.release("d+space")
+                    pyautogui.click(button="right")
+
+    except Exception as e:
+        main_logger.error("Failed to do test actions: {}".format(str(e)))
+        main_logger.error("Traceback: {}".format(traceback.format_exc()))
+
+
 def start_client_side_tests(args, case, is_workable_condition, ip_address, communication_port, output_path, audio_device_name, current_try):
     screens_path = os.path.join(output_path, case["case"])
 
@@ -210,7 +238,12 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                 elif command == "click_server":
                     click_server(sock, action)
                 elif command == "start_test_actions":
-                    start_test_actions(sock, action)
+                    if args[0] == "server": 
+                        start_test_actions(sock, command)
+                    else:
+                        gpu_view_thread = Thread(target=do_test_actions, args=(game_name,))
+                        gpu_view_thread.daemon = True
+                        gpu_view_thread.start()
                 elif command == "sleep_and_screen":
                     sleep_and_screen(*args, screens_path)
                 elif command == "finish":
