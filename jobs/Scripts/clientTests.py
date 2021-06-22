@@ -8,6 +8,7 @@ import win32gui
 import pyautogui
 import pyscreenshot
 import shlex
+import json
 from pyffmpeg import FFmpeg
 sys.path.append(os.path.abspath(os.path.join(
 	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
