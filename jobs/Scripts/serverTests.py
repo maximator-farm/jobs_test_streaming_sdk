@@ -194,6 +194,9 @@ def do_test_actions(game_name):
             pyautogui.keyDown("a")
             sleep(0.5)
             pyautogui.keyUp("a")
+        elif game_name == "apexlegends":
+            for i in range(10):
+                pydirectinput.move(20, None)
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))
