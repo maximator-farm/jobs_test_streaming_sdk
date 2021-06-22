@@ -139,6 +139,8 @@ def click_server(sock, x_description, y_description):
         else:
             y = int(y_description)
 
+        main_logger.info("Click at x = {}, y = {}".format(x, y))
+
         pyautogui.click(x=x, y=y)
 
         sock.send("done".encode())
@@ -150,35 +152,32 @@ def click_server(sock, x_description, y_description):
 
 def do_test_actions(game_name):
     try:
-        continue_actions = True
-
         if game_name == "borderlands3":
             pass
         elif game_name == "valorant":
-            while continue_actions:
-                pyautogui.keyDown("a")
-                sleep(0.5)
-                pyautogui.keyUp("a")
+            pyautogui.keyDown("a")
+            sleep(0.5)
+            pyautogui.keyUp("a")
 
-                pyautogui.click()
-                sleep(0.5)
-                pyautogui.click()
+            pyautogui.click()
+            sleep(0.5)
+            pyautogui.click()
 
-                pyautogui.keyDown("d")
-                sleep(0.5)
-                pyautogui.keyUp("d")
+            pyautogui.keyDown("d")
+            sleep(0.5)
+            pyautogui.keyUp("d")
 
-                pyautogui.keyDown("d")
-                sleep(0.5)
-                pyautogui.keyUp("d")
+            pyautogui.keyDown("d")
+            sleep(0.5)
+            pyautogui.keyUp("d")
 
-                pyautogui.click()
-                sleep(0.5)
-                pyautogui.click()
+            pyautogui.click()
+            sleep(0.5)
+            pyautogui.click()
 
-                pyautogui.keyDown("a")
-                sleep(0.5)
-                pyautogui.keyUp("a")
+            pyautogui.keyDown("a")
+            sleep(0.5)
+            pyautogui.keyUp("a")
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))
@@ -218,7 +217,7 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                     execute_test_actions = False
                 except Exception as e:
                     if execute_test_actions:
-                        start_test_actions(game_name.lower())
+                        do_test_actions(game_name.lower())
                     else:
                         sleep(1)
                     continue
@@ -239,8 +238,8 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 elif command == "click_server":
                     click_server(connection, *args)
                 elif command == "start_test_actions":
-                    sock.send("done".encode())
-                    start_test_actions(game_name.lower())
+                    connection.send("done".encode())
+                    do_test_actions(game_name.lower())
                     execute_test_actions = True
                 elif command == "next_case":
                     next_case(connection)
@@ -266,7 +265,7 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
 
         if not is_aborted:
-            sock.send("abort".encode())
+            connection.send("abort".encode())
 
         raise e
     finally:

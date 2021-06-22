@@ -18,7 +18,7 @@ pyautogui.FAILSAFE = False
 
 
 current_image_num = 1
-SERVER_ACTIONS = ["execute_cmd", "check_game", "press_keys_server"]
+SERVER_ACTIONS = ["execute_cmd", "check_game", "press_keys_server", "click_server", "start_test_actions"]
 
 
 def execute_cmd(sock, action):
