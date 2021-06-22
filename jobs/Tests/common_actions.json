@@ -75,6 +75,12 @@
         "click_server center_0 center_0",
         "press_keys_server \"w_8\"",
         "check_game \"Apex Legends\" \"r5apex.exe\"",
+        "press_keys_server \"esc\"",
+        "sleep 1",
+        "click_server center_0 center_155",
+        "sleep 2",
+        "click_server center_680 center_-190",
+        "sleep 2",
 
         "make_screen",
         "move 1000 500",

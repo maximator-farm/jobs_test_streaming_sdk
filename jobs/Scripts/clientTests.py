@@ -9,7 +9,7 @@ import pyautogui
 import pyscreenshot
 import shlex
 import json
-import keyboard
+import pydirectinput
 from threading import Thread
 from pyffmpeg import FFmpeg
 sys.path.append(os.path.abspath(os.path.join(
@@ -136,22 +136,26 @@ def do_test_actions(game_name):
     try:
         if game_name == "apexlegends":
             for i in range(2):
-                keyboard.send("q")
+                pydirectinput.press("q")
 
                 sleep(5)
 
                 # i = 0 -> 25 times. i = 1 -> 10 times
                 for j in range(25 - i * 15):
-                    keyboard.press("a+space")
+                    pydirectinput.keyDown("a")
+                    pydirectinput.keyDown("space")
                     pyautogui.click(button="right")
                     sleep(0.5)
-                    keyboard.release("a+space")
+                    pydirectinput.keyUp("a")
+                    pydirectinput.keyUp("space")
                     pyautogui.click(button="right")
 
-                    keyboard.press("d+space")
+                    pydirectinput.keyDown("d")
+                    pydirectinput.keyDown("space")
                     pyautogui.click(button="right")
                     sleep(0.5)
-                    keyboard.release("d+space")
+                    pydirectinput.keyUp("d")
+                    pydirectinput.keyUp("space")
                     pyautogui.click(button="right")
 
     except Exception as e:
