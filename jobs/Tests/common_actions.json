@@ -62,7 +62,7 @@
     "apexlegends_actions": [
         "check_game \"Apex Legends\" \"r5apex.exe\"",
         "skip_if_done 11",
-        "execute_cmd \"C:\\JN\\ApexLegends.exe - Shortcut.lnk\"",
+        "execute_cmd \"C:\\JN\\ApexLegends.exe - Shortcut.url\"",
         "sleep 45",
         "click_server center_0 center_0",
         "sleep 15",
