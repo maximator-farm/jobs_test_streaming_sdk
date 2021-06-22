@@ -15,6 +15,7 @@
         <argument>--communication_port "{communicationPort}"</argument>
         <argument>--server_gpu_name "{serverGPUName}"</argument>
         <argument>--server_os_name "{serverOSName}"</argument>
+        <argument>--collect_traces "{collectTraces}"</argument>
     </execute>
 
     <execute command='python "{ResourcesDir}/makeCompareReport.py"'>

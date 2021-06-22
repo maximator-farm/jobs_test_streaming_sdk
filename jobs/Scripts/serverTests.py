@@ -1,3 +1,4 @@
+
 import socket
 import sys
 import os
@@ -8,9 +9,10 @@ import traceback
 import win32gui
 import shlex
 import pyautogui
-from utils import close_process
+from utils import close_process, collect_traces
+from threading import Thread
 sys.path.append(os.path.abspath(os.path.join(
-	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
+    os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
 
 pyautogui.FAILSAFE = False
@@ -122,7 +124,25 @@ def next_case(sock):
     sock.send("done".encode())
 
 
+def gpuview(sock, start_collect_traces, archive_path, archive_name):
+    if start_collect_traces == "True":
+        sock.send("start".encode())
+
+        try:
+            collect_traces(archive_path, archive_name + "_server.zip")
+        except Exception as e:
+            main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
+            main_logger.warning("Traceback: {}".format(traceback.format_exc()))
+    else:
+        sock.send("skip".encode())
+
+
 def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
+    archive_path = os.path.join(args.output, "gpuview")
+
+    if not os.path.exists(archive_path):
+        os.makedirs(archive_path)
+
     # configure socket
     sock = socket.socket()
     sock.bind(("", int(communication_port)))
@@ -149,16 +169,18 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 parts = request.split(' ', 1)
                 command = parts[0]
                 if len(parts) > 1:
-                    args = shlex.split(parts[1])
+                    arguments = shlex.split(parts[1])
                 else:
-                    args = None
+                    arguments = None
 
                 if command == "execute_cmd":
-                    execute_cmd(connection, *args)
+                    execute_cmd(connection, *arguments)
                 elif command == "check_game":
-                    check_game(connection, *args)
+                    check_game(connection, *arguments)
                 elif command == "press_keys_server":
-                    press_keys_server(connection, *args)
+                    press_keys_server(connection, *arguments)
+                elif command == "gpuview":
+                    gpuview(connection, args.collect_traces, archive_path, case["case"])
                 elif command == "next_case":
                     next_case(connection)
                     break
