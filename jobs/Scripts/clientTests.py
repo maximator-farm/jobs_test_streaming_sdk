@@ -128,7 +128,7 @@ def click_server(sock, action):
     sock.send(action.encode())
 
 
-def start_test_actions(sock, action):
+def start_test_actions_server(sock, action):
     sock.send(action.encode())
 
 
@@ -235,7 +235,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                 elif command == "click_server":
                     click_server(sock, action)
                 elif command == "start_test_actions_server":
-                    start_test_actions(sock, command)
+                    start_test_actions_server(sock, "start_test_actions")
                 elif command == "start_test_actions_client":
                     gpu_view_thread = Thread(target=do_test_actions, args=(game_name.lower(),))
                     gpu_view_thread.daemon = True
