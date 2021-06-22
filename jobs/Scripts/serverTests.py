@@ -11,7 +11,7 @@ import shlex
 import pyautogui
 from utils import close_process
 sys.path.append(os.path.abspath(os.path.join(
-	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
+    os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
 
 pyautogui.FAILSAFE = False
@@ -84,8 +84,21 @@ def press_keys_server(sock, keys_string):
         keys = keys_string.split()
 
         for key in keys:
-            main_logger.info("Press: {}".format(key))
-            pyautogui.press(key)
+            duration = 0
+
+            if "_" in key:
+                parts = key.split("_")
+                key = parts[0]
+                duration = int(parts[1])
+
+            main_logger.info("Press: {}. Duration: {}".format(key, duration))
+
+            if duration == 0:
+                pyautogui.press(key)
+            else:
+                pyautogui.keyDown(key)
+                sleep(duration)
+                pyautogui.keyUp(key)
 
             if "enter" in key:
                 sleep(2)
@@ -141,7 +154,9 @@ def click_server(sock, x_description, y_description):
 
         main_logger.info("Click at x = {}, y = {}".format(x, y))
 
-        pyautogui.click(x=x, y=y)
+        pyautogui.moveTo(x, y)
+        sleep(1)
+        pyautogui.click()
 
         sock.send("done".encode())
     except Exception as e:
