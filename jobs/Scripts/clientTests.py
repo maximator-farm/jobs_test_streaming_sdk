@@ -241,7 +241,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                 elif command == "start_test_actions_server":
                     start_test_actions(sock, command)
                 elif command == "start_test_actions_client":
-                    gpu_view_thread = Thread(target=do_test_actions, args=(game_name,))
+                    gpu_view_thread = Thread(target=do_test_actions, args=(game_name.lower(),))
                     gpu_view_thread.daemon = True
                     gpu_view_thread.start()
                 elif command == "sleep_and_screen":
