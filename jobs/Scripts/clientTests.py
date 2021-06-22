@@ -10,6 +10,7 @@ import pyscreenshot
 import shlex
 import json
 import keyboard
+from threading import Thread
 from pyffmpeg import FFmpeg
 sys.path.append(os.path.abspath(os.path.join(
 	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
