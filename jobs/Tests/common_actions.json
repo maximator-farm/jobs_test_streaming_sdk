@@ -53,6 +53,8 @@
         "click_server center_0 edge_-460",
 
         "check_game \"VALORANT\" \"VALORANT-Win64-Shipping.exe\"",
+        "move 1000 500",
+        "click",
         "make_screen before_any_actions",
         "start_test_actions",
         "sleep_and_screen 5 5 5 test_actions",
