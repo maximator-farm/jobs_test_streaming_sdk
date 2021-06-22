@@ -20,7 +20,7 @@ pyautogui.FAILSAFE = False
 
 
 current_image_num = 1
-SERVER_ACTIONS = ["execute_cmd", "check_game", "press_keys_server", "click_server", "start_test_actions"]
+SERVER_ACTIONS = ["execute_cmd", "check_game", "press_keys_server", "click_server", "start_test_actions_server"]
 
 
 def execute_cmd(sock, action):
@@ -238,13 +238,12 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                     press_keys_server(sock, action)
                 elif command == "click_server":
                     click_server(sock, action)
-                elif command == "start_test_actions":
-                    if args[0] == "server": 
-                        start_test_actions(sock, command)
-                    else:
-                        gpu_view_thread = Thread(target=do_test_actions, args=(game_name,))
-                        gpu_view_thread.daemon = True
-                        gpu_view_thread.start()
+                elif command == "start_test_actions_server":
+                    start_test_actions(sock, command)
+                elif command == "start_test_actions_client":
+                    gpu_view_thread = Thread(target=do_test_actions, args=(game_name,))
+                    gpu_view_thread.daemon = True
+                    gpu_view_thread.start()
                 elif command == "sleep_and_screen":
                     sleep_and_screen(*args, screens_path)
                 elif command == "finish":
