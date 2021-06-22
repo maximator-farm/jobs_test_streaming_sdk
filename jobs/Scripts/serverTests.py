@@ -191,8 +191,6 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
     sock.bind(("", int(communication_port)))
     # max one connection
     sock.listen(1)
-    # non-blocking usage
-    sock.setblocking(False)
     connection, address = sock.accept()
 
     request = connection.recv(1024).decode()
@@ -210,6 +208,9 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 connection.send("ready".encode())
             else:
                 connection.send("fail".encode())
+
+            # non-blocking usage
+            connection.setblocking(False)
 
             while True:
                 try:
