@@ -65,7 +65,7 @@
         "execute_cmd \"C:\\JN\\ApexLegends.exe - Shortcut.url\"",
         "sleep 45",
         "click_server center_0 center_0",
-        "sleep 15",
+        "sleep 20",
         "click_server 230 920",
         "sleep 3",
         "click_server 415 130",
@@ -80,7 +80,7 @@
         "move 1000 500",
         "click",
         "sleep 3",
-        "make_screen apex_legends_fire_range",
+        "make_screen apex_legends_firerange",
         "sleep_and_screen 5 5 5 test_actions",
         "record_video 1920x1200 10"
     ]

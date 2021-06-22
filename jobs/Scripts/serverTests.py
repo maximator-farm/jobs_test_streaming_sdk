@@ -9,6 +9,7 @@ import win32gui
 import win32api
 import shlex
 import pyautogui
+import keyboard
 from utils import close_process
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
@@ -94,11 +95,11 @@ def press_keys_server(sock, keys_string):
             main_logger.info("Press: {}. Duration: {}".format(key, duration))
 
             if duration == 0:
-                pyautogui.press(key)
+                keyboard.send(key)
             else:
-                pyautogui.keyDown(key)
+                keyboard.press(key)
                 sleep(duration)
-                pyautogui.keyUp(key)
+                keyboard.release(key)
 
             if "enter" in key:
                 sleep(2)
