@@ -144,19 +144,19 @@ def do_test_actions(game_name):
                 for j in range(25 - i * 15):
                     pydirectinput.keyDown("a")
                     pydirectinput.keyDown("space")
-                    pyautogui.click(button="right")
+                    pydirectinput.move(200, None)
                     sleep(0.5)
                     pydirectinput.keyUp("a")
                     pydirectinput.keyUp("space")
-                    pyautogui.click(button="right")
+                    pydirectinput.move(200, None)
 
                     pydirectinput.keyDown("d")
                     pydirectinput.keyDown("space")
-                    pyautogui.click(button="right")
+                    pydirectinput.move(200, None)
                     sleep(0.5)
                     pydirectinput.keyUp("d")
                     pydirectinput.keyUp("space")
-                    pyautogui.click(button="right")
+                    pydirectinput.move(200, None)
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))

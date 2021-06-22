@@ -6,7 +6,7 @@
         "sleep 150",
         "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
         "make_screen",
-        "move 1000 500",
+        "move 1000 800",
         "click",
         "sleep 3",
         "make_screen borderlands_menu",
@@ -83,7 +83,7 @@
         "sleep 2",
 
         "make_screen",
-        "move 1000 500",
+        "move 1000 800",
         "click",
         "sleep 3",
         "make_screen apex_legends_firerange",
