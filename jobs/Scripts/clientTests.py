@@ -140,19 +140,23 @@ def do_test_actions(game_name):
 
                 pydirectinput.keyDown("a")
                 pydirectinput.keyDown("space")
-                pydirectinput.move(200, None)
+                pyautogui.move(1000, 0, 0.33)
+                pydirectinput.move(1000, None)
                 sleep(0.5)
                 pydirectinput.keyUp("a")
                 pydirectinput.keyUp("space")
-                pydirectinput.move(200, None)
+                pyautogui.move(1000, 0, 0.33)
+                pydirectinput.move(1000, None)
 
                 pydirectinput.keyDown("d")
                 pydirectinput.keyDown("space")
-                pydirectinput.move(200, None)
+                pyautogui.move(1000, 0, 0.33)
+                pydirectinput.move(1000, None)
                 sleep(0.5)
                 pydirectinput.keyUp("d")
                 pydirectinput.keyUp("space")
-                pydirectinput.move(200, None)
+                pyautogui.move(1000, 0, 0.33)
+                pydirectinput.move(1000, None)
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))
