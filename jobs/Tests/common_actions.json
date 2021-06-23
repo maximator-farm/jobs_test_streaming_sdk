@@ -11,8 +11,10 @@
         "sleep 3",
         "make_screen borderlands_menu",
         "press_keys_server \"down down enter   enter   c c   down enter\"",
-        "sleep_and_screen 30 5 5 borderlands_benchmark",
+        "sleep 30",
+        "make_screen borderlands_benchmark",
         "record_video 1920x1200 10",
+        "sleep_and_screen 5 4 5 borderlands_benchmark",
         "press_keys_server \"esc\"",
         "sleep 10"
     ],
@@ -55,9 +57,11 @@
         "move 1000 800",
         "click",
         "make_screen before_any_actions",
+        "sleep 5",
         "start_test_actions_client",
-        "sleep_and_screen 5 5 5 test_actions",
+        "make_screen test_actions",
         "record_video 1920x1200 10"
+        "sleep_and_screen 5 4 5 test_actions",
     ],
 
     "apexlegends_actions": [
@@ -88,9 +92,11 @@
         "click",
         "sleep 3",
         "make_screen apex_legends_firerange",
+        "sleep 5",
         "start_test_actions_server",
         "start_test_actions_client",
-        "sleep_and_screen 5 5 5 test_actions",
+        "make_screen test_actions",
         "record_video 1920x1200 10"
+        "sleep_and_screen 5 4 5 test_actions",
     ]
 }

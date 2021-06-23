@@ -242,7 +242,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                     if arguments is None:
                         make_screen(output_path)
                     else:
-                        make_screen(screens_path, screen_name="{}_try_{}".format(*arguments, current_try))
+                        make_screen(screens_path, screen_name="{}".format(*arguments))
                 elif command == "record_video":
                     record_video(output_path, audio_device_name, case["case"], *arguments)
                 elif command == "move":
