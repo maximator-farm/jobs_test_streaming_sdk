@@ -74,7 +74,7 @@
         "click_server 230 1070",
         "sleep 90",
         "click_server center_0 center_0",
-        "press_keys_server \"w+shift_15\"",
+        "press_keys_server \"w+shift_16\"",
         "check_game \"Apex Legends\" \"r5apex.exe\"",
         "press_keys_server \"esc\"",
         "sleep 1",
