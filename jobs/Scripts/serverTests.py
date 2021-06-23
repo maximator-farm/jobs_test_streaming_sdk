@@ -202,7 +202,7 @@ def do_test_actions(game_name):
             pyautogui.keyUp("a")
         elif game_name == "apexlegends":
             pyautogui.click(button="right")
-            sleep(0.5)
+            sleep(1.5)
             pyautogui.click(button="right")
 
     except Exception as e:
