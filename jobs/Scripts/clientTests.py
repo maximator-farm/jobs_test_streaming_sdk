@@ -12,8 +12,10 @@ import json
 import pydirectinput
 from threading import Thread
 from pyffmpeg import FFmpeg
+from threading import Thread
+from utils import collect_traces
 sys.path.append(os.path.abspath(os.path.join(
-	os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
+    os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
 
 pyautogui.FAILSAFE = False
@@ -85,7 +87,7 @@ def press_keys_server(sock, action):
     sock.send(action.encode())
 
 
-def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, screen_path):
+def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, sock, start_collect_traces, screen_path, archive_path, archive_name):
     sleep(int(initial_delay))
 
     screen_number = 1
@@ -98,6 +100,17 @@ def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, scree
             break
         else:
             sleep(int(delay))
+
+    try:
+        sock.send("gpuview".encode())
+        response = sock.recv(1024).decode()
+        main_logger.info("Server response for 'gpuview' action: {}".format(response))
+
+        if start_collect_traces == "True":
+            collect_traces(archive_path, archive_name + "_client.zip")
+    except Exception as e:
+        main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
+        main_logger.warning("Traceback: {}".format(traceback.format_exc()))
 
 
 def finish(sock):
@@ -163,6 +176,10 @@ def do_test_actions(game_name):
 
 def start_client_side_tests(args, case, is_workable_condition, ip_address, communication_port, output_path, audio_device_name, current_try):
     screens_path = os.path.join(output_path, case["case"])
+    archive_path = os.path.join(args.output, "gpuview")
+
+    if not os.path.exists(archive_path):
+        os.makedirs(archive_path)
 
     if current_try == 0:
         current_image_num = 1
@@ -213,29 +230,29 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                 parts = action.split(' ', 1)
                 command = parts[0]
                 if len(parts) > 1:
-                    args = shlex.split(parts[1])
+                    arguments = shlex.split(parts[1])
                 else:
-                    args = None
+                    arguments = None
 
                 if command == "execute_cmd":
                     execute_cmd(sock, action)
                 elif command == "check_game":
                     check_game(sock, action)
                 elif command == "make_screen":
-                    if args is None:
+                    if arguments is None:
                         make_screen(output_path)
                     else:
-                        make_screen(screens_path, screen_name="{}_try_{}".format(*args, current_try))
+                        make_screen(screens_path, screen_name="{}_try_{}".format(*arguments, current_try))
                 elif command == "record_video":
-                    record_video(output_path, audio_device_name, case["case"], *args)
+                    record_video(output_path, audio_device_name, case["case"], *arguments)
                 elif command == "move":
-                    move(*args)
+                    move(*arguments)
                 elif command == "click":
                     click()
                 elif command == "sleep":
-                    do_sleep(*args)
+                    do_sleep(*arguments)
                 elif command == "press_keys":
-                    press_keys(*args)
+                    press_keys(*arguments)
                 elif command == "press_keys_server":
                     press_keys_server(sock, action)
                 elif command == "click_server":
@@ -247,13 +264,13 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                     gpu_view_thread.daemon = True
                     gpu_view_thread.start()
                 elif command == "sleep_and_screen":
-                    sleep_and_screen(*args, screens_path)
+                    sleep_and_screen(*arguments, sock, args.collect_traces, screens_path, archive_path, case["case"])
                 elif command == "finish":
                     is_finished = True
                     finish(sock)
                 elif command == "skip_if_done":
                     if is_previous_command_done:
-                        commands_to_skip += int(args[0])
+                        commands_to_skip += int(arguments[0])
                 else:
                     raise Exception("Unknown client command: {}".format(command))
 
@@ -281,7 +298,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
             raise Exception("Unknown server answer: {}".format(response))
     except Exception as e:
         is_failed = True
-        main_logger.error("Fatal error. Case will be aborted:".format(str(e)))
+        main_logger.error("Fatal error. Case will be aborted: {}".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
 
         raise e

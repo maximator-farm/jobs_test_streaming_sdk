@@ -162,6 +162,13 @@ def save_results(args, case, cases, test_case_status = "", error_messages = []):
         test_case_report["test_status"] = test_case_status
         test_case_report["server_log"] = os.path.join("tool_logs", case["case"] + "_server.log")
         test_case_report["client_log"] = os.path.join("tool_logs", case["case"] + "_client.log")
+
+        if args.collect_traces == "True":
+            if args.execution_type == "server":
+                test_case_report["server_trace_archive"] = os.path.join("gpuview", case["case"] + "_server.zip")
+            else:
+                test_case_report["client_trace_archive"] = os.path.join("gpuview", case["case"] + "_client.zip")
+
         test_case_report["testing_start"] = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
         test_case_report["number_of_tries"] += 1
 
@@ -318,6 +325,7 @@ def createArgsParser():
     parser.add_argument('--server_os_name', required=True)
     parser.add_argument('--game_name', required=True)
     parser.add_argument('--common_actions_path', required=True)
+    parser.add_argument('--collect_traces', required=True)
 
     return parser
 
