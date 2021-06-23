@@ -55,6 +55,7 @@
         "move 1000 800",
         "click",
         "make_screen before_any_actions",
+        "start_test_actions_server",
         "start_test_actions_client",
         "sleep_and_screen 5 5 5 test_actions",
         "record_video 1920x1200 10"
@@ -74,7 +75,7 @@
         "click_server 230 1070",
         "sleep 90",
         "click_server center_0 center_0",
-        "press_keys_server \"w_8\"",
+        "press_keys_server \"w+shift_15\"",
         "check_game \"Apex Legends\" \"r5apex.exe\"",
         "press_keys_server \"esc\"",
         "sleep 1",

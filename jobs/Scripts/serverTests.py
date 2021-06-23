@@ -97,9 +97,15 @@ def press_keys_server(sock, keys_string):
             if duration == 0:
                 pydirectinput.press(key)
             else:
-                pydirectinput.keyDown(key)
+                keys_to_press = key.split("+")
+
+                for key_to_press in keys_to_press:
+                    pydirectinput.keyDown(key_to_press)
+
                 sleep(duration)
-                pydirectinput.keyUp(key)
+
+                for key_to_press in keys_to_press:
+                    pydirectinput.keyUp(key_to_press)
 
             if "enter" in key:
                 sleep(2)
@@ -195,8 +201,9 @@ def do_test_actions(game_name):
             sleep(0.5)
             pyautogui.keyUp("a")
         elif game_name == "apexlegends":
-            for i in range(10):
-                pydirectinput.move(20, -1000)
+            pyautogui.click(button="right")
+            sleep(0.5)
+            pyautogui.click(button="right")
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))
