@@ -13,6 +13,7 @@
         "press_keys_server \"down down enter   enter   c c   down enter\"",
         "sleep 30",
         "make_screen borderlands_benchmark",
+        "sleep 5",
         "record_video 1920x1200 10",
         "sleep_and_screen 5 4 5 borderlands_benchmark",
         "press_keys_server \"esc\"",
@@ -60,6 +61,7 @@
         "sleep 5",
         "start_test_actions_client",
         "make_screen test_actions",
+        "sleep 5",
         "record_video 1920x1200 10",
         "sleep_and_screen 5 4 5 test_actions"
     ],
@@ -96,6 +98,7 @@
         "start_test_actions_server",
         "start_test_actions_client",
         "make_screen test_actions",
+        "sleep 5",
         "record_video 1920x1200 10",
         "sleep_and_screen 5 4 5 test_actions"
     ]
