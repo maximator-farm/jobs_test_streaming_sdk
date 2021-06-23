@@ -17,8 +17,6 @@
         <argument>--server_os_name "{serverOSName}"</argument>
         <argument>--game_name "{gameName}"</argument>
         <argument>--common_actions_path "{CommonActions}"</argument>
-        <argument>--game_name "{gameName}"</argument>
-        <argument>--common_actions_path "{CommonActions}"</argument>
     </execute>
 
     <execute command='python "{ResourcesDir}/makeCompareReport.py"'>
