@@ -45,6 +45,8 @@
         "click_server center_0 center_225",
         "sleep 30",
 
+        "click_server center_-545 center_0",
+        "sleep 2",
         "click_server center_0 edge_-400",
         "sleep 1",
         "click_server center_0 edge_-460",
@@ -53,7 +55,7 @@
         "move 1000 800",
         "click",
         "make_screen before_any_actions",
-        "start_test_actions_server",
+        "start_test_actions_client",
         "sleep_and_screen 5 5 5 test_actions",
         "record_video 1920x1200 10"
     ],

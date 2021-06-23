@@ -149,6 +149,9 @@ def do_test_actions(game_name):
                 sleep(0.5)
                 pydirectinput.keyUp("d")
                 pydirectinput.keyUp("space")
+        elif game_name == "valorant":
+            pyautogui.press("x")
+            sleep(3)
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))
