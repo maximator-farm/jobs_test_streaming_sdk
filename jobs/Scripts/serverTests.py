@@ -326,7 +326,7 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
         if REBOOT_TIME is None:
             REBOOT_TIME = time()
         elif args.game_name.lower() in SECONDS_TO_CLOSE:
-            if REBOOT_TIME - SECONDS_TO_CLOSE[args.game_name.lower()]:
+            if time() - REBOOT_TIME > SECONDS_TO_CLOSE[args.game_name.lower()]:
                 result = close_processes()
                 main_logger.info("Processes were closed with status: {}".format(result))
                 REBOOT_TIME = time()
