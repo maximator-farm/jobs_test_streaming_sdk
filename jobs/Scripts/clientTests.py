@@ -151,6 +151,8 @@ def do_test_actions(game_name):
                 pydirectinput.keyUp("space")
         elif game_name == "valorant":
             pyautogui.press("x")
+            sleep(1)
+            pyautogui.click()
             sleep(3)
 
     except Exception as e:
