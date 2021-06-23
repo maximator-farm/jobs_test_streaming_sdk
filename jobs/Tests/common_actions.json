@@ -60,8 +60,8 @@
         "sleep 5",
         "start_test_actions_client",
         "make_screen test_actions",
-        "record_video 1920x1200 10"
-        "sleep_and_screen 5 4 5 test_actions",
+        "record_video 1920x1200 10",
+        "sleep_and_screen 5 4 5 test_actions"
     ],
 
     "apexlegends_actions": [
@@ -96,7 +96,7 @@
         "start_test_actions_server",
         "start_test_actions_client",
         "make_screen test_actions",
-        "record_video 1920x1200 10"
-        "sleep_and_screen 5 4 5 test_actions",
+        "record_video 1920x1200 10",
+        "sleep_and_screen 5 4 5 test_actions"
     ]
 }
