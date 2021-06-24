@@ -2,13 +2,15 @@
 import socket
 import sys
 import os
-from time import sleep
+from time import sleep, time
 import psutil
 from subprocess import PIPE
 import traceback
 import win32gui
+import win32api
 import shlex
 import pyautogui
+import pydirectinput
 from utils import close_process, collect_traces
 from threading import Thread
 sys.path.append(os.path.abspath(os.path.join(
@@ -19,6 +21,10 @@ pyautogui.FAILSAFE = False
 
 
 PROCESSES = {}
+
+# some games should be rebooted sometimes
+SECONDS_TO_CLOSE = {"valorant": 3600}
+REBOOT_TIME = None
 
 
 def execute_cmd(sock, cmd_command):
@@ -85,8 +91,27 @@ def press_keys_server(sock, keys_string):
         keys = keys_string.split()
 
         for key in keys:
-            main_logger.info("Press: {}".format(key))
-            pyautogui.press(key)
+            duration = 0
+
+            if "_" in key:
+                parts = key.split("_")
+                key = parts[0]
+                duration = int(parts[1])
+
+            main_logger.info("Press: {}. Duration: {}".format(key, duration))
+
+            if duration == 0:
+                pydirectinput.press(key)
+            else:
+                keys_to_press = key.split("+")
+
+                for key_to_press in keys_to_press:
+                    pydirectinput.keyDown(key_to_press)
+
+                sleep(duration)
+
+                for key_to_press in keys_to_press:
+                    pydirectinput.keyUp(key_to_press)
 
             if "enter" in key:
                 sleep(2)
@@ -124,6 +149,73 @@ def next_case(sock):
     sock.send("done".encode())
 
 
+def click_server(sock, x_description, y_description):
+    try:
+        if "center_" in x_description:
+            x = win32api.GetSystemMetrics(0) / 2 + int(x_description.replace("center_", ""))
+        elif "edge_" in x_description:
+            x = win32api.GetSystemMetrics(0) + int(x_description.replace("edge_", ""))
+        else:
+            x = int(x_description)
+
+        if "center_" in y_description:
+            y = win32api.GetSystemMetrics(1) / 2 + int(y_description.replace("center_", ""))
+        elif "edge_" in y_description:
+            y = win32api.GetSystemMetrics(1) + int(y_description.replace("edge_", ""))
+        else:
+            y = int(y_description)
+
+        main_logger.info("Click at x = {}, y = {}".format(x, y))
+
+        pyautogui.moveTo(x, y)
+        sleep(1)
+        pyautogui.click()
+
+        sock.send("done".encode())
+    except Exception as e:
+        main_logger.error("Failed to click: {}".format(str(e)))
+        main_logger.error("Traceback: {}".format(traceback.format_exc()))
+        sock.send("failed".encode())
+
+
+def do_test_actions(game_name):
+    try:
+        if game_name == "borderlands3":
+            pass
+        elif game_name == "valorant":
+            pyautogui.keyDown("a")
+            sleep(0.5)
+            pyautogui.keyUp("a")
+
+            pyautogui.click()
+            sleep(0.5)
+            pyautogui.click()
+
+            pyautogui.keyDown("d")
+            sleep(0.5)
+            pyautogui.keyUp("d")
+
+            pyautogui.keyDown("d")
+            sleep(0.5)
+            pyautogui.keyUp("d")
+
+            pyautogui.click()
+            sleep(0.5)
+            pyautogui.click()
+
+            pyautogui.keyDown("a")
+            sleep(0.5)
+            pyautogui.keyUp("a")
+        elif game_name == "apexlegends":
+            pyautogui.click(button="right")
+            sleep(1.5)
+            pyautogui.click(button="right")
+
+    except Exception as e:
+        main_logger.error("Failed to do test actions: {}".format(str(e)))
+        main_logger.error("Traceback: {}".format(traceback.format_exc()))
+
+
 def gpuview(sock, start_collect_traces, archive_path, archive_name):
     if start_collect_traces == "True":
         sock.send("start".encode())
@@ -154,6 +246,9 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
 
     is_aborted = False
     is_non_workable = False
+    execute_test_actions = False
+
+    game_name = args.game_name
 
     try:
         if request == "ready":
@@ -163,8 +258,19 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
             else:
                 connection.send("fail".encode())
 
+            # non-blocking usage
+            connection.setblocking(False)
+
             while True:
-                request = connection.recv(1024).decode()
+                try:
+                    request = connection.recv(1024).decode()
+                    execute_test_actions = False
+                except Exception as e:
+                    if execute_test_actions:
+                        do_test_actions(game_name.lower())
+                    else:
+                        sleep(1)
+                    continue
 
                 parts = request.split(' ', 1)
                 command = parts[0]
@@ -179,6 +285,12 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                     check_game(connection, *arguments)
                 elif command == "press_keys_server":
                     press_keys_server(connection, *arguments)
+                elif command == "click_server":
+                    click_server(connection, *arguments)
+                elif command == "start_test_actions":
+                    connection.send("done".encode())
+                    do_test_actions(game_name.lower())
+                    execute_test_actions = True
                 elif command == "gpuview":
                     gpuview(connection, args.collect_traces, archive_path, case["case"])
                 elif command == "next_case":
@@ -205,8 +317,18 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
 
         if not is_aborted:
-            sock.send("abort".encode())
+            connection.send("abort".encode())
 
         raise e
     finally:
+        global SECONDS_TO_CLOSE, REBOOT_TIME
+
+        if REBOOT_TIME is None:
+            REBOOT_TIME = time()
+        elif args.game_name.lower() in SECONDS_TO_CLOSE:
+            if time() - REBOOT_TIME > SECONDS_TO_CLOSE[args.game_name.lower()]:
+                result = close_processes()
+                main_logger.info("Processes were closed with status: {}".format(result))
+                REBOOT_TIME = time()
+
         connection.close()

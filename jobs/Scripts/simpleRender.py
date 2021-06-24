@@ -323,6 +323,8 @@ def createArgsParser():
     parser.add_argument('--communication_port', required=True)
     parser.add_argument('--server_gpu_name', required=True)
     parser.add_argument('--server_os_name', required=True)
+    parser.add_argument('--game_name', required=True)
+    parser.add_argument('--common_actions_path', required=True)
     parser.add_argument('--collect_traces', required=True)
 
     return parser
