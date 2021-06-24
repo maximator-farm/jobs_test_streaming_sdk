@@ -209,7 +209,6 @@ def do_test_actions(game_name):
         elif game_name == "apexlegends":
             pyautogui.click(button="right")
             sleep(1.5)
-            pyautogui.click(button="right")
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))
