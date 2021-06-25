@@ -133,6 +133,7 @@
         "sleep 3",
         "make_screen lol_training",
         "sleep 5",
+        "start_test_actions_server",
         "start_test_actions_client",
         "make_screen test_actions",
         "sleep 5",

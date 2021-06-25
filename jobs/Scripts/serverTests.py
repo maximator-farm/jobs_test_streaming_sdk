@@ -227,6 +227,21 @@ def do_test_actions(game_name):
         elif game_name == "apexlegends":
             pyautogui.click(button="right")
             sleep(1.5)
+        elif game_name == "lol":
+            center_x = win32api.GetSystemMetrics(0) / 2
+            center_y = win32api.GetSystemMetrics(1) / 2
+
+            sleep(4)
+
+            pyautogui.moveTo(center_x + 360, center_y - 360)
+            sleep(0.1)
+            pyautogui.click(button="right")
+            sleep(1.5)
+
+            pyautogui.moveTo(center_x, center_y)
+            sleep(0.1)
+            pyautogui.click(button="right")
+            sleep(1.5)
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))

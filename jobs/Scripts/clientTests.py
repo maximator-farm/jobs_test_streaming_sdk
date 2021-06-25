@@ -173,16 +173,19 @@ def do_test_actions(game_name):
             center_x = win32api.GetSystemMetrics(0) / 2
             center_y = win32api.GetSystemMetrics(1) / 2
 
-            for i in range(10):
-                for u in range(5):
-                    pydirectinput.press("e")
-                    sleep(0.2)
-                    pydirectinput.press("e")
+            for i in range(5):
+                pydirectinput.press("e")
+                sleep(0.1)
+                pydirectinput.press("e")
+                sleep(0.1)
 
                 pydirectinput.press("r")
                 sleep(0.1)
                 pydirectinput.press("r")
                 sleep(3)
+
+                # get time to do server actions
+                sleep(4)
 
     except Exception as e:
         main_logger.error("Failed to do test actions: {}".format(str(e)))
