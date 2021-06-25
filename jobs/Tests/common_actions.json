@@ -104,7 +104,7 @@
     ],
 
     "lol_actions": [
-        "check_game \"League of Legends\" \"LeagueClient.exe\""
+        "check_game \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
         "skip_if_done 19",
         "execute_cmd \"C:\\JN\\League of Legends.lnk\"",
@@ -124,7 +124,7 @@
         "click_server center_0 center_230",
         "sleep 45",
         "press_keys_server \"shift+x shift+y:17 ctrl+e ctrl+r\"",
-        "check_game \"League of Legends\" \"LeagueClient.exe\""
+        "check_game \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
 
         "make_screen",
