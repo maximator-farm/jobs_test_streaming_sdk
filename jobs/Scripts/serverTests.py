@@ -101,7 +101,25 @@ def press_keys_server(sock, keys_string):
             main_logger.info("Press: {}. Duration: {}".format(key, duration))
 
             if duration == 0:
-                pydirectinput.press(key)
+                times = 1
+
+                if ":" in key:
+                    parts = key.split(":")
+                    key = parts[0]
+                    times = int(parts[1])
+
+                keys_to_press = key.split("+")
+
+                for i in range(times):
+                    for key_to_press in keys_to_press:
+                        pydirectinput.keyDown(key_to_press)
+
+                    sleep(0.1)
+
+                    for key_to_press in keys_to_press:
+                        pydirectinput.keyUp(key_to_press)
+
+                    sleep(0.5)
             else:
                 keys_to_press = key.split("+")
 
@@ -207,6 +225,31 @@ def do_test_actions(game_name):
             sleep(0.5)
             pyautogui.keyUp("a")
         elif game_name == "apexlegends":
+            pyautogui.click(button="right")
+            sleep(1.5)
+        elif game_name == "lol":
+            edge_x = win32api.GetSystemMetrics(0)
+            edge_y = win32api.GetSystemMetrics(1)
+            center_x = edge_x / 2
+            center_y = edge_y / 2
+
+            sleep(4)
+
+            pyautogui.moveTo(center_x + 360, center_y - 360)
+            sleep(0.1)
+            pyautogui.click()
+            sleep(0.1)
+            pyautogui.moveTo(edge_x - 255, edge_y - 60)
+            sleep(0.1)
+            pyautogui.click(button="right")
+            sleep(1.5)
+
+            pyautogui.moveTo(edge_x - 290, edge_y - 20)
+            sleep(0.1)
+            pyautogui.click()
+            sleep(0.1)
+            pyautogui.moveTo(center_x, center_y)
+            sleep(0.1)
             pyautogui.click(button="right")
             sleep(1.5)
 
