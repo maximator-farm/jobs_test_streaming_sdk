@@ -173,31 +173,11 @@ def do_test_actions(game_name):
             center_x = win32api.GetSystemMetrics(0) / 2
             center_y = win32api.GetSystemMetrics(1) / 2
 
-            for i in range(5):
-                for x in [-200, 200]:
-                    for y in [-200, 200]:
-                        pydirectinput.press("e")
-                        sleep(0.1)
-                        pyautogui.moveTo(center_x + x, center_y + y)
-                        sleep(0.1)
-                        pyautogui.click()
-                        pydirectinput.press("e")
-                        main_logger.info("Click at x = {}, y = {}".format(center_x + x, center_y + y))
-                        main_logger.info(pyautogui.position())
-
-                pyautogui.moveTo(center_x - 200, center_y + 200)
-                main_logger.info("Click at x = {}, y = {}".format(center_x - 200, center_y + 200))
-                main_logger.info(pyautogui.position())
-                sleep(0.1)
-                pyautogui.click(button="right")
-                sleep(2)
-
-                pyautogui.moveTo(center_x + 200, center_y - 200)
-                main_logger.info("Click at x = {}, y = {}".format(center_x + 200, center_y - 200))
-                main_logger.info(pyautogui.position())
-                sleep(0.1)
-                pyautogui.click(button="right")
-                sleep(2)
+            for i in range(10):
+                for u in range(5)
+                    pydirectinput.press("e")
+                    sleep(0.2)
+                    pydirectinput.press("e")
 
                 pydirectinput.press("r")
                 sleep(0.1)
