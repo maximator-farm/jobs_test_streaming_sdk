@@ -140,5 +140,30 @@
         "sleep 5",
         "record_video 1920x1200 10",
         "sleep_and_screen 5 4 5 test_actions"
+    ],
+
+    "heaven_actions": [
+        "check_game \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
+        "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
+        "skip_if_done 7",
+        "execute_cmd \"C:\\JN\\Heaven Benchmark 4.0.lnk\"",
+        "sleep 5",
+        "click_server center_280 center_135",
+        "sleep 20",
+        "check_game \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
+        "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
+
+        "make_screen",
+        "move 1000 800",
+        "click",
+        "sleep 3",
+        "make_screen before_benchmark",
+        "press_keys_server \"f9\"",
+        "sleep 1",
+        "make_screen heaven_benchmark",
+        "sleep 5",
+        "record_video 1920x1200 10",
+        "sleep_and_screen 5 4 5 heaven_benchmark",
+        "press_keys_server \"esc\""
     ]
 }
