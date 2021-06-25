@@ -101,7 +101,13 @@ def press_keys_server(sock, keys_string):
             main_logger.info("Press: {}. Duration: {}".format(key, duration))
 
             if duration == 0:
-                pydirectinput.press(key)
+                keys_to_press = key.split("+")
+
+                for key_to_press in keys_to_press:
+                    pydirectinput.keyDown(key_to_press)
+
+                for key_to_press in keys_to_press:
+                    pydirectinput.keyUp(key_to_press)
             else:
                 keys_to_press = key.split("+")
 

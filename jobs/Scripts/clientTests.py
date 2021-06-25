@@ -14,6 +14,7 @@ from threading import Thread
 from pyffmpeg import FFmpeg
 from threading import Thread
 from utils import collect_traces
+import win32api
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
@@ -167,6 +168,34 @@ def do_test_actions(game_name):
                 pydirectinput.press("x")
                 sleep(1)
                 pyautogui.click()
+                sleep(3)
+        elif game_name == "lol":
+            center_x = win32api.GetSystemMetrics(0) / 2
+            center_y = win32api.GetSystemMetrics(1) / 2
+
+            for i in range(5):
+                for x in [-200, 200]:
+                    for y in [-200, 200]:
+                        pydirectinput.press("e")
+                        sleep(0.1)
+                        pyautogui.moveTo(center_x + x, center_y + y)
+                        sleep(0.1)
+                        pyautogui.click()
+                        pydirectinput.press("e")
+
+                pyautogui.moveTo(center_x - 200, center_y + 200)
+                sleep(0.1)
+                pyautogui.click(button="right")
+                sleep(2)
+
+                pyautogui.moveTo(center_x + 200, center_y - 200)
+                sleep(0.1)
+                pyautogui.click(button="right")
+                sleep(2)
+
+                pydirectinput.press("r")
+                sleep(0.1)
+                pydirectinput.press("r")
                 sleep(3)
 
     except Exception as e:

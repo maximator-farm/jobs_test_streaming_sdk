@@ -101,5 +101,42 @@
         "sleep 5",
         "record_video 1920x1200 10",
         "sleep_and_screen 5 4 5 test_actions"
+    ],
+
+    "lol_actions": [
+        "check_game \"League of Legends\" \"LeagueClient.exe\""
+        "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
+        "skip_if_done 19",
+        "execute_cmd \"C:\\JN\\League of Legends.lnk\"",
+        "sleep 45",
+        "click_server center_-520 center_-340",
+        "sleep 1",
+        "click_server center_-390 center_-280",
+        "sleep 1",
+        "click_server center_-15 center_-160",
+        "sleep 1",
+        "click_server center_-110 center_310",
+        "sleep 1",
+        "click_server center_-110 center_310",
+        "sleep 1",
+        "click_server center_150 center_-210",
+        "sleep 1",
+        "click_server center_0 center_230",
+        "sleep 45",
+        "press_keys_server \"shift+x shift+y:17 ctrl+e ctrl+r\"",
+        "check_game \"League of Legends\" \"LeagueClient.exe\""
+        "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
+
+        "make_screen",
+        "move 1000 800",
+        "click",
+        "sleep 3",
+        "make_screen lol_training",
+        "sleep 5",
+        "start_test_actions_client",
+        "make_screen test_actions",
+        "sleep 5",
+        "record_video 1920x1200 10",
+        "sleep_and_screen 5 4 5 test_actions"
     ]
 }
