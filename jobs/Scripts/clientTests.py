@@ -174,7 +174,7 @@ def do_test_actions(game_name):
             center_y = win32api.GetSystemMetrics(1) / 2
 
             for i in range(10):
-                for u in range(5)
+                for u in range(5):
                     pydirectinput.press("e")
                     sleep(0.2)
                     pydirectinput.press("e")
