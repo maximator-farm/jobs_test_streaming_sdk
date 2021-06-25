@@ -111,7 +111,14 @@ def press_keys_server(sock, keys_string):
                 keys_to_press = key.split("+")
 
                 for i in range(times):
-                    pydirectinput.press(keys_to_press)
+                    for key_to_press in keys_to_press:
+                        pydirectinput.keyDown(key_to_press)
+
+                    sleep(0.1)
+
+                    for key_to_press in keys_to_press:
+                        pydirectinput.keyUp(key_to_press)
+
                     sleep(0.5)
             else:
                 keys_to_press = key.split("+")
