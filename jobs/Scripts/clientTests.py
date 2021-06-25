@@ -182,13 +182,16 @@ def do_test_actions(game_name):
                         sleep(0.1)
                         pyautogui.click()
                         pydirectinput.press("e")
+                        main_logger.info("Click at x = {}, y = {}".format(center_x + x, center_y + y))
 
                 pyautogui.moveTo(center_x - 200, center_y + 200)
+                main_logger.info("Click at x = {}, y = {}".format(center_x - 200, center_y + 200))
                 sleep(0.1)
                 pyautogui.click(button="right")
                 sleep(2)
 
                 pyautogui.moveTo(center_x + 200, center_y - 200)
+                main_logger.info("Click at x = {}, y = {}".format(center_x + 200, center_y - 200))
                 sleep(0.1)
                 pyautogui.click(button="right")
                 sleep(2)
