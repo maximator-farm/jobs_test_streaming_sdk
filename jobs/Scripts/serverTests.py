@@ -106,6 +106,8 @@ def press_keys_server(sock, keys_string):
                 for key_to_press in keys_to_press:
                     pydirectinput.keyDown(key_to_press)
 
+                sleep(0.1)
+
                 for key_to_press in keys_to_press:
                     pydirectinput.keyUp(key_to_press)
             else:
