@@ -228,16 +228,26 @@ def do_test_actions(game_name):
             pyautogui.click(button="right")
             sleep(1.5)
         elif game_name == "lol":
-            center_x = win32api.GetSystemMetrics(0) / 2
-            center_y = win32api.GetSystemMetrics(1) / 2
+            edge_x = win32api.GetSystemMetrics(0)
+            edge_y = win32api.GetSystemMetrics(1)
+            center_x = edge_x / 2
+            center_y = edge_y / 2
 
             sleep(4)
 
             pyautogui.moveTo(center_x + 360, center_y - 360)
             sleep(0.1)
+            pyautogui.click()
+            sleep(0.1)
+            pyautogui.moveTo(edge_x - 255, edge_y - 60)
+            sleep(0.1)
             pyautogui.click(button="right")
             sleep(1.5)
 
+            pyautogui.moveTo(edge_x - 290, edge_y - 20)
+            sleep(0.1)
+            pyautogui.click()
+            sleep(0.1)
             pyautogui.moveTo(center_x, center_y)
             sleep(0.1)
             pyautogui.click(button="right")
