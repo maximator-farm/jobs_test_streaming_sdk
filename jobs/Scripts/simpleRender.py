@@ -28,7 +28,7 @@ from jobs_launcher.core.system_info import get_gpu
 # port throuth which client and server communicate to synchronize execution of tests
 PROCESS = None
 # some games should be rebooted sometimes
-SECONDS_TO_CLOSE = {"valorant": 3600, "lol": 1800}
+SECONDS_TO_CLOSE = {"valorant": 3600, "lol": 3600}
 REBOOT_TIME = None
 
 
