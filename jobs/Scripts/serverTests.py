@@ -22,10 +22,6 @@ pyautogui.FAILSAFE = False
 
 PROCESSES = {}
 
-# some games should be rebooted sometimes
-SECONDS_TO_CLOSE = {"valorant": 3600, "lol": 1800}
-REBOOT_TIME = None
-
 
 def execute_cmd(sock, cmd_command):
     try:
@@ -363,14 +359,4 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
 
         raise e
     finally:
-        global SECONDS_TO_CLOSE, REBOOT_TIME
-
-        if REBOOT_TIME is None:
-            REBOOT_TIME = time()
-        elif args.game_name.lower() in SECONDS_TO_CLOSE:
-            if time() - REBOOT_TIME > SECONDS_TO_CLOSE[args.game_name.lower()]:
-                result = close_processes()
-                main_logger.info("Processes were closed with status: {}".format(result))
-                REBOOT_TIME = time()
-
         connection.close()
