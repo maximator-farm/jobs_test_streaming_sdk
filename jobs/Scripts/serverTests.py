@@ -23,7 +23,7 @@ pyautogui.FAILSAFE = False
 PROCESSES = {}
 
 # some games should be rebooted sometimes
-SECONDS_TO_CLOSE = {"valorant": 3600}
+SECONDS_TO_CLOSE = {"valorant": 3600, "lol": 1800}
 REBOOT_TIME = None
 
 

@@ -107,7 +107,7 @@
         "check_game \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
         "skip_if_done 20",
-        "sleep 180",
+        "sleep 360",
         "execute_cmd \"C:\\JN\\League of Legends.lnk\"",
         "sleep 45",
         "click_server center_-520 center_-340",
