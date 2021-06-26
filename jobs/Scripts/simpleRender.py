@@ -28,7 +28,7 @@ from jobs_launcher.core.system_info import get_gpu
 # port throuth which client and server communicate to synchronize execution of tests
 PROCESS = None
 # some games should be rebooted sometimes
-SECONDS_TO_CLOSE = {"valorant": 3600, "lol": 3600}
+SECONDS_TO_CLOSE = {"valorant": 3600}
 REBOOT_TIME = None
 
 
@@ -310,8 +310,10 @@ def execute_tests(args, current_conf):
 
                     if REBOOT_TIME is None:
                         REBOOT_TIME = time.time()
-                    elif args.game_name.lower() in SECONDS_TO_CLOSE:
-                        if time.time() - REBOOT_TIME > SECONDS_TO_CLOSE[args.game_name.lower()]:
+                        main_logger.info("Reboot time was set")
+                    else:
+                        main_logger.info("Time left from the latest restart of game: {}".format(time.time() - REBOOT_TIME))
+                        if args.game_name.lower() in SECONDS_TO_CLOSE and (time.time() - REBOOT_TIME) > SECONDS_TO_CLOSE[args.game_name.lower()]:
                             result = close_processes()
                             main_logger.info("Processes were closed with status: {}".format(result))
                             REBOOT_TIME = time.time()

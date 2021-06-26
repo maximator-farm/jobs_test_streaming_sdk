@@ -107,7 +107,7 @@
         "check_game \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
         "skip_if_done 20",
-        "sleep 360",
+        "sleep 180",
         "execute_cmd \"C:\\JN\\League of Legends.lnk\"",
         "sleep 45",
         "click_server center_-520 center_-340",
@@ -124,7 +124,7 @@
         "sleep 1",
         "click_server center_0 center_230",
         "sleep 45",
-        "press_keys_server \"shift+x shift+y:17 ctrl+e ctrl+r\"",
+        "press_keys_server \"shift+x ctrl+shift+i shift+y:17 ctrl+e ctrl+r\"",
         "check_game \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
 
