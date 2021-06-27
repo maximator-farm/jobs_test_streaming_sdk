@@ -105,7 +105,7 @@
     ],
 
     "lol_actions": [
-        "check_game \"League of Legends\" \"LeagueClient.exe\"",
+        "check_window \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
         "skip_if_done 20",
         "sleep 300",
@@ -126,7 +126,7 @@
         "click_server center_0 center_230",
         "sleep 45",
         "press_keys_server \"shift+x ctrl+shift+i shift+y:17 ctrl+e ctrl+r\"",
-        "check_game \"League of Legends\" \"LeagueClient.exe\"",
+        "check_window \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
 
         "make_screen",
@@ -144,14 +144,14 @@
     ],
 
     "heaven_actions": [
-        "check_game \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
+        "check_window \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
         "skip_if_done 7",
         "execute_cmd \"C:\\JN\\Heaven Benchmark 4.0.lnk\"",
         "sleep 5",
         "click_server center_280 center_135",
         "sleep 30",
-        "check_game \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
+        "check_window \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
 
         "make_screen",

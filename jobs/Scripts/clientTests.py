@@ -23,14 +23,14 @@ pyautogui.FAILSAFE = False
 
 
 current_image_num = 1
-SERVER_ACTIONS = ["execute_cmd", "check_game", "press_keys_server", "click_server", "start_test_actions_server"]
+SERVER_ACTIONS = ["execute_cmd", "check_game", "check_window", "press_keys_server", "click_server", "start_test_actions_server"]
 
 
 def execute_cmd(sock, action):
     sock.send(action.encode())
 
 
-def check_game(sock, action):
+def check_window(sock, action):
     sock.send(action.encode())
 
 
@@ -243,8 +243,8 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
 
                 if command == "execute_cmd":
                     execute_cmd(sock, action)
-                elif command == "check_game":
-                    check_game(sock, action)
+                elif command == "check_game" or command == "check_window":
+                    check_window(sock, action)
                 elif command == "make_screen":
                     if arguments is None:
                         make_screen(output_path)
@@ -290,7 +290,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                     elif response == "failed":
                         is_previous_command_done = False
 
-                        if command != "check_game":
+                        if command != "check_game" and command != "check_window":
                             raise Exception("Action failed on server side")
                     elif response == "abort":
                         is_aborted = True

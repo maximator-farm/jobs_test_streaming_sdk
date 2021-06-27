@@ -38,18 +38,20 @@ def execute_cmd(sock, cmd_command):
         sock.send("failed".encode())
 
 
-def check_game(sock, window_name, process_name):
+def check_window(sock, window_name, process_name, is_game=True):
     try:
         window = win32gui.FindWindow(None, window_name)
 
         if window is not None and window != 0:
             main_logger.info("Window {} was succesfully found".format(window_name))
-            try:
-                win32gui.ShowWindow(window, 5)
-                win32gui.SetForegroundWindow(window)
-            except Exception as e1:
-                main_logger.error("Failed to make window foreground: {}".format(str(e1)))
-                main_logger.error("Traceback: {}".format(traceback.format_exc()))
+            
+            if is_game:
+                try:
+                    win32gui.ShowWindow(window, 5)
+                    win32gui.SetForegroundWindow(window)
+                except Exception as e1:
+                    main_logger.error("Failed to make window foreground: {}".format(str(e1)))
+                    main_logger.error("Traceback: {}".format(traceback.format_exc()))
         else:
             main_logger.error("Window {} wasn't found at all".format(window_name))
             sock.send("failed".encode())
@@ -341,8 +343,9 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
 
                 if command == "execute_cmd":
                     execute_cmd(connection, *arguments)
-                elif command == "check_game":
-                    check_game(connection, *arguments)
+                elif command == "check_game" or command == "check_window":
+                    is_game = command == "check_game"
+                    check_window(connection, *arguments, is_game=is_game)
                 elif command == "press_keys_server":
                     press_keys_server(connection, *arguments)
                 elif command == "click_server":
