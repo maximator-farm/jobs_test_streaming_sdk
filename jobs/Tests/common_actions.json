@@ -150,7 +150,7 @@
         "execute_cmd \"C:\\JN\\Heaven Benchmark 4.0.lnk\"",
         "sleep 5",
         "click_server center_280 center_135",
-        "sleep 20",
+        "sleep 30",
         "check_game \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
 
