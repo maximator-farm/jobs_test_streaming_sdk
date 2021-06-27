@@ -227,8 +227,17 @@ def do_test_actions(game_name):
             sleep(0.5)
             pyautogui.keyUp("a")
         elif game_name == "apexlegends":
+            pydirectinput.keyDown("a")
+            pydirectinput.keyDown("space")
+            sleep(0.5)
+            pydirectinput.keyUp("a")
+            pydirectinput.keyUp("space")
+
+            pydirectinput.keyDown("d")
+            pydirectinput.keyDown("space")
+            sleep(0.5)
+            pydirectinput.keyUp("d")
             pyautogui.click(button="right")
-            sleep(1.5)
         elif game_name == "lol":
             edge_x = win32api.GetSystemMetrics(0)
             edge_y = win32api.GetSystemMetrics(1)
@@ -293,6 +302,8 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
     execute_test_actions = False
 
     game_name = args.game_name
+    
+    pydirectinput.press("space")
 
     try:
         if request == "ready":

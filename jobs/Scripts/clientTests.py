@@ -151,18 +151,7 @@ def do_test_actions(game_name):
         if game_name == "apexlegends":
             for i in range(40):
                 pydirectinput.press("q")
-
-                pydirectinput.keyDown("a")
-                pydirectinput.keyDown("space")
-                sleep(0.5)
-                pydirectinput.keyUp("a")
-                pydirectinput.keyUp("space")
-
-                pydirectinput.keyDown("d")
-                pydirectinput.keyDown("space")
-                sleep(0.5)
-                pydirectinput.keyUp("d")
-                pydirectinput.keyUp("space")
+                sleep(1)
         elif game_name == "valorant":
             for i in range(10):
                 pydirectinput.press("x")
