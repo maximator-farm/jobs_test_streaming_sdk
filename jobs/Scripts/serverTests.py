@@ -21,6 +21,7 @@ pyautogui.FAILSAFE = False
 
 
 PROCESSES = {}
+GAMES_WITH_TIMEOUTS = ['apexlegends']
 
 
 def execute_cmd(sock, cmd_command):
@@ -303,8 +304,11 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
     execute_test_actions = False
 
     game_name = args.game_name
-    
-    pydirectinput.press("space")
+
+    global GAMES_WITH_TIMEOUTS
+
+    if game_name.lower() in GAMES_WITH_TIMEOUTS:
+        pydirectinput.press("space")
 
     try:
         if request == "ready":
