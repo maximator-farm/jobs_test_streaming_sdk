@@ -237,6 +237,7 @@ def do_test_actions(game_name):
             pydirectinput.keyDown("space")
             sleep(0.5)
             pydirectinput.keyUp("d")
+            pydirectinput.keyUp("space")
             pyautogui.click(button="right")
         elif game_name == "lol":
             edge_x = win32api.GetSystemMetrics(0)
