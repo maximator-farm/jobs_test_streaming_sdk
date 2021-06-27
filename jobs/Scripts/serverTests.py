@@ -41,8 +41,14 @@ def check_game(sock, window_name, process_name):
     try:
         window = win32gui.FindWindow(None, window_name)
 
-        if window is not None:
+        if window is not None and window != 0:
             main_logger.info("Window {} was succesfully found".format(window_name))
+            try:
+                win32gui.ShowWindow(window, 5)
+                win32gui.SetForegroundWindow(window)
+            except Exception as e1:
+                main_logger.error("Failed to make window foreground: {}".format(str(e1)))
+                main_logger.error("Traceback: {}".format(traceback.format_exc()))
         else:
             main_logger.error("Window {} wasn't found at all".format(window_name))
             sock.send("failed".encode())

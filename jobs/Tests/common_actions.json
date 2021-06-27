@@ -1,10 +1,10 @@
 {
     "borderlands3_actions": [
-        "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+        "check_game \"Borderlands® 3  \" \"Borderlands3.exe\"",
         "skip_if_done 3",
         "execute_cmd \"C:\\JN\\Borderlands3.exe - Shortcut.lnk\"",
         "sleep 150",
-        "check_game \"Borderlands® 3\" \"Borderlands3.exe\"",
+        "check_game \"Borderlands® 3  \" \"Borderlands3.exe\"",
         "make_screen",
         "move 1000 800",
         "click",
@@ -21,7 +21,7 @@
     ],
 
     "valorant_actions": [
-        "check_game \"VALORANT\" \"VALORANT-Win64-Shipping.exe\"",
+        "check_game \"VALORANT  \" \"VALORANT-Win64-Shipping.exe\"",
         "skip_if_done 23",
         "execute_cmd \"C:\\JN\\VALORANT.exe - Shortcut.lnk\"",
         "sleep 15",
@@ -54,7 +54,7 @@
         "sleep 1",
         "click_server center_0 edge_-460",
 
-        "check_game \"VALORANT\" \"VALORANT-Win64-Shipping.exe\"",
+        "check_game \"VALORANT  \" \"VALORANT-Win64-Shipping.exe\"",
         "move 1000 800",
         "click",
         "make_screen before_any_actions",
@@ -107,7 +107,7 @@
         "check_game \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
         "skip_if_done 20",
-        "sleep 180",
+        "sleep 360",
         "execute_cmd \"C:\\JN\\League of Legends.lnk\"",
         "sleep 45",
         "click_server center_-520 center_-340",

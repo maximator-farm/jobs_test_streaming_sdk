@@ -19,8 +19,9 @@ import time
 from pyffmpeg import FFmpeg
 import win32api
 
-sys.path.append(os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
+ROOT_PATH = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.path.pardir, os.path.pardir))
+sys.path.append(ROOT_PATH)
 from jobs_launcher.core.config import *
 from jobs_launcher.core.system_info import get_gpu
 
@@ -28,8 +29,7 @@ from jobs_launcher.core.system_info import get_gpu
 # port throuth which client and server communicate to synchronize execution of tests
 PROCESS = None
 # some games should be rebooted sometimes
-SECONDS_TO_CLOSE = {"valorant": 3600}
-REBOOT_TIME = None
+SECONDS_TO_CLOSE = {"valorant": 4500, "lol": 3000}
 
 
 def get_audio_device_name():
@@ -306,17 +306,23 @@ def execute_tests(args, current_conf):
                     file.write(logs)
                     
                 if args.execution_type == "server":
-                    global SECONDS_TO_CLOSE, REBOOT_TIME
+                    global SECONDS_TO_CLOSE
+                    
+                    with open(os.path.join(ROOT_PATH, "state.py"), "r") as json_file:
+                        state = json.load(json_file)
 
-                    if REBOOT_TIME is None:
-                        REBOOT_TIME = time.time()
+                    if state["restart_time"] == 0:
+                        state["restart_time"] = time.time()
                         main_logger.info("Reboot time was set")
                     else:
-                        main_logger.info("Time left from the latest restart of game: {}".format(time.time() - REBOOT_TIME))
-                        if args.game_name.lower() in SECONDS_TO_CLOSE and (time.time() - REBOOT_TIME) > SECONDS_TO_CLOSE[args.game_name.lower()]:
+                        main_logger.info("Time left from the latest restart of game: {}".format(time.time() - state["restart_time"]))
+                        if args.game_name.lower() in SECONDS_TO_CLOSE and (time.time() - state["restart_time"]) > SECONDS_TO_CLOSE[args.game_name.lower()]:
                             result = close_processes()
                             main_logger.info("Processes were closed with status: {}".format(result))
-                            REBOOT_TIME = time.time()
+                            state["restart_time"] = time.time()
+                            
+                    with open(os.path.join(ROOT_PATH, "state.py"), "w+") as json_file:
+                        json.dump(state, json_file, indent=4)  
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1
