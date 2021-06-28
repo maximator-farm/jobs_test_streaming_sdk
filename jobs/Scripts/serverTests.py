@@ -334,6 +334,8 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                         sleep(1)
                     continue
 
+                main_logger.info("Received action: {}".format(request))
+
                 parts = request.split(' ', 1)
                 command = parts[0]
                 if len(parts) > 1:

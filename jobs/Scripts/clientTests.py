@@ -230,6 +230,8 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                     actions = json.load(common_actions_file)[actions_key]
 
             for action in actions:
+                main_logger.info("Current action: {}".format(action))
+
                 if commands_to_skip > 0:
                     commands_to_skip -= 1
                     continue
@@ -283,6 +285,8 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
 
                 if command in SERVER_ACTIONS:
                     response = sock.recv(1024).decode()
+
+                    main_logger.info("Server answer for action '{}': {}".format(action, response))
 
                     if response == "done":
                         is_previous_command_done = True
