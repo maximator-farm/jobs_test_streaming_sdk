@@ -31,11 +31,11 @@ def execute_cmd(sock, cmd_command):
         PROCESSES[cmd_command] = process
 
         main_logger.info("Executed: {}".format(cmd_command))
-        sock.send("done".encode())
+        sock.send("done".encode("utf-8"))
     except Exception as e:
         main_logger.error("Failed to execute_cmd: {}".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
-        sock.send("failed".encode())
+        sock.send("failed".encode("utf-8"))
 
 
 def check_window(sock, window_name, process_name, is_game=True):
@@ -54,7 +54,7 @@ def check_window(sock, window_name, process_name, is_game=True):
                     main_logger.error("Traceback: {}".format(traceback.format_exc()))
         else:
             main_logger.error("Window {} wasn't found at all".format(window_name))
-            sock.send("failed".encode())
+            sock.send("failed".encode("utf-8"))
             return
 
         global PROCESSES
@@ -63,15 +63,15 @@ def check_window(sock, window_name, process_name, is_game=True):
             if process_name in process.name():
                 main_logger.info("Process {} was succesfully found".format(process_name))
                 PROCESSES[process_name] = process
-                sock.send("done".encode())
+                sock.send("done".encode("utf-8"))
                 break
         else:
             main_logger.info("Process {} wasn't found at all".format(process_name))
-            sock.send("failed".encode())
+            sock.send("failed".encode("utf-8"))
     except Exception as e:
         main_logger.error("Failed to execute_cmd: {}".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
-        sock.send("failed".encode())
+        sock.send("failed".encode("utf-8"))
 
 
 def close_processes():
@@ -141,11 +141,11 @@ def press_keys_server(sock, keys_string):
             else:
                 sleep(1)
 
-        sock.send("done".encode())
+        sock.send("done".encode("utf-8"))
     except Exception as e:
         main_logger.error("Failed to press keys: {}".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
-        sock.send("failed".encode())
+        sock.send("failed".encode("utf-8"))
 
 
 def finish(sock):
@@ -154,22 +154,22 @@ def finish(sock):
 
         if result:
             main_logger.info("Processes was succesfully closed")
-            sock.send("done".encode())
+            sock.send("done".encode("utf-8"))
         else:
             main_logger.error("Failed to close processes")
-            sock.send("failed".encode())
+            sock.send("failed".encode("utf-8"))
     except Exception as e:
         main_logger.error("Failed to finish case execution: {}".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
-        sock.send("failed".encode())
+        sock.send("failed".encode("utf-8"))
 
 
 def retry(sock):
-    sock.send("done".encode())
+    sock.send("done".encode("utf-8"))
 
 
 def next_case(sock):
-    sock.send("done".encode())
+    sock.send("done".encode("utf-8"))
 
 
 def click_server(sock, x_description, y_description):
@@ -194,11 +194,11 @@ def click_server(sock, x_description, y_description):
         sleep(1)
         pyautogui.click()
 
-        sock.send("done".encode())
+        sock.send("done".encode("utf-8"))
     except Exception as e:
         main_logger.error("Failed to click: {}".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
-        sock.send("failed".encode())
+        sock.send("failed".encode("utf-8"))
 
 
 def do_test_actions(game_name):
@@ -275,7 +275,7 @@ def do_test_actions(game_name):
 
 def gpuview(sock, start_collect_traces, archive_path, archive_name):
     if start_collect_traces == "True":
-        sock.send("start".encode())
+        sock.send("start".encode("utf-8"))
 
         try:
             collect_traces(archive_path, archive_name + "_server.zip")
@@ -283,7 +283,7 @@ def gpuview(sock, start_collect_traces, archive_path, archive_name):
             main_logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
             main_logger.warning("Traceback: {}".format(traceback.format_exc()))
     else:
-        sock.send("skip".encode())
+        sock.send("skip".encode("utf-8"))
 
 
 def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
@@ -299,7 +299,7 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
     sock.listen(1)
     connection, address = sock.accept()
 
-    request = connection.recv(1024).decode()
+    request = connection.recv(1024).decode("utf-8")
 
     is_aborted = False
     is_non_workable = False
@@ -316,16 +316,16 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
         if request == "ready":
 
             if is_workable_condition():
-                connection.send("ready".encode())
+                connection.send("ready".encode("utf-8"))
             else:
-                connection.send("fail".encode())
+                connection.send("fail".encode("utf-8"))
 
             # non-blocking usage
             connection.setblocking(False)
 
             while True:
                 try:
-                    request = connection.recv(1024).decode()
+                    request = connection.recv(1024).decode("utf-8")
                     execute_test_actions = False
                 except Exception as e:
                     if execute_test_actions:
@@ -353,7 +353,7 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 elif command == "click_server":
                     click_server(connection, *arguments)
                 elif command == "start_test_actions":
-                    connection.send("done".encode())
+                    connection.send("done".encode("utf-8"))
                     do_test_actions(game_name.lower())
                     execute_test_actions = True
                 elif command == "gpuview":
@@ -382,7 +382,7 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
 
         if not is_aborted:
-            connection.send("abort".encode())
+            connection.send("abort".encode("utf-8"))
 
         raise e
     finally:

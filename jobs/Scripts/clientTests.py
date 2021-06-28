@@ -27,11 +27,11 @@ SERVER_ACTIONS = ["execute_cmd", "check_game", "check_window", "press_keys_serve
 
 
 def execute_cmd(sock, action):
-    sock.send(action.encode())
+    sock.send(action.encode("utf-8"))
 
 
 def check_window(sock, action):
-    sock.send(action.encode())
+    sock.send(action.encode("utf-8"))
 
 
 def make_screen(screen_path, screen_name=""):
@@ -85,7 +85,7 @@ def press_keys(keys_string):
 
 
 def press_keys_server(sock, action):
-    sock.send(action.encode())
+    sock.send(action.encode("utf-8"))
 
 
 def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, sock, start_collect_traces, screen_path, archive_path, archive_name):
@@ -103,8 +103,8 @@ def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, sock,
             sleep(int(delay))
 
     try:
-        sock.send("gpuview".encode())
-        response = sock.recv(1024).decode()
+        sock.send("gpuview".encode("utf-8"))
+        response = sock.recv(1024).decode("utf-8")
         main_logger.info("Server response for 'gpuview' action: {}".format(response))
 
         if start_collect_traces == "True":
@@ -115,35 +115,35 @@ def sleep_and_screen(initial_delay, number_of_screens, delay, screen_name, sock,
 
 
 def finish(sock):
-    sock.send("finish".encode())
-    response = sock.recv(1024).decode()
+    sock.send("finish".encode("utf-8"))
+    response = sock.recv(1024).decode("utf-8")
     main_logger.info("Server response for 'finish' action: {}".format(response))
 
 
 def abort(sock):
-    sock.send("abort".encode())
-    response = sock.recv(1024).decode()
+    sock.send("abort".encode("utf-8"))
+    response = sock.recv(1024).decode("utf-8")
     main_logger.info("Server response for 'abort' action: {}".format(response))
 
 
 def retry(sock):
-    sock.send("retry".encode())
-    response = sock.recv(1024).decode()
+    sock.send("retry".encode("utf-8"))
+    response = sock.recv(1024).decode("utf-8")
     main_logger.info("Server response for 'retry' action: {}".format(response))
 
 
 def next_case(sock):
-    sock.send("next_case".encode())
-    response = sock.recv(1024).decode()
+    sock.send("next_case".encode("utf-8"))
+    response = sock.recv(1024).decode("utf-8")
     main_logger.info("Server response for 'next_case' action: {}".format(response))
 
 
 def click_server(sock, action):
-    sock.send(action.encode())
+    sock.send(action.encode("utf-8"))
 
 
 def start_test_actions_server(sock, action):
-    sock.send(action.encode())
+    sock.send(action.encode("utf-8"))
 
 
 def do_test_actions(game_name):
@@ -205,8 +205,8 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
 
     try:
         # try to communicate with server few times
-        sock.send("ready".encode())
-        response = sock.recv(1024).decode()
+        sock.send("ready".encode("utf-8"))
+        response = sock.recv(1024).decode("utf-8")
 
         is_previous_command_done = True
         is_failed = False
@@ -226,7 +226,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                 actions = case[actions_key]
             else:
                 # use default list of actions if some specific list of actions doesn't exist
-                with open(os.path.abspath(args.common_actions_path), "r") as common_actions_file:
+                with open(os.path.abspath(args.common_actions_path), "r", encoding="utf-8") as common_actions_file:
                     actions = json.load(common_actions_file)[actions_key]
 
             for action in actions:
@@ -284,7 +284,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                     raise Exception("Unknown client command: {}".format(command))
 
                 if command in SERVER_ACTIONS:
-                    response = sock.recv(1024).decode()
+                    response = sock.recv(1024).decode("utf-8")
 
                     main_logger.info("Server answer for action '{}': {}".format(action, response))
 
