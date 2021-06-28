@@ -22,7 +22,7 @@
 
     "valorant_actions": [
         "check_game \"VALORANT  \" \"VALORANT-Win64-Shipping.exe\"",
-        "skip_if_done 24",
+        "skip_if_done 26",
         "sleep 180",
         "execute_cmd \"C:\\JN\\VALORANT.exe - Shortcut.lnk\"",
         "sleep 15",
@@ -56,6 +56,7 @@
         "click_server center_0 edge_-460",
 
         "check_game \"VALORANT  \" \"VALORANT-Win64-Shipping.exe\"",
+        "make_screen",
         "move 1000 800",
         "click",
         "make_screen before_any_actions",
@@ -146,7 +147,7 @@
     "heaven_actions": [
         "check_window \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
-        "skip_if_done 7",
+        "skip_if_done 6",
         "execute_cmd \"C:\\JN\\Heaven Benchmark 4.0.lnk\"",
         "sleep 5",
         "click_server center_280 center_135",
