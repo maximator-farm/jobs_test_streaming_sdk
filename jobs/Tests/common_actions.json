@@ -167,5 +167,52 @@
         "record_video 1920x1200 10",
         "sleep_and_screen 5 4 5 heaven_benchmark",
         "press_keys_server \"esc\""
+    ],
+
+    "valley_actions": [
+        "check_window \"Unigine Valley Benchmark (Basic Edition)\" \"browser_x86.exe\"",
+        "check_game \"Unigine Valley Benchmark 1.0 Basic (Direct3D11)\" \"Valley.exe\"",
+        "skip_if_done 6",
+        "execute_cmd \"C:\\JN\\Valley Benchmark 1.0.lnk\"",
+        "sleep 5",
+        "click_server center_280 center_135",
+        "sleep 30",
+        "check_window \"Unigine Valley Benchmark (Basic Edition)\" \"browser_x86.exe\"",
+        "check_game \"Unigine Valley Benchmark 1.0 Basic (Direct3D11)\" \"Valley.exe\"",
+
+        "make_screen",
+        "move 1000 800",
+        "click",
+        "sleep 2",
+        "make_screen before_benchmark",
+        "press_keys_server \"f9\"",
+        "sleep 1",
+        "make_screen valley_benchmark",
+        "sleep 5",
+        "record_video 1920x1200 10",
+        "sleep_and_screen 5 4 5 valley_benchmark",
+        "press_keys_server \"esc\""
+    ],
+
+    "superposition_actions": [
+        "check_window \"UNIGINE Superposition v1.1\" \"launcher.exe\"",
+        "skip_if_done 3",
+        "execute_cmd \"C:\\JN\\Superposition Benchmark 1.1.lnk\"",
+        "sleep 5",
+        "check_window \"UNIGINE Superposition v1.1\" \"launcher.exe\"",
+
+        "make_screen",
+        "move 1000 800",
+        "click",
+        "click_server center_405 center_255",
+        "sleep 10",
+        "make_screen benchmark_loading",
+        "sleep 20",
+        "make_screen superposition_benchmark",
+        "sleep 5",
+        "record_video 1920x1200 10",
+        "sleep_and_screen 5 4 5 superposition_benchmark",
+        "press_keys_server \"esc\"",
+        "sleep 5"
     ]
 }
