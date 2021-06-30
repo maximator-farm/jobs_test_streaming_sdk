@@ -197,7 +197,7 @@
     "superposition_actions": [
         "check_window \"UNIGINE Superposition v1.1\" \"launcher.exe\"",
         "skip_if_done 3",
-        "execute_cmd \"C:\\JN\\Superposition Benchmark 1.1.lnk\"",
+        "execute_cmd \"C:\\JN\\Superposition Benchmark.lnk\"",
         "sleep 5",
         "check_window \"UNIGINE Superposition v1.1\" \"launcher.exe\"",
 
