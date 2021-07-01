@@ -144,7 +144,7 @@
         "sleep_and_screen 5 4 5 test_actions"
     ],
 
-    "heavendx9_actions": [
+    "heavendx11_actions": [
         "check_window \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
         "skip_if_done 6",
@@ -171,9 +171,9 @@
         "press_keys_server \"esc\""
     ],
 
-    "heavendx11_actions": [
+    "heavendx9_actions": [
         "check_window \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
-        "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
+        "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D9)\" \"Heaven.exe\"",
         "skip_if_done 6",
         "execute_cmd \"C:\\JN\\Heaven Benchmark 4.0.lnk\"",
         "sleep 5",
@@ -182,7 +182,7 @@
         "click_server center_280 center_135",
         "sleep 30",
         "check_window \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
-        "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
+        "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D9)\" \"Heaven.exe\"",
 
         "make_screen",
         "move 1000 800",
@@ -198,7 +198,7 @@
         "press_keys_server \"esc\""
     ],
 
-    "valleydx9_actions": [
+    "valleydx11_actions": [
         "check_window \"Unigine Valley Benchmark (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Valley Benchmark 1.0 Basic (Direct3D11)\" \"Valley.exe\"",
         "skip_if_done 6",
@@ -225,9 +225,9 @@
         "press_keys_server \"esc\""
     ],
 
-    "valleydx11_actions": [
+    "valleydx9_actions": [
         "check_window \"Unigine Valley Benchmark (Basic Edition)\" \"browser_x86.exe\"",
-        "check_game \"Unigine Valley Benchmark 1.0 Basic (Direct3D11)\" \"Valley.exe\"",
+        "check_game \"Unigine Valley Benchmark 1.0 Basic (Direct3D9)\" \"Valley.exe\"",
         "skip_if_done 6",
         "execute_cmd \"C:\\JN\\Valley Benchmark 1.0.lnk\"",
         "sleep 5",
@@ -236,7 +236,7 @@
         "click_server center_280 center_135",
         "sleep 30",
         "check_window \"Unigine Valley Benchmark (Basic Edition)\" \"browser_x86.exe\"",
-        "check_game \"Unigine Valley Benchmark 1.0 Basic (Direct3D11)\" \"Valley.exe\"",
+        "check_game \"Unigine Valley Benchmark 1.0 Basic (Direct3D9)\" \"Valley.exe\"",
 
         "make_screen",
         "move 1000 800",
