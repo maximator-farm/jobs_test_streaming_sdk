@@ -112,6 +112,7 @@ def prepare_empty_reports(args, current_conf):
             test_case_report['test_group'] = args.test_group
             test_case_report['tool'] = 'StreamingSDK'
             test_case_report['render_time'] = 0.0
+            test_case_report['execution_time'] = 0.0
             test_case_report['execution_type'] = args.execution_type
             test_case_report['keys'] = case['server_keys'] if args.execution_type == 'server' else case['client_keys']
             test_case_report['transport_protocol'] = case['transport_protocol'].upper()
@@ -159,10 +160,11 @@ def prepare_empty_reports(args, current_conf):
         json.dump(cases, f, indent=4)
 
 
-def save_results(args, case, cases, test_case_status = "", error_messages = []):
+def save_results(args, case, cases, execution_time = 0.0, test_case_status = "", error_messages = []):
     with open(os.path.join(args.output, case["case"] + CASE_REPORT_SUFFIX), "r") as file:
         test_case_report = json.loads(file.read())[0]
         test_case_report["test_status"] = test_case_status
+        test_case_report["execution_time"] = execution_time
         test_case_report["server_log"] = os.path.join("tool_logs", case["case"] + "_server.log")
         test_case_report["client_log"] = os.path.join("tool_logs", case["case"] + "_client.log")
 
@@ -218,6 +220,8 @@ def execute_tests(args, current_conf):
     tool_path = args.server_tool if args.execution_type == "server" else args.client_tool
 
     for case in [x for x in cases if not is_case_skipped(x, current_conf)]:
+
+        case_start_time = time.time()
 
         keys = case["server_keys"] if args.execution_type == "server" else case["client_keys"]
 
@@ -277,11 +281,13 @@ def execute_tests(args, current_conf):
                     audio_device_name = get_audio_device_name()
                     start_client_side_tests(args, case, is_workable_condition, args.ip_address, args.communication_port, output_path, audio_device_name, current_try)
 
-                save_results(args, case, cases, test_case_status = "passed", error_messages = [])
+                execution_time = time.time() - case_start_time
+                save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
 
                 break
             except Exception as e:
-                save_results(args, case, cases, test_case_status = "failed", error_messages = error_messages)
+                execution_time = time.time() - case_start_time
+                save_results(args, case, cases, execution_time = execution_time, test_case_status = "failed", error_messages = error_messages)
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
@@ -299,7 +305,8 @@ def execute_tests(args, current_conf):
                 if "Error:" in logs:
                     error_messages.add("Error was mentioned in {} log".format(args.execution_type))
 
-                    save_results(args, case, cases, test_case_status = "passed", error_messages = [])
+                    execution_time = time.time() - case_start_time
+                    save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
 
                 with open(log_destination_path, "a") as file:
                     file.write("\n---------- Try #{} ----------\n\n".format(current_try))
@@ -326,7 +333,8 @@ def execute_tests(args, current_conf):
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1
-            save_results(args, case, cases, test_case_status = "error", error_messages = error_messages)
+            execution_time = time.time() - case_start_time
+            save_results(args, case, cases, execution_time = execution_time, test_case_status = "error", error_messages = error_messages)
 
     return rc
 
