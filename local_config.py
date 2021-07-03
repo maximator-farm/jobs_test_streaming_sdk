@@ -7,3 +7,4 @@ show_render_time = False
 show_performance_tab = False
 show_compare_tab = True
 compare_tab_type = 'screens'
+show_execution_time = True
