@@ -29,7 +29,7 @@
     },
     {
         "case": "STR_AUD_002",
-        "status": "active",
+        "status": "skipped",
         "server_keys": "-Resolution 1920,1200",
         "client_keys": "-Fullscreen true -Stereo true",
         "transport_protocol": "udp",
@@ -113,7 +113,7 @@
     },
     {
         "case": "STR_AUD_005",
-        "status": "active",
+        "status": "skipped",
         "server_keys": "-Resolution 1920,1200",
         "client_keys": "-Fullscreen true -Stereo true",
         "transport_protocol": "tcp",
