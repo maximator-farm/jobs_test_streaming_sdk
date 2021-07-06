@@ -57,7 +57,7 @@
     },
     {
         "case": "STR_RT_003",
-        "status": "active",
+        "status": "skipped",
         "server_keys": "-Resolution 1920,1200 -Render Vulkan",
         "client_keys": "-Fullscreen true",
         "transport_protocol": "udp",
@@ -113,7 +113,7 @@
     },
     {
         "case": "STR_RT_005",
-        "status": "active",
+        "status": "skipped",
         "server_keys": "-Resolution 1920,1200",
         "client_keys": "-Fullscreen true -Render OpenGL",
         "transport_protocol": "udp",
@@ -141,7 +141,7 @@
     },
     {
         "case": "STR_RT_006",
-        "status": "active",
+        "status": "skipped",
         "server_keys": "-Resolution 1920,1200",
         "client_keys": "-Fullscreen true -Render Vulkan",
         "transport_protocol": "udp",
@@ -225,7 +225,7 @@
     },
     {
         "case": "STR_RT_009",
-        "status": "active",
+        "status": "skipped",
         "server_keys": "-Resolution 1920,1200 -Render Vulkan",
         "client_keys": "-Fullscreen true",
         "transport_protocol": "tcp",
@@ -281,7 +281,7 @@
     },
     {
         "case": "STR_RT_011",
-        "status": "active",
+        "status": "skipped",
         "server_keys": "-Resolution 1920,1200",
         "client_keys": "-Fullscreen true -Render OpenGL",
         "transport_protocol": "tcp",
@@ -309,7 +309,7 @@
     },
     {
         "case": "STR_RT_012",
-        "status": "active",
+        "status": "skipped",
         "server_keys": "-Resolution 1920,1200",
         "client_keys": "-Fullscreen true -Render Vulkan",
         "transport_protocol": "tcp",
