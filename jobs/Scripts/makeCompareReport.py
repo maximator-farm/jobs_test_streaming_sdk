@@ -61,8 +61,9 @@ if __name__ == '__main__':
                         line_number += 1
 
         if json_content["test_status"] != "skipped":
+            median_latency_key = 'median_{}_latency'.format(args.execution_type)
+
             if len(latencies) > 0:
-                median_latency_key = 'median_{}_latency'.format(args.execution_type)
                 json_content[median_latency_key] = median(latencies)
 
             if min_latency != -1:
@@ -73,15 +74,16 @@ if __name__ == '__main__':
                 latency_key = 'max_{}_latency'.format(args.execution_type)
                 json_content[latency_key] = max_latency
                 
-                if max_latency >= 100 and max_latency < 300:
+            if median_latency_key in json_content:
+                if json_content[median_latency_key] >= 100 and json_content[median_latency_key] < 300:
                     json_content["test_status"] = "failed"
-                elif max_latency >= 300:
+                elif json_content[median_latency_key] >= 300:
                     json_content["test_status"] = "failed"
-                elif max_latency == 0:
-                    json_content["message"].append("Max {} latency is equal to 0".format(args.execution_type))
+                elif json_content[median_latency_key] == 0:
+                    json_content["message"].append("Median {} latency is equal to 0".format(args.execution_type))
                     json_content["test_status"] = "error"
             else:
-                json_content["message"].append("Could not find mentions of {} latency in log".format(args.execution_type))
+                json_content["message"].append("Could not find mentions of non-zero latency in {} log".format(args.execution_type))
                 json_content["test_status"] = "error"
 
         reports.append(json_content)
