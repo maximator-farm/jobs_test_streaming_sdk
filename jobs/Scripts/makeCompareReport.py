@@ -3,6 +3,7 @@ import json
 import os
 import argparse
 from statistics import stdev, mean
+import re
 
 sys.path.append(
     os.path.abspath(
@@ -127,9 +128,18 @@ def parse_block_line(args, line, saved_values):
 
 
 def parse_error(args, line, saved_errors):
-    error_message = line.split(":", maxsplit = 3)[3].strip().split('.')[0]
+    error_message = line.split(':', maxsplit = 3)[3].split('.')[0].replace('fps', '').strip()
 
-    if error_message not in saved_errors:
+    parts = error_message.split()
+    if '(' in parts[-1]:
+        error_message = error_message.split('(')[0]
+    elif parts[-1].isdigit():
+        parts.pop()
+        error_message = " ".join(parts)
+
+    error_message = re.sub(r' at$| to$| -$| =$', '', error_message).strip()
+
+    if error_message and error_message not in saved_errors:
         saved_errors.append(error_message)
 
 
@@ -360,4 +370,5 @@ if __name__ == '__main__':
                     update_status(args, json_content, saved_values, saved_errors, framerate)
 
         reports.append(json_content)
+        print(saved_errors)
     with open(os.path.join(work_dir, 'report_compare.json'), 'w') as f: json.dump(reports, f, indent=4)
