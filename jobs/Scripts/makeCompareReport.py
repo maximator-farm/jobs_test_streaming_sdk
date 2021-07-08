@@ -69,7 +69,7 @@ def parse_block_line(args, line, saved_values):
                 saved_values['tx_rates'] = []
 
             tx_rate = float(line.split('Tx rate:')[1].split(',')[0].replace('fps', ''))
-            saved_values['tx_rates'].append(tx_rates)
+            saved_values['tx_rates'].append(tx_rate)
 
     elif 'Queue depth' in line:
         # Line example:
