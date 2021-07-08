@@ -17,8 +17,8 @@ def get_test_status(test_status_one, test_status_two):
     statuses = ("skipped", "error", "failed", "passed")
 
     for status in statuses:
-    	if status in test_statuses:
-    		return status
+        if status in test_statuses:
+            return status
 
 
 if __name__ == '__main__':
@@ -48,7 +48,10 @@ if __name__ == '__main__':
                             if key in source_file_content[i]:
                                 target_file_content[i][key] = source_file_content[i][key]
 
-                        target_file_content[i]["test_status"] = get_test_status(target_file_content[i]["test_status"], target_file_content[i]["test_status"])
+                        target_file_content[i]["test_status"] = get_test_status(target_file_content[i]["test_status"], source_file_content[i]["test_status"])
+
+                        if "message" in source_file_content[i]:
+                            target_file_content[i]["message"] += source_file_content[i]["message"]
 
                     with open(target_file_path, "w", encoding="utf8") as f:
                         json.dump(target_file_content, f, indent=4, sort_keys=True)
