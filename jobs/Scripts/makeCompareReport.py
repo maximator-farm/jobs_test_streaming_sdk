@@ -311,6 +311,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
     if max(saved_values["client_latencies"]) == 0 or max(saved_values["server_latencies"]) == 0:
         json_content["test_status"] = "error"
 
+    json_content["message"].extend(saved_errors)
 
 
 if __name__ == '__main__':
@@ -370,5 +371,4 @@ if __name__ == '__main__':
                     update_status(args, json_content, saved_values, saved_errors, framerate)
 
         reports.append(json_content)
-        print(saved_errors)
     with open(os.path.join(work_dir, 'report_compare.json'), 'w') as f: json.dump(reports, f, indent=4)
