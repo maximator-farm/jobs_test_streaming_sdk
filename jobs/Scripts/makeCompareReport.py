@@ -2,7 +2,7 @@ import sys
 import json
 import os
 import argparse
-from statistics import stdev
+from statistics import stdev, mean
 
 sys.path.append(
     os.path.abspath(
@@ -134,9 +134,8 @@ def parse_error(args, line, saved_errors):
 
 
 def update_status(args, json_content, saved_values, saved_errors, framerate):
-    # TODO - rework rule №1
-    # rule №1: encoder >= framerate -> problem with app
     if 'encoder_values' in saved_values:
+        # rule №1.1: encoder >= framerate -> problem with app
         for encoder_value in saved_values['encoder_values']:
             if encoder_value >= framerate:
                 json_content["message"].append("Application problem: Encoder is equal to or bigger than framerate")
@@ -145,11 +144,23 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
                 break
 
+        # rule №1.2: avrg encoder * 2 < encoder -> problem with app
+        avrg_encoder_value = mean(saved_values['encoder_values'])
+
+        for encoder_value in saved_values['encoder_values']:
+            if avrg_encoder_value * 2 < encoder_value:
+                json_content["message"].append("\nApplication problem: Some encoder values is much bigger than average encoder value")
+                if json_content["test_status"] != "error":
+                    json_content["test_status"] = "failure"
+
+                break
+
+
     # rule №2.1: tx rate - rx rate > 3 -> problem with network
     if 'rx_rates' in saved_values and 'tx_rates' in saved_values:
         for i in range(len(saved_values['rx_rates'])):
             if saved_values['rx_rates'][i] - saved_values['tx_rates'][i] > 3:
-                json_content["message"].append("Network problem: TX Rate is much bigger than Rx Rate")
+                json_content["message"].append("\nNetwork problem: TX Rate is much bigger than Rx Rate")
 
                 break
 
@@ -157,17 +168,95 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
     if 'tx_rates' in saved_values:
         for tx_rate in saved_values['tx_rates']:
             if framerate - tx_rate > 4:
-                json_content["message"].append("Application problem: TX Rate is much less than framerate")
+                json_content["message"].append("\nApplication problem: TX Rate is much less than framerate")
 
                 break
 
-    # rule №4: TODO - implement
+    # rule №4: encoder and decoder check. Problems with encoder -> warning. Problems with decoder -> issue with app
+    # 0-0 -> skip
+    # 0-1 -> first time - skip. second time - problem
+    # 1-0 -> first time - skip. second time - problem
+    # X-Y -> problem (Y > 1, X < Y)
+    # X-Y -> problem (X > 1, X > Y)
+    if 'encoder_values' in saved_values:
+        is_problem = False
+        is_small_increasing = False
+        is_small_descreasing = False
+
+        for i in range(len(saved_values['encoder_values']) - 1):
+            if saved_values['encoder_values'][i] == saved_values['encoder_values'][i + 1] == 0:
+                continue
+            elif saved_values['encoder_values'][i] == saved_values['encoder_values'][i + 1]:
+                is_problem = True
+                json_content["message"].append("\nApplication problem: encoder value stagnation")
+                break
+            elif saved_values['encoder_values'][i] < saved_values['encoder_values'][i + 1] and saved_values['encoder_values'][i + 1] > 1:
+                is_problem = True
+                json_content["message"].append("\nApplication problem: increase in encoder value")
+                break
+            elif saved_values['encoder_values'][i] < saved_values['encoder_values'][i + 1] and saved_values['encoder_values'][i + 1] == 1:
+                if is_small_increasing:
+                    is_problem = True
+                    json_content["message"].append("\nApplication problem: increase in encoder value")
+                    break
+                else:
+                    is_small_increasing = True
+            elif saved_values['encoder_values'][i] > saved_values['encoder_values'][i + 1] and saved_values['encoder_values'][i] > 1:
+                is_problem = True
+                json_content["message"].append("\nApplication problem: decrease in encoder value")
+                break
+            elif saved_values['encoder_values'][i] > saved_values['encoder_values'][i + 1] and saved_values['encoder_values'][i] == 1:
+                if is_small_descreasing:
+                    is_problem = True
+                    json_content["message"].append("\nApplication problem: decrease in encoder value")
+                    break
+                else:
+                    is_small_descreasing = True
+
+    if 'decoder_values' in saved_values:
+        is_problem = False
+        is_small_increasing = False
+        is_small_descreasing = False
+
+        for i in range(len(saved_values['decoder_values']) - 1):
+            if saved_values['decoder_values'][i] == saved_values['decoder_values'][i + 1] == 0:
+                continue
+            elif saved_values['decoder_values'][i] == saved_values['decoder_values'][i + 1]:
+                is_problem = True
+                json_content["message"].append("\nApplication problem: encoder value stagnation")
+                break
+            elif saved_values['decoder_values'][i] < saved_values['decoder_values'][i + 1] and saved_values['decoder_values'][i + 1] > 1:
+                is_problem = True
+                json_content["message"].append("\nApplication problem: increase in encoder value")
+                break
+            elif saved_values['decoder_values'][i] < saved_values['decoder_values'][i + 1] and saved_values['decoder_values'][i + 1] == 1:
+                if is_small_increasing:
+                    is_problem = True
+                    json_content["message"].append("\nApplication problem: increase in encoder value")
+                    break
+                else:
+                    is_small_increasing = True
+            elif saved_values['decoder_values'][i] > saved_values['decoder_values'][i + 1] and saved_values['decoder_values'][i] > 1:
+                is_problem = True
+                json_content["message"].append("\nApplication problem: decrease in encoder value")
+                break
+            elif saved_values['decoder_values'][i] > saved_values['decoder_values'][i + 1] and saved_values['decoder_values'][i] == 1:
+                if is_small_descreasing:
+                    is_problem = True
+                    json_content["message"].append("\nApplication problem: decrease in encoder value")
+                    break
+                else:
+                    is_small_descreasing = True
+
+        if is_problem:
+            if json_content["test_status"] != "error":
+                json_content["test_status"] = "failure"
 
     # rule №6.1: client latency <= decoder -> issue with app
     if 'client_latencies' in saved_values and 'decoder_values' in saved_values:
         for i in range(len(saved_values['client_latencies'])):
             if saved_values['client_latencies'][i] <= saved_values['decoder_values'][i]:
-                json_content["message"].append("Application problem: client latency is less than decoder value")
+                json_content["message"].append("\nApplication problem: client latency is less than decoder value")
                 if json_content["test_status"] != "error":
                     json_content["test_status"] = "failure"
 
@@ -177,7 +266,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
     if 'server_latencies' in saved_values and 'encoder_value' in saved_values:
         for i in range(len(saved_values['server_latencies'])):
             if saved_values['server_latencies'][i] <= saved_values['encoder_value'][i]:
-                json_content["message"].append("Application problem: server latency is less than encoder value")
+                json_content["message"].append("\nApplication problem: server latency is less than encoder value")
                 if json_content["test_status"] != "error":
                     json_content["test_status"] = "failure"
 
@@ -187,23 +276,49 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
     if 'decyns_values' in saved_values:
         for decyns_value in saved_values['decyns_values']:
             if abs(decyns_value) > 100:
-                json_content["message"].append("Application problem: Absolute value of A/V desync is more than 100 ms")
+                json_content["message"].append("\nApplication problem: Absolute value of A/V desync is more than 100 ms")
 
                 break
 
-    # rule №8: TODO - implement
+    # rule №8: |(sum of average bandwidth tx - sum of video bitrate)| / sum of video bitrate > 0.25 -> issue with app
+    if 'average_bandwidth_tx' in saved_values and 'video_bitrate' in saved_values:
+        average_bandwidth_tx_sum = 0
+        video_bitrate_sum = 0
 
-    # rule №9: TODO - implement
+        for i in range(len(saved_values['average_bandwidth_tx'])):
+            average_bandwidth_tx_sum += saved_values['average_bandwidth_tx'][i]
+            video_bitrate_sum += saved_values['video_bitrate'][i]
+
+        average_bandwidth_tx_sum /= 1000
+
+        if abs((average_bandwidth_tx_sum - video_bitrate_sum)) / video_bitrate_sum > 0.25:
+            json_content["message"].append("\nApplication problem: Too high Bandwidth AVG")
+
+    # rule №9: number of abnormal network latency values is bigger than 10% of total values -> issue with app
+    # Abnormal value: avrg network latency * 2 < network latency
+    if 'network_latencies' in saved_values:
+        avrg_network_latency = mean(saved_values['network_latencies'])
+        abnormal_values_num = 0
+        total_values_num = len(saved_values['network_latencies'])
+
+        for network_latency in saved_values['network_latencies']:
+            if avrg_network_latency * 2 < network_latency:
+                abnormal_values_num += 1
+
+        if abnormal_values_num > round(total_values_num * 0.1):
+            json_content["message"].append("\nApplication problem: Too many high values of network latency")
 
     # rule №10: send time avg * 100 > send time worst -> issue with network
     if 'send_time_avg' in saved_values and 'send_time_worst' in saved_values:
         for i in range(len(saved_values['send_time_avg'])):
             if saved_values['send_time_avg'][i] * 100 > saved_values['send_time_worst'][i]:
-                json_content["message"].append("Network problem: average send time is 100 times more than the worst send time")
+                json_content["message"].append("\nNetwork problem: average send time is 100 times more than the worst send time")
 
                 break
 
-    # rule №11: TODO - implement
+    if max(saved_values["client_latencies"]) == 0 or max(saved_values["server_latencies"]) == 0:
+        json_content["test_status"] = "error"
+
 
 
 if __name__ == '__main__':
@@ -225,7 +340,7 @@ if __name__ == '__main__':
         json_content = json.load(open(os.path.join(work_dir, file), 'r'))[0]
 
         if json_content.get('group_timeout_exceeded', False):
-            json_content['message'].append('Test group timeout exceeded')
+            json_content['message'].append('\nTest group timeout exceeded')
 
         log_key = '{}_log'.format(args.execution_type)
 
@@ -263,5 +378,4 @@ if __name__ == '__main__':
                     update_status(args, json_content, saved_values, saved_errors, framerate)
 
         reports.append(json_content)
-
     with open(os.path.join(work_dir, 'report_compare.json'), 'w') as f: json.dump(reports, f, indent=4)
