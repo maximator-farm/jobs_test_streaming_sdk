@@ -138,9 +138,9 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         # rule №1.1: encoder >= framerate -> problem with app
         for encoder_value in saved_values['encoder_values']:
             if encoder_value >= framerate:
-                json_content["message"].append("Application problem: Encoder is equal to or bigger than framerate")
+                json_content["message"].append("\nApplication problem: Encoder is equal to or bigger than framerate")
                 if json_content["test_status"] != "error":
-                    json_content["test_status"] = "failure"
+                    json_content["test_status"] = "failed"
 
                 break
 
@@ -151,7 +151,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
             if avrg_encoder_value * 2 < encoder_value:
                 json_content["message"].append("\nApplication problem: Some encoder values is much bigger than average encoder value")
                 if json_content["test_status"] != "error":
-                    json_content["test_status"] = "failure"
+                    json_content["test_status"] = "failed"
 
                 break
 
@@ -232,7 +232,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
         if is_problem:
             if json_content["test_status"] != "error":
-                json_content["test_status"] = "failure"
+                json_content["test_status"] = "failed"
 
     # rule №6.1: client latency <= decoder -> issue with app
     if 'client_latencies' in saved_values and 'decoder_values' in saved_values:
@@ -240,7 +240,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
             if saved_values['client_latencies'][i] <= saved_values['decoder_values'][i]:
                 json_content["message"].append("\nApplication problem: client latency is less than decoder value")
                 if json_content["test_status"] != "error":
-                    json_content["test_status"] = "failure"
+                    json_content["test_status"] = "failed"
 
                 break
 
@@ -250,7 +250,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
             if saved_values['server_latencies'][i] <= saved_values['encoder_value'][i]:
                 json_content["message"].append("\nApplication problem: server latency is less than encoder value")
                 if json_content["test_status"] != "error":
-                    json_content["test_status"] = "failure"
+                    json_content["test_status"] = "failed"
 
                 break
 
