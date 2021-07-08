@@ -22,47 +22,54 @@ def parse_block_line(args, line, saved_values):
     if 'Average latency' in line:
         # Line example:
         # 2021-05-31 09:01:55.469     3F90 [RemoteGamePipeline]    Info: Average latency: full 35.08, client  1.69, server 21.83, encoder  3.42, network 11.56, decoder  1.26, Rx rate: 122.67 fps, Tx rate: 62.33 fps
-        if 'client_latencies' not in saved_values:
-            saved_values['client_latencies'] = []
+        if 'client' in line:
+            if 'client_latencies' not in saved_values:
+                saved_values['client_latencies'] = []
 
-        encoder_value = float(line.split('client')[1].split(',')[0])
-        saved_values['client_latencies'].append(encoder_value)
+            client_latency = float(line.split('client')[1].split(',')[0])
+            saved_values['client_latencies'].append(client_latency)
 
-        if 'server_latencies' not in saved_values:
-            saved_values['server_latencies'] = []
+        if 'server' in line:
+            if 'server_latencies' not in saved_values:
+                saved_values['server_latencies'] = []
 
-        encoder_value = float(line.split('server')[1].split(',')[0])
-        saved_values['server_latencies'].append(encoder_value)
+            server_latency = float(line.split('server')[1].split(',')[0])
+            saved_values['server_latencies'].append(server_latency)
 
-        if 'network_latencies' not in saved_values:
-            saved_values['network_latencies'] = []
+        if 'network' in line:
+            if 'network_latencies' not in saved_values:
+                saved_values['network_latencies'] = []
 
-        network_latencies = float(line.split('network')[1].split(',')[0])
-        saved_values['network_latencies'].append(network_latencies)  
+            network_latency = float(line.split('network')[1].split(',')[0])
+            saved_values['network_latencies'].append(network_latency)  
 
-        if 'encoder_values' not in saved_values:
-            saved_values['encoder_values'] = []
+        if 'encoder' in line:
+            if 'encoder_values' not in saved_values:
+                saved_values['encoder_values'] = []
 
-        encoder_value = float(line.split('encoder')[1].split(',')[0])
-        saved_values['encoder_values'].append(encoder_value)
+            encoder_value = float(line.split('encoder')[1].split(',')[0])
+            saved_values['encoder_values'].append(encoder_value)
 
-        if 'decoder_values' not in saved_values:
-            saved_values['decoder_values'] = []
+        if 'decoder' in line:
+            if 'decoder_values' not in saved_values:
+                saved_values['decoder_values'] = []
 
-        encoder_value = float(line.split('decoder')[1].split(',')[0])
-        saved_values['decoder_values'].append(encoder_value)      
+            decoder_value = float(line.split('decoder')[1].split(',')[0])
+            saved_values['decoder_values'].append(decoder_value)      
 
-        if 'rx_rates' not in saved_values:
-            saved_values['rx_rates'] = []
+        if 'Rx rate:' in line:
+            if 'rx_rates' not in saved_values:
+                saved_values['rx_rates'] = []
 
-        encoder_value = float(line.split('Rx rate:')[1].split(',')[0].replace('fps', ''))
-        saved_values['rx_rates'].append(encoder_value)
+            rx_rate = float(line.split('Rx rate:')[1].split(',')[0].replace('fps', ''))
+            saved_values['rx_rates'].append(rx_rate)
 
-        if 'tx_rates' not in saved_values:
-            saved_values['tx_rates'] = []
+        if 'Tx rate:' in line:
+            if 'tx_rates' not in saved_values:
+                saved_values['tx_rates'] = []
 
-        encoder_value = float(line.split('Tx rate:')[1].split(',')[0].replace('fps', ''))
-        saved_values['tx_rates'].append(encoder_value)
+            tx_rate = float(line.split('Tx rate:')[1].split(',')[0].replace('fps', ''))
+            saved_values['tx_rates'].append(tx_rates)
 
     elif 'Queue depth' in line:
         # Line example:
@@ -76,8 +83,8 @@ def parse_block_line(args, line, saved_values):
         if 'queue_decoder_values' not in saved_values:
             saved_values['queue_decoder_values'] = []
 
-        queue_encoder_value = float(line.split('Decoder:')[1].split(',')[0])
-        saved_values['queue_decoder_values'].append(queue_encoder_value)
+        queue_decoder_value = float(line.split('Decoder:')[1].split(',')[0])
+        saved_values['queue_decoder_values'].append(queue_decoder_value)
 
     elif 'A/V desync' in line:
         # Line example:
@@ -231,28 +238,29 @@ if __name__ == '__main__':
 
         log_path = os.path.join(work_dir, json_content[log_key]).replace('/', os.path.sep).replace('\\', os.path.sep)
 
-        if log_key in json_content and os.path.exists(log_path):
-            framerate = get_framerate(json_content["keys"])
+        if args.execution_type == "server":
+            if log_key in json_content and os.path.exists(log_path):
+                framerate = get_framerate(json_content["keys"])
 
-            with open(log_path, 'r') as log_file:
-                log = log_file.readlines()
-                for line in log:
-                    # beginning of the new block
-                    if 'Average latency' in line:
-                        end_of_block = False
-                        block_number += 1
+                with open(log_path, 'r') as log_file:
+                    log = log_file.readlines()
+                    for line in log:
+                        # beginning of the new block
+                        if 'Average latency' in line:
+                            end_of_block = False
+                            block_number += 1
 
-                    # skip three first blocks of output with latency (it can contains abnormal data due to starting of Streaming SDK)
-                    if block_number > 3:
-                        if not end_of_block:
-                            parse_block_line(args, line, saved_values)
-                        elif line.strip():
-                            parse_error(args, line, saved_errors)
+                        # skip three first blocks of output with latency (it can contains abnormal data due to starting of Streaming SDK)
+                        if block_number > 3:
+                            if not end_of_block:
+                                parse_block_line(args, line, saved_values)
+                            elif line.strip():
+                                parse_error(args, line, saved_errors)
 
-                    if 'Queue depth' in line:
-                        end_of_block = True
+                        if 'Queue depth' in line:
+                            end_of_block = True
 
-                update_status(args, json_content, saved_values, saved_errors, framerate)
+                    update_status(args, json_content, saved_values, saved_errors, framerate)
 
         reports.append(json_content)
 
