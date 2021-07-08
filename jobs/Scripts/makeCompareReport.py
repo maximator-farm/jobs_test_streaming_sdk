@@ -174,10 +174,8 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
     # rule №4: encoder and decoder check. Problems with encoder -> warning. Problems with decoder -> issue with app
     # 0-0 -> skip
-    # 0-1 -> first time - skip. second time - problem
-    # 1-0 -> first time - skip. second time - problem
-    # X-Y -> problem (Y > 1, X < Y)
-    # X-Y -> problem (X > 1, X > Y)
+    # X-Y -> first time - skip. second time - problem (Y > 1, X < Y)
+    # X-Y -> first time - skip. sec (X > 1, X > Y)
     if 'encoder_values' in saved_values:
         is_problem = False
         is_small_increasing = False
@@ -190,22 +188,14 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
                 is_problem = True
                 json_content["message"].append("\nApplication problem: encoder value stagnation")
                 break
-            elif saved_values['encoder_values'][i] < saved_values['encoder_values'][i + 1] and saved_values['encoder_values'][i + 1] > 1:
-                is_problem = True
-                json_content["message"].append("\nApplication problem: increase in encoder value")
-                break
-            elif saved_values['encoder_values'][i] < saved_values['encoder_values'][i + 1] and saved_values['encoder_values'][i + 1] == 1:
+            elif saved_values['encoder_values'][i] < saved_values['encoder_values'][i + 1]:
                 if is_small_increasing:
                     is_problem = True
                     json_content["message"].append("\nApplication problem: increase in encoder value")
                     break
                 else:
                     is_small_increasing = True
-            elif saved_values['encoder_values'][i] > saved_values['encoder_values'][i + 1] and saved_values['encoder_values'][i] > 1:
-                is_problem = True
-                json_content["message"].append("\nApplication problem: decrease in encoder value")
-                break
-            elif saved_values['encoder_values'][i] > saved_values['encoder_values'][i + 1] and saved_values['encoder_values'][i] == 1:
+            elif saved_values['encoder_values'][i] > saved_values['encoder_values'][i + 1]:
                 if is_small_descreasing:
                     is_problem = True
                     json_content["message"].append("\nApplication problem: decrease in encoder value")
@@ -225,22 +215,14 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
                 is_problem = True
                 json_content["message"].append("\nApplication problem: encoder value stagnation")
                 break
-            elif saved_values['decoder_values'][i] < saved_values['decoder_values'][i + 1] and saved_values['decoder_values'][i + 1] > 1:
-                is_problem = True
-                json_content["message"].append("\nApplication problem: increase in encoder value")
-                break
-            elif saved_values['decoder_values'][i] < saved_values['decoder_values'][i + 1] and saved_values['decoder_values'][i + 1] == 1:
+            elif saved_values['decoder_values'][i] < saved_values['decoder_values'][i + 1]:
                 if is_small_increasing:
                     is_problem = True
                     json_content["message"].append("\nApplication problem: increase in encoder value")
                     break
                 else:
                     is_small_increasing = True
-            elif saved_values['decoder_values'][i] > saved_values['decoder_values'][i + 1] and saved_values['decoder_values'][i] > 1:
-                is_problem = True
-                json_content["message"].append("\nApplication problem: decrease in encoder value")
-                break
-            elif saved_values['decoder_values'][i] > saved_values['decoder_values'][i + 1] and saved_values['decoder_values'][i] == 1:
+            elif saved_values['decoder_values'][i] > saved_values['decoder_values'][i + 1]:
                 if is_small_descreasing:
                     is_problem = True
                     json_content["message"].append("\nApplication problem: decrease in encoder value")
