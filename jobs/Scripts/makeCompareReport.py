@@ -186,26 +186,26 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
     # 0-0 -> skip
     # X-Y -> first time - skip. second time - problem (Y > 1, X < Y)
     # X-Y -> first time - skip. sec (X > 1, X > Y)
-    if 'encoder_values' in saved_values:
+    if 'queue_encoder_values' in saved_values:
         is_problem = False
         is_small_increasing = False
         is_small_descreasing = False
 
-        for i in range(len(saved_values['encoder_values']) - 1):
-            if saved_values['encoder_values'][i] == saved_values['encoder_values'][i + 1] == 0:
+        for i in range(len(saved_values['queue_encoder_values']) - 1):
+            if saved_values['queue_encoder_values'][i] == saved_values['queue_encoder_values'][i + 1] == 0:
                 continue
-            elif saved_values['encoder_values'][i] == saved_values['encoder_values'][i + 1]:
+            elif saved_values['queue_encoder_values'][i] == saved_values['queue_encoder_values'][i + 1]:
                 is_problem = True
                 json_content["message"].append("\nApplication problem: encoder value stagnation")
                 break
-            elif saved_values['encoder_values'][i] < saved_values['encoder_values'][i + 1]:
+            elif saved_values['queue_encoder_values'][i] < saved_values['queue_encoder_values'][i + 1]:
                 if is_small_increasing:
                     is_problem = True
                     json_content["message"].append("\nApplication problem: increase in encoder value")
                     break
                 else:
                     is_small_increasing = True
-            elif saved_values['encoder_values'][i] > saved_values['encoder_values'][i + 1]:
+            elif saved_values['queue_encoder_values'][i] > saved_values['queue_encoder_values'][i + 1]:
                 if is_small_descreasing:
                     is_problem = True
                     json_content["message"].append("\nApplication problem: decrease in encoder value")
@@ -213,29 +213,29 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
                 else:
                     is_small_descreasing = True
 
-    if 'decoder_values' in saved_values:
+    if 'queue_decoder_values' in saved_values:
         is_problem = False
         is_small_increasing = False
         is_small_descreasing = False
 
-        for i in range(len(saved_values['decoder_values']) - 1):
-            if saved_values['decoder_values'][i] == saved_values['decoder_values'][i + 1] == 0:
+        for i in range(len(saved_values['queue_decoder_values']) - 1):
+            if saved_values['queue_decoder_values'][i] == saved_values['queue_decoder_values'][i + 1] == 0:
                 continue
-            elif saved_values['decoder_values'][i] == saved_values['decoder_values'][i + 1]:
+            elif saved_values['queue_decoder_values'][i] == saved_values['queue_decoder_values'][i + 1]:
                 is_problem = True
-                json_content["message"].append("\nApplication problem: encoder value stagnation")
+                json_content["message"].append("\nApplication problem: decoder value stagnation")
                 break
-            elif saved_values['decoder_values'][i] < saved_values['decoder_values'][i + 1]:
+            elif saved_values['queue_decoder_values'][i] < saved_values['queue_decoder_values'][i + 1]:
                 if is_small_increasing:
                     is_problem = True
-                    json_content["message"].append("\nApplication problem: increase in encoder value")
+                    json_content["message"].append("\nApplication problem: increase in decoder value")
                     break
                 else:
                     is_small_increasing = True
-            elif saved_values['decoder_values'][i] > saved_values['decoder_values'][i + 1]:
+            elif saved_values['queue_decoder_values'][i] > saved_values['queue_decoder_values'][i + 1]:
                 if is_small_descreasing:
                     is_problem = True
-                    json_content["message"].append("\nApplication problem: decrease in encoder value")
+                    json_content["message"].append("\nApplication problem: decrease in decoder value")
                     break
                 else:
                     is_small_descreasing = True
@@ -371,4 +371,5 @@ if __name__ == '__main__':
                     update_status(args, json_content, saved_values, saved_errors, framerate)
 
         reports.append(json_content)
+        print(json_content["message"])
     with open(os.path.join(work_dir, 'report_compare.json'), 'w') as f: json.dump(reports, f, indent=4)
