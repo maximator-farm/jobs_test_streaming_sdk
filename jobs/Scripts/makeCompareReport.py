@@ -179,6 +179,8 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         for tx_rate in saved_values['tx_rates']:
             if framerate - tx_rate > 4:
                 json_content["message"].append("\nApplication problem: TX Rate is much less than framerate")
+                if json_content["test_status"] != "error":
+                    json_content["test_status"] = "failed"
 
                 break
 
@@ -269,6 +271,8 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         for decyns_value in saved_values['decyns_values']:
             if abs(decyns_value) > 100:
                 json_content["message"].append("\nApplication problem: Absolute value of A/V desync is more than 100 ms")
+                if json_content["test_status"] != "error":
+                    json_content["test_status"] = "failed"
 
                 break
 
@@ -286,6 +290,9 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         if abs((average_bandwidth_tx_sum - video_bitrate_sum)) / video_bitrate_sum > 0.25:
             json_content["message"].append("\nApplication problem: Too high Bandwidth AVG")
 
+            if json_content["test_status"] != "error":
+                json_content["test_status"] = "failed"
+
     # rule №9: number of abnormal network latency values is bigger than 10% of total values -> issue with app
     # Abnormal value: avrg network latency * 2 < network latency
     if 'network_latencies' in saved_values:
@@ -298,7 +305,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
                 abnormal_values_num += 1
 
         if abnormal_values_num > round(total_values_num * 0.1):
-            json_content["message"].append("\nApplication problem: Too many high values of network latency")
+            json_content["message"].append("\nNetwork problem: Too many high values of network latency")
 
     # rule №10: send time avg * 100 > send time worst -> issue with network
     if 'send_time_avg' in saved_values and 'send_time_worst' in saved_values:
@@ -308,7 +315,9 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
                 break
 
-    if max(saved_values["client_latencies"]) == 0 or max(saved_values["server_latencies"]) == 0:
+    if "client_latencies" not in saved_values or "server_latencies" not in saved_values:
+        json_content["test_status"] = "error"
+    elif max(saved_values["client_latencies"]) == 0 or max(saved_values["server_latencies"]) == 0:
         json_content["test_status"] = "error"
 
     json_content["message"].extend(saved_errors)
@@ -344,9 +353,9 @@ if __name__ == '__main__':
 
         end_of_block = False
 
-        log_path = os.path.join(work_dir, json_content[log_key]).replace('/', os.path.sep).replace('\\', os.path.sep)
-
         if args.execution_type == "server":
+            log_path = os.path.join(work_dir, json_content[log_key]).replace('/', os.path.sep).replace('\\', os.path.sep)
+
             if log_key in json_content and os.path.exists(log_path):
                 framerate = get_framerate(json_content["keys"])
 
