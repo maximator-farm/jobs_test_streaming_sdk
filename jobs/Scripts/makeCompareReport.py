@@ -15,7 +15,7 @@ from jobs_launcher.core.config import *
 
 
 def get_framerate(keys):
-    if '-Framerate' in keys:
+    if '-Framerate ' in keys:
         return int(keys.split('-Framerate')[1].split()[0])
     else:
         return 30
