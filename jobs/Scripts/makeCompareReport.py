@@ -8,8 +8,10 @@ import re
 sys.path.append(
     os.path.abspath(
         os.path.join(os.path.dirname(__file__), os.path.pardir, os.path.pardir)
-        )
     )
+)
+
+from jobs_launcher.core.config import *
 
 
 def get_framerate(keys):
@@ -222,7 +224,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
         for i in range(len(saved_values['queue_decoder_values']) - 1):
             if saved_values['queue_decoder_values'][i] == saved_values['queue_decoder_values'][i + 1] == 0:
-                continue
+                pass
             elif saved_values['queue_decoder_values'][i] == saved_values['queue_decoder_values'][i + 1]:
                 is_problem = True
                 json_content["message"].append("Application problem: decoder value stagnation")
@@ -379,6 +381,11 @@ if __name__ == '__main__':
 
                     update_status(args, json_content, saved_values, saved_errors, framerate)
 
+            main_logger.info("Test case processed: {}".format(json_content["test_case"]))
+            main_logger.info("Saved values: {}".format(saved_values))
+            main_logger.info("Saved errors: {}".format(saved_errors))
+        else:
+            main_logger.info("Test case skipped: {}".format(json_content["test_case"]))
+
         reports.append(json_content)
-        print(json_content["message"])
     with open(os.path.join(work_dir, 'report_compare.json'), 'w') as f: json.dump(reports, f, indent=4)
