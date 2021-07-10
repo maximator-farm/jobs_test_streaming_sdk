@@ -158,7 +158,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
             # rule №1.1: encoder >= framerate -> problem with app
             for encoder_value in saved_values['encoder_values']:
                 if encoder_value >= framerate:
-                    json_content["message"].append("Application problem: Encoder is equal to or bigger than framerate. Encoder: {}. Framerate: {}".format(encoder_value, framerate))
+                    json_content["message"].append("Application problem: Encoder is equal to or bigger than framerate. Encoder  {}. Framerate: {}".format(encoder_value, framerate))
                     if json_content["test_status"] != "error":
                         json_content["test_status"] = "failed"
 
@@ -169,7 +169,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
             for encoder_value in saved_values['encoder_values']:
                 if avrg_encoder_value * 2 < encoder_value:
-                    json_content["message"].append("Application problem: Some encoder values is much bigger than average encoder value. Encoder: {}. Avrg encoder: {}".format(encoder_value, round(avrg_encoder_value, 2)))
+                    json_content["message"].append("Application problem: Some encoder values is much bigger than average encoder value. Encoder  {}. Avrg encoder: {}".format(encoder_value, round(avrg_encoder_value, 2)))
                     if json_content["test_status"] != "error":
                         json_content["test_status"] = "failed"
 
@@ -188,7 +188,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         if 'tx_rates' in saved_values:
             for tx_rate in saved_values['tx_rates']:
                 if framerate - tx_rate > 4:
-                    json_content["message"].append("Application problem: TX Rate is much less than framerate. Framerate: {}. TX rate: {}".format(framerate, tx_rate))
+                    json_content["message"].append("Application problem: TX Rate is much less than framerate. Framerate: {}. TX rate: {} fps".format(framerate, tx_rate))
                     if json_content["test_status"] != "error":
                         json_content["test_status"] = "failed"
 
@@ -260,7 +260,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         if 'client_latencies' in saved_values and 'decoder_values' in saved_values:
             for i in range(len(saved_values['client_latencies'])):
                 if saved_values['client_latencies'][i] <= saved_values['decoder_values'][i]:
-                    json_content["message"].append("Application problem: client latency is less than decoder value. Client latency: {}. Decoder: {}".format(saved_values['client_latencies'][i], saved_values['decoder_values'][i]))
+                    json_content["message"].append("Application problem: client latency is less than decoder value. Client  {}. Decoder  {}".format(saved_values['client_latencies'][i], saved_values['decoder_values'][i]))
                     if json_content["test_status"] != "error":
                         json_content["test_status"] = "failed"
 
@@ -270,7 +270,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         if 'server_latencies' in saved_values and 'encoder_value' in saved_values:
             for i in range(len(saved_values['server_latencies'])):
                 if saved_values['server_latencies'][i] <= saved_values['encoder_value'][i]:
-                    json_content["message"].append("Application problem: server latency is less than encoder value. Server latency: {}. Encoder: {}".format(saved_values['server_latencies'][i], saved_values['encoder_value'][i]))
+                    json_content["message"].append("Application problem: server latency is less than encoder value. Server  {}. Encoder  {}".format(saved_values['server_latencies'][i], saved_values['encoder_value'][i]))
                     if json_content["test_status"] != "error":
                         json_content["test_status"] = "failed"
 
@@ -280,7 +280,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         if 'decyns_values' in saved_values:
             for decyns_value in saved_values['decyns_values']:
                 if abs(decyns_value) > 100:
-                    json_content["message"].append("Application problem: Absolute value of A/V desync is more than 100 ms. Desync: {}".format(decyns_value))
+                    json_content["message"].append("Application problem: Absolute value of A/V desync is more than 100 ms. A/V desync: {} ms".format(decyns_value))
                     if json_content["test_status"] != "error":
                         json_content["test_status"] = "failed"
 
@@ -323,7 +323,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         if 'send_time_avg' in saved_values and 'send_time_worst' in saved_values:
             for i in range(len(saved_values['send_time_avg'])):
                 if saved_values['send_time_avg'][i] * 100 > saved_values['send_time_worst'][i]:
-                    json_content["message"].append("Network problem: average send time is 100 times more than the worst send time. Send time avg: {}. Send time worst: {}".format(saved_values['send_time_avg'][i], saved_values['send_time_worst'][i]))
+                    json_content["message"].append("Network problem: average send time is 100 times more than the worst send time. Send time (avg/worst):  {}/ {} ms".format(saved_values['send_time_avg'][i], saved_values['send_time_worst'][i]))
 
                     break
 
@@ -379,7 +379,8 @@ if __name__ == '__main__':
                             if not end_of_block:
                                 parse_block_line(args, line, saved_values)
                             elif line.strip():
-                                parse_error(args, line, saved_errors)
+                                #parse_error(args, line, saved_errors)
+                                pass
 
                         if 'Queue depth' in line:
                             end_of_block = True
