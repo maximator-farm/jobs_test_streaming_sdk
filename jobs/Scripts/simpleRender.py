@@ -98,6 +98,13 @@ def prepare_empty_reports(args, current_conf):
         cases = json.load(json_file)
 
     for case in cases:
+        case["server_keys"] = case["server_keys"].replace("1920,1200", "1920,1080")
+        case["client_keys"] = case["client_keys"].replace("1920,1200", "1920,1080")
+        new_info = []
+        for info in case["script_info"]:
+            new_info.append(info.replace("1920,1200", "1920,1080"))
+        case["script_info"] = new_info
+    
         if is_case_skipped(case, current_conf):
             case['status'] = 'skipped'
 

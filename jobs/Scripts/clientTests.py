@@ -46,6 +46,8 @@ def make_screen(screen_path, screen_name=""):
 def record_video(video_path, audio_device_name, video_name, resolution, duration):
     video_full_path = os.path.join(video_path, video_name + ".mp4")
     time_flag_value = strftime("%H:%M:%S", gmtime(int(duration)))
+    
+    resolution = "1920x1080"
 
     recorder = FFmpeg()
     main_logger.info("Start to record video")
