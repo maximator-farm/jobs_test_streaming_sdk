@@ -300,7 +300,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
             difference = abs((average_bandwidth_tx_sum - video_bitrate_sum)) / video_bitrate_sum
 
             if difference > 0.25:
-                json_content["message"].append("Application problem: Too high Bandwidth AVG. AVG total bandwidth for case: {}. AVG total bitrate for case: {}. Difference: {}%".format(video_bitrate_sum, round(average_bandwidth_tx_sum, 2), round(difference, 2)))
+                json_content["message"].append("Application problem: Too high Bandwidth AVG. AVG total bandwidth for case: {}. AVG total bitrate for case: {}. Difference: {}%".format(video_bitrate_sum, round(average_bandwidth_tx_sum, 2), round(difference * 100, 2)))
 
                 if json_content["test_status"] != "error":
                     json_content["test_status"] = "failed"
