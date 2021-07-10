@@ -179,7 +179,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         # rule №2.1: tx rate - rx rate > 3 -> problem with network
         if 'rx_rates' in saved_values and 'tx_rates' in saved_values:
             for i in range(len(saved_values['rx_rates'])):
-                if saved_values['rx_rates'][i] - saved_values['tx_rates'][i] > 3:
+                if saved_values['tx_rates'][i] - saved_values['rx_rates'][i] > 3:
                     json_content["message"].append("Network problem: TX Rate is much bigger than RX Rate. TX rate: {}. RX rate: {}".format(saved_values['tx_rates'][i], saved_values['rx_rates'][i]))
 
                     break
@@ -239,19 +239,19 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
                     pass
                 elif saved_values['queue_decoder_values'][i] == saved_values['queue_decoder_values'][i + 1]:
                     is_problem = True
-                    json_content["message"].append("Application problem: decoder value stagnation ({}-{})".format(saved_values['queue_encoder_values'][i], saved_values['queue_encoder_values'][i + 1]))
+                    json_content["message"].append("Application problem: decoder value stagnation ({}-{})".format(saved_values['queue_decoder_values'][i], saved_values['queue_decoder_values'][i + 1]))
                     break
                 elif saved_values['queue_decoder_values'][i] < saved_values['queue_decoder_values'][i + 1]:
                     if is_small_increasing:
                         is_problem = True
-                        json_content["message"].append("Application problem: increase in decoder value ({}-{})".format(saved_values['queue_encoder_values'][i], saved_values['queue_encoder_values'][i + 1]))
+                        json_content["message"].append("Application problem: increase in decoder value ({}-{})".format(saved_values['queue_decoder_values'][i], saved_values['queue_decoder_values'][i + 1]))
                         break
                     else:
                         is_small_increasing = True
                 elif saved_values['queue_decoder_values'][i] > saved_values['queue_decoder_values'][i + 1]:
                     if is_small_descreasing:
                         is_problem = True
-                        json_content["message"].append("Application problem: decrease in decoder value ({}-{})".format(saved_values['queue_encoder_values'][i], saved_values['queue_encoder_values'][i + 1]))
+                        json_content["message"].append("Application problem: decrease in decoder value ({}-{})".format(saved_values['queue_decoder_values'][i], saved_values['queue_decoder_values'][i + 1]))
                         break
                     else:
                         is_small_descreasing = True
@@ -323,7 +323,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
         if 'send_time_avg' in saved_values and 'send_time_worst' in saved_values:
             for i in range(len(saved_values['send_time_avg'])):
                 if saved_values['send_time_avg'][i] * 100 > saved_values['send_time_worst'][i]:
-                    json_content["message"].append("Network problem: average send time is 100 times more than the worst send time. Send time (avg/worst):  {}/ {} ms".format(saved_values['send_time_avg'][i], saved_values['send_time_worst'][i]))
+                    json_content["message"].append("Network problem: average send time multiplied by 100 is more than the worst send time. Send time (avg/worst):  {}/ {} ms".format(saved_values['send_time_avg'][i], saved_values['send_time_worst'][i]))
 
                     break
 
