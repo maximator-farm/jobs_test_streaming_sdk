@@ -206,29 +206,10 @@ def do_test_actions(game_name):
         if game_name == "borderlands3":
             pass
         elif game_name == "valorant":
-            pyautogui.keyDown("a")
-            sleep(0.5)
-            pyautogui.keyUp("a")
-
-            pyautogui.click()
-            sleep(0.5)
-            pyautogui.click()
-
-            pyautogui.keyDown("d")
-            sleep(0.5)
-            pyautogui.keyUp("d")
-
-            pyautogui.keyDown("d")
-            sleep(0.5)
-            pyautogui.keyUp("d")
-
-            pyautogui.click()
-            sleep(0.5)
-            pyautogui.click()
-
-            pyautogui.keyDown("a")
-            sleep(0.5)
-            pyautogui.keyUp("a")
+            sleep(2.0)
+            pydirectinput.keyDown("space")
+            sleep(0.1)
+            pydirectinput.keyUp("space")            
         elif game_name == "apexlegends":
             pydirectinput.keyDown("a")
             pydirectinput.keyDown("space")
