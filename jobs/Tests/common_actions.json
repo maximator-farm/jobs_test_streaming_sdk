@@ -61,6 +61,7 @@
         "click",
         "make_screen before_any_actions",
         "sleep 5",
+        "start_test_actions_server",
         "start_test_actions_client",
         "make_screen test_actions",
         "sleep 5",
