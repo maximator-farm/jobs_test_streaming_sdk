@@ -319,10 +319,10 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
             if abnormal_values_num > round(total_values_num * 0.1):
                 json_content["message"].append("Network problem: Too many high values of network latency (more than 10%)")
 
-        # rule №10: send time worst * 100 > send time avg -> issue with network
+        # rule №10: send time avg * 100 < send time worst -> issue with network
         if 'send_time_avg' in saved_values and 'send_time_worst' in saved_values:
             for i in range(len(saved_values['send_time_avg'])):
-                if saved_values['send_time_avg'][i] * 100 > saved_values['send_time_worst'][i]:
+                if saved_values['send_time_avg'][i] * 100 < saved_values['send_time_worst'][i]:
                     json_content["message"].append("Network problem: worst send time is 100 times more than the avg send time. Send time (avg/worst):  {}/ {} ms".format(saved_values['send_time_avg'][i], saved_values['send_time_worst'][i]))
 
                     break
