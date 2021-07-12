@@ -284,7 +284,6 @@
         "make_screen before_any_actions",
         "sleep 5",
         "record_video 1920x1200 10",
-        "sleep_and_screen 5 4 5 nothing",
-        "press_keys_server \"esc\""
+        "sleep_and_screen 5 4 5 nothing"
     ]
 }
