@@ -260,7 +260,7 @@ def execute_tests(args, current_conf):
                     )
 
                     with open(settings_json_path, "r") as file:
-                        settings_json_content = json.load(json_file)
+                        settings_json_content = json.load(file)
 
                     main_logger.info("Network in settings.json: {}".format(settings_json_content["Headset"]["Network"]))
 
