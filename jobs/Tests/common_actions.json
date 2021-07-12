@@ -276,7 +276,7 @@
         "sleep 5"
     ],
 
-    "nothing": [
+    "nothing_actions": [
         "make_screen",
         "move 1000 800",
         "click",
