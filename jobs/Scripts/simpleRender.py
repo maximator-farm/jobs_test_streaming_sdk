@@ -240,6 +240,8 @@ def execute_tests(args, current_conf):
 
             try:
                 if args.execution_type == "server":
+                    settings_json_path = os.path.join(os.getenv("APPDATA"), "..", "Local", "AMD", "RemoteGameServer", "settings", "settings.json")
+
                     copyfile(
                         os.path.realpath(
                             os.path.join(os.path.dirname(__file__),
@@ -247,8 +249,13 @@ def execute_tests(args, current_conf):
                             "Configs",
                             "settings_{}.json".format(case["transport_protocol"].upper()))
                         ), 
-                        os.path.join(os.getenv("APPDATA"), "..", "Local", "AMD", "RemoteGameServer", "settings", "settings.json")
+                        settings_json_path
                     )
+
+                    with open(settings_json_path, "r") as file:
+                        settings_json_content = json.load(json_file)
+
+                    main_logger.info("Network in settings.json: {}".format(settings_json_content["Headset"]["Network"]))
 
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
                 else:
