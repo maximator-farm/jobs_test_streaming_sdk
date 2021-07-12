@@ -308,6 +308,16 @@ def execute_tests(args, current_conf):
                 if PROCESS is not None:
                     close_process(PROCESS)
 
+                status = 0
+
+                while status != 128:
+                    status = subprocess.call("taskkill /IM RemoteGameClient.exe")
+
+                status = 0
+
+                while status != 128:
+                    status = subprocess.call("taskkill /IM RemoteGameServer.exe")
+
                 current_try += 1
 
                 log_source_path = tool_path + ".log"
