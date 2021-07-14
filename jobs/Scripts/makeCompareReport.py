@@ -176,18 +176,18 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
                     break
 
 
-        # rule №2.1: tx rate - rx rate > 3 -> problem with network
+        # rule №2.1: tx rate - rx rate > 8 -> problem with network
         if 'rx_rates' in saved_values and 'tx_rates' in saved_values:
             for i in range(len(saved_values['rx_rates'])):
-                if saved_values['tx_rates'][i] - saved_values['rx_rates'][i] > 3:
+                if saved_values['tx_rates'][i] - saved_values['rx_rates'][i] > 8:
                     json_content["message"].append("Network problem: TX Rate is much bigger than RX Rate. TX rate: {}. RX rate: {}".format(saved_values['tx_rates'][i], saved_values['rx_rates'][i]))
 
                     break
 
-        # rule №2.2: framerate - tx rate > 4 -> problem with app
+        # rule №2.2: framerate - tx rate > 10 -> problem with app
         if 'tx_rates' in saved_values:
             for tx_rate in saved_values['tx_rates']:
-                if framerate - tx_rate > 4:
+                if framerate - tx_rate > 10:
                     json_content["message"].append("Application problem: TX Rate is much less than framerate. Framerate: {}. TX rate: {} fps".format(framerate, tx_rate))
                     if json_content["test_status"] != "error":
                         json_content["test_status"] = "failed"
@@ -286,7 +286,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
                     break
 
-        # rule №8: |(sum of average bandwidth tx - sum of video bitrate)| / sum of video bitrate > 0.25 -> issue with app
+        # rule №8: (sum of video bitrate - sum of average bandwidth tx) / sum of video bitrate > 0.25 -> issue with app
         if 'average_bandwidth_tx' in saved_values and 'video_bitrate' in saved_values:
             average_bandwidth_tx_sum = 0
             video_bitrate_sum = 0
@@ -297,7 +297,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
             average_bandwidth_tx_sum /= 1000
 
-            difference = abs((average_bandwidth_tx_sum - video_bitrate_sum)) / video_bitrate_sum
+            difference = (video_bitrate_sum - average_bandwidth_tx_sum) / video_bitrate_sum
 
             if difference > 0.25:
                 json_content["message"].append("Application problem: Too high Bandwidth AVG. AVG total bandwidth for case: {}. AVG total bitrate for case: {}. Difference: {}%".format(round(average_bandwidth_tx_sum, 2), video_bitrate_sum, round(difference * 100, 2)))
