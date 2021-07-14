@@ -274,5 +274,16 @@
         "sleep_and_screen 5 4 5 superposition_benchmark",
         "press_keys_server \"esc\"",
         "sleep 5"
+    ],
+
+    "nothing_actions": [
+        "make_screen",
+        "move 1000 800",
+        "click",
+        "sleep 2",
+        "make_screen before_any_actions",
+        "sleep 5",
+        "record_video 1920x1200 10",
+        "sleep_and_screen 5 4 5 nothing"
     ]
 }
