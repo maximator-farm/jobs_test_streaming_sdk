@@ -54,7 +54,7 @@
 	},
 	"Headset" : 
 	{
-		"DatagramSize" : 1024,
+		"DatagramSize" : 65507,
 		"EnableNetwork" : true,
 		"LogPath" : null,
 		"MaxUserCount" : 1,
