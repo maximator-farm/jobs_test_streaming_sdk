@@ -253,7 +253,7 @@ def start_client_side_tests(args, case, is_workable_condition, ip_address, commu
                     else:
                         make_screen(screens_path, screen_name="{}".format(*arguments))
                 elif command == "record_video":
-                    record_video(output_path, audio_device_name, case["case"], *arguments)
+                    record_video(output_path, audio_device_name, case["case"], args.screen_resolution, *arguments)
                 elif command == "move":
                     move(*arguments)
                 elif command == "click":

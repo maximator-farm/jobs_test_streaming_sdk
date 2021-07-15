@@ -138,6 +138,9 @@ def prepare_empty_reports(args, current_conf):
                         transport_protocol=case["transport_protocol"],
                         ip_address=args.ip_address
                     )
+
+                    test_case_report["script_info"][i].replace("<resolution>", args.screen_resolution.replace("x", ","))
+
                     break
 
             if case['status'] == 'skipped':
@@ -267,6 +270,8 @@ def execute_tests(args, current_conf):
                         ip_address=args.ip_address
                     )
 
+                    execution_script = execution_script.replace("<resolution>", args.screen_resolution.replace("x", ","))
+
                 execution_script_path = os.path.join(args.output, "{}.bat".format(case["case"]))
        
                 with open(execution_script_path, "w") as f:
@@ -374,6 +379,7 @@ def createArgsParser():
     parser.add_argument('--game_name', required=True)
     parser.add_argument('--common_actions_path', required=True)
     parser.add_argument('--collect_traces', required=True)
+    parser.add_argument('--screen_resolution', required=True)
 
     return parser
 
