@@ -47,7 +47,7 @@ def check_window(sock, window_name, process_name, is_game=True):
             
             if is_game:
                 try:
-                    win32gui.ShowWindow(window, 5)
+                    win32gui.ShowWindow(window, 4)
                     win32gui.SetForegroundWindow(window)
                 except Exception as e1:
                     main_logger.error("Failed to make window foreground: {}".format(str(e1)))
