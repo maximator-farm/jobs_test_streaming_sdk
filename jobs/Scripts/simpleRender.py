@@ -136,7 +136,10 @@ def prepare_empty_reports(args, current_conf):
                     test_case_report["script_info"][i] = "{base}".format(
                         base=test_case_report["script_info"][i]
                     )
-                    break
+
+                elif "Server keys" in test_case_report["script_info"][i]:
+
+                    test_case_report["script_info"][i] = test_case_report["script_info"][i].replace("<resolution>", args.screen_resolution.replace("x", ","))
 
             if case['status'] == 'skipped':
                 test_case_report['test_status'] = 'skipped'
@@ -257,6 +260,8 @@ def execute_tests(args, current_conf):
                     main_logger.info("Datagram size in settings.json: {}".format(settings_json_content["Headset"]["DatagramSize"]))
 
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
+
+                    execution_script = execution_script.replace("<resolution>", args.screen_resolution.replace("x", ","))
                 else:
                     execution_script = "{tool} {keys}".format(
                         tool=tool_path,
@@ -370,6 +375,7 @@ def createArgsParser():
     parser.add_argument('--game_name', required=True)
     parser.add_argument('--common_actions_path', required=True)
     parser.add_argument('--collect_traces', required=True)
+    parser.add_argument('--screen_resolution', required=True)
 
     return parser
 
