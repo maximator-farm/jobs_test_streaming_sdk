@@ -139,7 +139,7 @@ def prepare_empty_reports(args, current_conf):
 
                 elif "Server keys" in test_case_report["script_info"][i]:
 
-                    test_case_report["script_info"][i].replace("<resolution>", args.screen_resolution.replace("x", ","))
+                    test_case_report["script_info"][i] = test_case_report["script_info"][i].replace("<resolution>", args.screen_resolution.replace("x", ","))
 
             if case['status'] == 'skipped':
                 test_case_report['test_status'] = 'skipped'
