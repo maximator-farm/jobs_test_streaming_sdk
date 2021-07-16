@@ -139,9 +139,9 @@ def prepare_empty_reports(args, current_conf):
                         ip_address=args.ip_address
                     )
 
-                    test_case_report["script_info"][i].replace("<resolution>", args.screen_resolution.replace("x", ","))
+                elif "Server keys" in test_case_report["script_info"][i]:
 
-                    break
+                    test_case_report["script_info"][i].replace("<resolution>", args.screen_resolution.replace("x", ","))
 
             if case['status'] == 'skipped':
                 test_case_report['test_status'] = 'skipped'
@@ -262,6 +262,8 @@ def execute_tests(args, current_conf):
                     main_logger.info("Datagram size in settings.json: {}".format(settings_json_content["Headset"]["DatagramSize"]))
 
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
+
+                    execution_script = execution_script.replace("<resolution>", args.screen_resolution.replace("x", ","))
                 else:
                     execution_script = "{tool} {keys} -connectionurl {transport_protocol}://{ip_address}:1235".format(
                         tool=tool_path,
@@ -269,8 +271,6 @@ def execute_tests(args, current_conf):
                         transport_protocol=case["transport_protocol"],
                         ip_address=args.ip_address
                     )
-
-                    execution_script = execution_script.replace("<resolution>", args.screen_resolution.replace("x", ","))
 
                 execution_script_path = os.path.join(args.output, "{}.bat".format(case["case"]))
        
