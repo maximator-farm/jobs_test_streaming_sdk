@@ -190,19 +190,19 @@ class ClickServer(Action):
 
     @Action.server_action_decorator
     def execute(self):
-        if "center_" in x_description:
-            x = win32api.GetSystemMetrics(0) / 2 + int(x_description.replace("center_", ""))
-        elif "edge_" in x_description:
-            x = win32api.GetSystemMetrics(0) + int(x_description.replace("edge_", ""))
+        if "center_" in self.x_description:
+            x = win32api.GetSystemMetrics(0) / 2 + int(self.x_description.replace("center_", ""))
+        elif "edge_" in self.x_description:
+            x = win32api.GetSystemMetrics(0) + int(self.x_description.replace("edge_", ""))
         else:
-            x = int(x_description)
+            x = int(self.x_description)
 
-        if "center_" in y_description:
-            y = win32api.GetSystemMetrics(1) / 2 + int(y_description.replace("center_", ""))
-        elif "edge_" in y_description:
-            y = win32api.GetSystemMetrics(1) + int(y_description.replace("edge_", ""))
+        if "center_" in self.y_description:
+            y = win32api.GetSystemMetrics(1) / 2 + int(self.y_description.replace("center_", ""))
+        elif "edge_" in self.y_description:
+            y = win32api.GetSystemMetrics(1) + int(self.y_description.replace("edge_", ""))
         else:
-            y = int(y_description)
+            y = int(self.y_description)
 
         self.logger.info("Click at x = {}, y = {}".format(x, y))
 
