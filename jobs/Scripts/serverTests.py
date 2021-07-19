@@ -13,6 +13,7 @@ import pydirectinput
 from utils import close_process, collect_traces
 from threading import Thread
 from instance_state import ServerInstanceState
+from server_actions import *
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
@@ -93,21 +94,21 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                     continue
 
                 main_logger.info("\nReceived action: {}".format(request))
-                main_logger.info("Current state: {}".format(instance_state.format_current_state()))
+                main_logger.info("Current state:\n{}".format(instance_state.format_current_state()))
 
-                parts = action.split(" ", 1)
+                parts = request.split(" ", 1)
                 command = parts[0]
                 if len(parts) > 1:
                     arguments_line = parts[1]
                 else:
                     arguments_line = None
 
-                params["action_line"] = action
+                params["action_line"] = request
                 params["command"] = command
                 params["arguments_line"] = arguments_line
 
                 if command in ACTIONS_MAPPING:
-                    command_object = ACTIONS_MAPPING[command](sock, params, instance_state, main_logger)
+                    command_object = ACTIONS_MAPPING[command](connection, params, instance_state, main_logger)
                     command_object.do_action()
                 else:
                     raise ServerActionException("Unknown server command: {}".format(command))

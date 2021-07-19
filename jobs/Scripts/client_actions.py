@@ -1,6 +1,5 @@
 import os
 from time import sleep, strftime, gmtime
-import shlex
 import traceback
 import pyautogui
 import pyscreenshot
@@ -101,7 +100,7 @@ class MakeScreen(Action):
         self.current_try = self.params["current_try"]
 
     def execute(self):
-        if self.screen_name is not None:
+        if not self.screen_name:
             make_screen(self.screen_path, self.current_try)
         else:
             make_screen(self.screen_path, self.current_try, self.screen_name, self.current_image_num)

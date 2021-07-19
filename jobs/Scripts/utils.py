@@ -5,6 +5,7 @@ from glob import glob
 import zipfile
 import psutil
 from subprocess import PIPE
+import shlex
 
 
 def is_case_skipped(case, render_platform):

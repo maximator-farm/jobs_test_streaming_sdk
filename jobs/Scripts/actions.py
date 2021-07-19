@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import traceback
 
 
 class ClientActionException(Exception):
@@ -59,7 +60,7 @@ class Action(ABC):
     def server_action_decorator(func):
         def server_action_decorator_impl(self):
             try:
-                result = func()
+                result = func(self)
 
                 if result:
                     self.sock.send("done".encode("utf-8"))

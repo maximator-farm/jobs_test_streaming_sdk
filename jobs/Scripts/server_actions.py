@@ -1,14 +1,16 @@
+import socket
+import sys
 import os
-from time import sleep, strftime, gmtime
-import shlex
+from time import sleep
+import psutil
+from subprocess import PIPE
 import traceback
+import win32gui
+import win32api
 import pyautogui
-import pyscreenshot
-import json
 import pydirectinput
-from pyffmpeg import FFmpeg
 from threading import Thread
-from utils import collect_traces, parse_arguments
+from utils import close_process, collect_traces, parse_arguments
 from actions import *
 
 pyautogui.FAILSAFE = False
@@ -145,20 +147,23 @@ class PressKeysServer(Action):
 
 
 class Abort(Action):
+    def parse(self):
+        self.processes = self.params["processes"]
+
     @Action.server_action_decorator
     def execute(self):
-        result = close_processes()
+        result = close_processes(self.processes, self.logger)
 
         if result:
-            main_logger.info("Processes was succesfully closed")
+            self.logger.info("Processes was succesfully closed")
         else:
-            main_logger.error("Failed to close processes")
+            self.logger.error("Failed to close processes")
 
         return result
 
     
     def analyze_result(self):
-        self.instance_state.is_aborted = True
+        self.state.is_aborted = True
         raise ClientActionException("Client sent abort command")
 
 
@@ -168,7 +173,7 @@ class Retry(Action):
         return True
 
     def analyze_result(self):
-        self.instance_state.is_aborted = True
+        self.state.is_aborted = True
         raise ClientActionException("Client sent abort command")
 
 
@@ -178,7 +183,7 @@ class NextCase(Action):
         return True
 
     def analyze_result(self):
-        self.instance_state.wait_next_command = False
+        self.state.wait_next_command = False
 
 
 class ClickServer(Action):
@@ -203,7 +208,7 @@ class ClickServer(Action):
         else:
             y = int(y_description)
 
-        main_logger.info("Click at x = {}, y = {}".format(x, y))
+        self.logger.info("Click at x = {}, y = {}".format(x, y))
 
         pyautogui.moveTo(x, y)
         sleep(1)

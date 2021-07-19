@@ -39,7 +39,7 @@ def get_audio_device_name():
     except Exception as e:
         main_logger.error("Can't get audio device name. Use default name instead")
         main_logger.error(str(e))
-        main_logger.error("Traceback: {}".format(traceback.format_exc()))
+        main_logger.error("Traceback:\n{}".format(traceback.format_exc()))
 
         return "Stereo Mix (Realtek High Definition Audio)"
 
