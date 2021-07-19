@@ -8,14 +8,10 @@ import json
 import pydirectinput
 from pyffmpeg import FFmpeg
 from threading import Thread
-from utils import collect_traces
+from utils import collect_traces, parse_arguments
 from actions import *
 
 pyautogui.FAILSAFE = False
-
-
-def parse_arguments(arguments):
-    return shlex.split(arguments)
 
 
 class ExecuteCMD(Action):

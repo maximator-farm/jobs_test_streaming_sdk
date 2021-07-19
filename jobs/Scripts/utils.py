@@ -77,3 +77,7 @@ def collect_traces(archive_path, archive_name):
 
     with zipfile.ZipFile(os.path.join(archive_path, archive_name), "w", zipfile.ZIP_DEFLATED) as archive:
         archive.write(target_path, arcname=target_name)
+
+
+def parse_arguments(arguments):
+    return shlex.split(arguments)

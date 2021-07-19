@@ -4,7 +4,7 @@ import os
 from time import sleep
 import traceback
 import json
-from instance_state import InstanceState
+from instance_state import ClientInstanceState
 from actions import ClientActionException
 from client_actions import *
 import psutil
@@ -93,7 +93,7 @@ def start_client_side_tests(args, case, is_workable_condition, current_try):
             sleep(5)
 
     try:
-        instance_state = InstanceState()
+        instance_state = ClientInstanceState()
 
         sock.send("ready".encode("utf-8"))
         response = sock.recv(1024).decode("utf-8")
@@ -125,7 +125,8 @@ def start_client_side_tests(args, case, is_workable_condition, current_try):
             params["game_name"] = game_name
 
             for action in actions:
-                main_logger.info("Current action: {}".format(action))
+                main_logger.info("\nCurrent action: {}".format(action))
+                main_logger.info("Current state: {}".format(instance_state.format_current_state()))
 
                 parts = action.split(" ", 1)
                 command = parts[0]

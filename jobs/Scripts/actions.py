@@ -54,3 +54,20 @@ class Action(ABC):
                     raise ServerActionException("Action failed on server side")
             else:
                 raise ServerActionException("Unknown server status: {}".format(response))
+
+
+    def server_action_decorator(func):
+        def server_action_decorator_impl(self):
+            try:
+                result = func()
+
+                if result:
+                    self.sock.send("done".encode("utf-8"))
+                else:
+                    self.sock.send("failed".encode("utf-8"))
+            except Exception as e:
+                self.logger.error("Failed to execute action: {}".format(str(e)))
+                self.logger.error("Traceback: {}".format(traceback.format_exc()))
+                self.sock.send("failed".encode("utf-8"))
+
+        return server_action_decorator_impl
