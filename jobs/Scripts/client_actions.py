@@ -112,7 +112,7 @@ def make_screen(screen_path, current_try, screen_name = "", current_image_num = 
 
     if screen_name:
         screen = screen.convert("RGB")
-        screen.save(os.path.join(screen_path, "{:03}_{}_try_{:02}.jpg".format(current_image_num, screen_name, current_try + 1)))
+        screen.save(os.path.join(screen_path, "{:03}_{}_try_{:02}.jpg".format(current_image_num, screen_name, current_try)))
 
 
 class RecordVideo(Action):
