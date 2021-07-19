@@ -91,7 +91,7 @@ class PressKeysServer(Action):
 
     @Action.server_action_decorator
     def execute(self):
-        keys = keys_string.split()
+        keys = self.keys_string.split()
 
         for key in keys:
             duration = 0
