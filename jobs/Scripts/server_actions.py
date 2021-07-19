@@ -16,10 +16,6 @@ from actions import *
 pyautogui.FAILSAFE = False
 
 
-def parse_arguments(arguments):
-    return shlex.split(arguments)
-
-
 class ExecuteCMD(Action):
     def parse(self):
         self.processes = self.params["processes"]
