@@ -14,15 +14,8 @@ from actions import *
 pyautogui.FAILSAFE = False
 
 
-def parse_arguments(action):
-    parts = action.split(' ', 1)
-    command = parts[0]
-
-    # parse argument if they exists
-    if len(parts) > 1:
-        return shlex.split(parts[1])
-    else:
-        return None
+def parse_arguments(arguments):
+    return shlex.split(arguments)
 
 
 class ExecuteCMD(Action):
@@ -33,85 +26,85 @@ class ExecuteCMD(Action):
         self.sock.send(self.action.encode("utf-8"))
 
     def analyze_result(self):
-        wait_server_answer(analyze_answer = True, abort_if_fail = True)
+        self.wait_server_answer(analyze_answer = True, abort_if_fail = True)
 
 
 class CheckWindow(Action):
-    def parse():
+    def parse(self):
         self.action = self.params["action_line"]
 
-    def execute():
+    def execute(self):
         self.sock.send(self.action.encode("utf-8"))
 
-    def analyze_result():
-        wait_server_answer(analyze_answer = True, abort_if_fail = False)
+    def analyze_result(self):
+        self.wait_server_answer(analyze_answer = True, abort_if_fail = False)
 
 
 class PressKeysServer(Action):
-    def parse():
+    def parse(self):
         self.action = self.params["action_line"]
 
-    def execute():
+    def execute(self):
         self.sock.send(self.action.encode("utf-8"))
 
-    def analyze_result():
-        wait_server_answer(analyze_answer = True, abort_if_fail = True)
+    def analyze_result(self):
+        self.wait_server_answer(analyze_answer = True, abort_if_fail = True)
 
 
 class Abort(Action):
-    def execute():
+    def execute(self):
         self.sock.send("abort".encode("utf-8"))
 
-    def analyze_result():
-        wait_server_answer(analyze_answer = False, abort_if_fail = False)
+    def analyze_result(self):
+        self.wait_server_answer(analyze_answer = False, abort_if_fail = False)
 
 
 class Retry(Action):
-    def execute():
+    def execute(self):
         self.sock.send("retry".encode("utf-8"))
 
-    def analyze_result():
-        wait_server_answer(analyze_answer = False, abort_if_fail = False)
+    def analyze_result(self):
+        self.wait_server_answer(analyze_answer = False, abort_if_fail = False)
 
 
 class NextCase(Action):
-    def execute():
+    def execute(self):
         self.sock.send("next_case".encode("utf-8"))
 
-    def analyze_result():
-        wait_server_answer(analyze_answer = False, abort_if_fail = False)
+    def analyze_result(self):
+        self.wait_server_answer(analyze_answer = False, abort_if_fail = False)
 
 
 class ClickServer(Action):
-    def parse():
+    def parse(self):
         self.action = self.params["action_line"]
 
-    def execute():
+    def execute(self):
         self.sock.send(self.action.encode("utf-8"))
 
-    def analyze_result():
-        wait_server_answer(analyze_answer = True, abort_if_fail = True)
+    def analyze_result(self):
+        self.wait_server_answer(analyze_answer = True, abort_if_fail = True)
 
 
 class StartTestActionsServer(Action):
-    def parse():
+    def parse(self):
         self.action = self.params["action_line"]
 
-    def execute():
+    def execute(self):
         self.sock.send(self.action.encode("utf-8"))
 
-    def analyze_result():
-        wait_server_answer(analyze_answer = True, abort_if_fail = True)
+    def analyze_result(self):
+        self.wait_server_answer(analyze_answer = True, abort_if_fail = True)
 
 
 class MakeScreen(Action):
-    def parse():
+    def parse(self):
         self.screen_path = self.params["screen_path"]
         self.screen_name = self.params["arguments_line"]
         self.current_image_num = self.params["current_image_num"]
         self.current_try = self.params["current_try"]
 
-    def execute():
+    def execute(self):
         if self.screen_name is not None:
             make_screen(self.screen_path, self.current_try)
         else:
@@ -124,18 +117,18 @@ def make_screen(screen_path, current_try, screen_name = "", current_image_num = 
 
     if screen_name:
         screen = screen.convert("RGB")
-        screen.save(os.path.join(screen_path, "{:03}_{}_try_{:02}.jpg".format(current_image_num, screen_name, current_try)))
+        screen.save(os.path.join(screen_path, "{:03}_{}_try_{:02}.jpg".format(current_image_num, screen_name, current_try + 1)))
 
 
 class RecordVideo(Action):
-    def parse():
+    def parse(self):
         self.audio_device_name = self.params["audio_device_name"]
         self.video_path = self.params["output_path"]
         self.video_name = self.params["case"]["case"]
         self.resolution = self.params["args"].screen_resolution
         self.duration = int(self.params["arguments_line"])
 
-    def execute():
+    def execute(self):
         video_full_path = os.path.join(self.video_path, self.video_name + ".mp4")
         time_flag_value = strftime("%H:%M:%S", gmtime(int(self.duration)))
 
@@ -149,33 +142,35 @@ class RecordVideo(Action):
 
 
 class Move(Action):
-    def parse():
-        self.x, self.y = parse_arguments(self.params["arguments_line"])
+    def parse(self):
+        parsed_arguments = parse_arguments(self.params["arguments_line"])
+        self.x = parsed_arguments[0]
+        self.y = parsed_arguments[1]
 
-    def execute():
+    def execute(self):
         self.logger.info("Move to x = {}, y = {}".format(self.x, self.y))
         pyautogui.moveTo(int(self.x), int(self.y))
 
 
 class Click(Action):
-    def execute():
+    def execute(self):
         pyautogui.click()
         sleep(1)
 
 
 class DoSleep(Action):
-    def parse():
+    def parse(self):
         self.seconds = self.params["arguments_line"]
 
-    def execute():
+    def execute(self):
         sleep(int(self.seconds))
 
 
 class PressKeys(Action):
-    def parse():
+    def parse(self):
         self.keys_string = self.params["arguments_line"]
 
-    def execute():
+    def execute(self):
         keys = self.keys_string.split()
 
         for key in keys:
@@ -190,23 +185,29 @@ class PressKeys(Action):
 
 
 class SleepAndScreen(Action):
-    def parse():
-        self.initial_delay, self.number_of_screens, self.delay = parse_arguments(self.params["arguments_line"])
+    def parse(self):
+        parsed_arguments = parse_arguments(self.params["arguments_line"])
+        self.initial_delay = parsed_arguments[0]
+        self.number_of_screens = parsed_arguments[1]
+        self.delay = parsed_arguments[2]
         self.collect_traces = self.params["args"].collect_traces
-        self.screens_path = self.params["screens_path"]
+        self.screen_path = self.params["screen_path"]
+        self.screen_name = parsed_arguments[3]
         self.archive_path = self.params["archive_path"]
         self.archive_name = self.params["case"]["case"]
         self.start_collect_traces = self.params["args"].collect_traces
         self.current_image_num = self.params["current_image_num"]
+        self.current_try = self.params["current_try"]
 
-    def execute():
+    def execute(self):
         sleep(int(self.initial_delay))
 
         screen_number = 1
 
         while True:
-            make_screen(self.screen_path, self.screen_name, self.current_image_num)
+            make_screen(self.screen_path, self.current_try, self.screen_name, self.current_image_num)
             self.params["current_image_num"] += 1
+            self.current_image_num = self.params["current_image_num"]
             screen_number += 1
 
             if screen_number > int(self.number_of_screens):
@@ -262,19 +263,19 @@ def do_test_actions(game_name, logger):
 
 
 class StartTestActionsClient(Action):
-    def parse():
+    def parse(self):
         self.game_name = self.params["game_name"]
 
-    def execute():
+    def execute(self):
         gpu_view_thread = Thread(target=do_test_actions, args=(self.game_name.lower(), self.logger,))
         gpu_view_thread.daemon = True
         gpu_view_thread.start()
 
 
 class SkipIfDone(Action):
-    def parse():
+    def parse(self):
         self.commands_to_skip = self.params["action_line"]
 
-    def execute():
+    def execute(self):
         if self.state.prev_action_done:
             self.state.commands_to_skip += int(self.commands_to_skip)

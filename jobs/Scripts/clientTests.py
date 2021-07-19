@@ -4,13 +4,17 @@ import os
 from time import sleep
 import traceback
 import json
-from instance_state import InstanceState, ClientActionException
+from instance_state import InstanceState
+from actions import ClientActionException
+from client_actions import *
+import psutil
+from subprocess import PIPE, STDOUT
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
 from jobs_launcher.core.config import *
 
 
-def get_audio_device_name(logger):
+def get_audio_device_name():
     try:
         ff = FFmpeg()
         ffmpeg_exe = ff.get_ffmpeg_bin()
@@ -49,15 +53,16 @@ ACTIONS_MAPPING = {
     "retry": Retry,
     "next_case": NextCase,
     "click_server": ClickServer,
+    "start_test_actions_client": StartTestActionsClient,
     "start_test_actions_server": StartTestActionsServer,
     "make_screen": MakeScreen,
     "record_video": RecordVideo,
     "move": Move,
     "click": Click,
-    "do_sleep": DoSleep,
+    "sleep": DoSleep,
     "parse_keys": PressKeys,
     "sleep_and_screen": SleepAndScreen,
-    "do_test_actions": DoTestActions
+    "skip_if_done": SkipIfDone
 }
 
 
@@ -111,10 +116,10 @@ def start_client_side_tests(args, case, is_workable_condition, current_try):
             params = {}
             params["output_path"] = output_path
             params["screen_path"] = screen_path
+            params["archive_path"] = archive_path
             params["current_image_num"] = 1
             params["current_try"] = current_try
             params["audio_device_name"] = audio_device_name
-            params["screen_path"] = screen_path
             params["args"] = args
             params["case"] = case
             params["game_name"] = game_name
@@ -134,10 +139,8 @@ def start_client_side_tests(args, case, is_workable_condition, current_try):
                 params["arguments_line"] = arguments_line
 
                 if command in ACTIONS_MAPPING:
-                    command_object = ACTIONS_MAPPING[command](sock, params, instance_state, logger)
-                    command_object.parse()
-                    command_object.execute()
-                    command_object.analyze_result()
+                    command_object = ACTIONS_MAPPING[command](sock, params, instance_state, main_logger)
+                    command_object.do_action()
                 else:
                     raise ClientActionException("Unknown client command: {}".format(command))
 
@@ -155,13 +158,16 @@ def start_client_side_tests(args, case, is_workable_condition, current_try):
     finally:
         if not instance_state.prev_action_done:
             if instance_state.non_workable_client or instance_state.non_workable_server:
-                retry(sock)
+                command_object = Retry(sock, params, instance_state, main_logger)
+                command_object.do_action()
             else:
                 instance_state.is_aborted_client = True
-                abort(sock)
+                command_object = Abort(sock, params, instance_state, main_logger)
+                command_object.do_action()
         elif instance_state.is_aborted_server:
             pass
         else:
-            next_case(sock)
+            command_object = NextCase(sock, params, instance_state, main_logger)
+            command_object.do_action()
 
         sock.close()

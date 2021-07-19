@@ -14,7 +14,7 @@ class ServerActionException(Exception):
 
 
 class Action(ABC):
-	def __init__(self, sock, params, state, logger):
+    def __init__(self, sock, params, state, logger):
         self.sock = sock
         self.params = params
         self.state = state
@@ -33,12 +33,17 @@ class Action(ABC):
     def analyze_result(self):
         pass
 
+    def do_action(self):
+        self.parse()
+        self.execute()
+        self.analyze_result()
+
     def wait_server_answer(self, analyze_answer = True, abort_if_fail = True):
         response = self.sock.recv(1024).decode("utf-8")
 
-        logger.info("Server answer: {}".format(response))
+        self.logger.info("Server answer: {}".format(response))
 
-        if analyze_result:
+        if analyze_answer:
             self.state.prev_action_done = (response == "done")
 
             if response == "abort":
