@@ -1,4 +1,3 @@
-
 import socket
 import sys
 import os
@@ -148,7 +147,7 @@ def press_keys_server(sock, keys_string):
         sock.send("failed".encode("utf-8"))
 
 
-def finish(sock):
+def abort(sock):
     try:
         result = close_processes()
 
@@ -159,7 +158,7 @@ def finish(sock):
             main_logger.error("Failed to close processes")
             sock.send("failed".encode("utf-8"))
     except Exception as e:
-        main_logger.error("Failed to finish case execution: {}".format(str(e)))
+        main_logger.error("Failed to abort case execution: {}".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
         sock.send("failed".encode("utf-8"))
 
@@ -267,15 +266,14 @@ def gpuview(sock, start_collect_traces, archive_path, archive_name):
         sock.send("skip".encode("utf-8"))
 
 
-def start_server_side_tests(args, case, is_workable_condition, communication_port, current_try):
+def start_server_side_tests(args, case, is_workable_condition, current_try):
     archive_path = os.path.join(args.output, "gpuview")
-
     if not os.path.exists(archive_path):
         os.makedirs(archive_path)
 
     # configure socket
     sock = socket.socket()
-    sock.bind(("", int(communication_port)))
+    sock.bind(("", int(args.communication_port)))
     # max one connection
     sock.listen(1)
     connection, address = sock.accept()
@@ -283,7 +281,6 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
     request = connection.recv(1024).decode("utf-8")
 
     is_aborted = False
-    is_non_workable = False
     execute_test_actions = False
 
     game_name = args.game_name
@@ -342,12 +339,9 @@ def start_server_side_tests(args, case, is_workable_condition, communication_por
                 elif command == "next_case":
                     next_case(connection)
                     break
-                elif command == "finish":
-                    finish(connection)
-                    break
                 elif command == "abort":
                     is_aborted = True
-                    finish(connection)
+                    abort(connection)
                     raise Exception("Client sent abort command")
                 elif command == "retry":
                     is_aborted = True
