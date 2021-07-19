@@ -138,7 +138,6 @@ def prepare_empty_reports(args, current_conf):
                     )
 
                 elif "Server keys" in test_case_report["script_info"][i]:
-
                     test_case_report["script_info"][i] = test_case_report["script_info"][i].replace("<resolution>", args.screen_resolution.replace("x", ","))
 
             if case['status'] == 'skipped':
@@ -178,8 +177,7 @@ def save_results(args, case, cases, execution_time = 0.0, test_case_status = "",
         test_case_report["testing_start"] = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
         test_case_report["number_of_tries"] += 1
 
-        if test_case_status != "passed":
-            test_case_report["message"] = list(error_messages)
+        test_case_report["message"] = list(error_messages)
 
         if test_case_status == "passed" or test_case_status == "error":
             test_case_report["group_timeout_exceeded"] = False
@@ -219,6 +217,8 @@ def execute_tests(args, current_conf):
         cases = json.load(json_file)
 
     tool_path = args.server_tool if args.execution_type == "server" else args.client_tool
+
+    tool_path = os.path.abspath(tool_path)
 
     for case in [x for x in cases if not is_case_skipped(x, current_conf)]:
 
@@ -306,30 +306,37 @@ def execute_tests(args, current_conf):
                 status = 0
 
                 while status != 128:
-                    status = subprocess.call("taskkill /IM RemoteGameClient.exe")
+                    status = subprocess.call("taskkill /f /im RemoteGameClient.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
                 status = 0
 
                 while status != 128:
-                    status = subprocess.call("taskkill /IM RemoteGameServer.exe")
+                    status = subprocess.call("taskkill /f /im RemoteGameServer.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
                 current_try += 1
 
-                log_source_path = tool_path + ".log"
-                log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + "_{}".format(args.execution_type) + ".log")
+                try:
+                    log_source_path = tool_path + ".log"
+                    log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + "_{}".format(args.execution_type) + ".log")
 
-                with open(log_source_path, "r") as file:
-                    logs = file.read().replace('\0', '')
+                    with open(log_source_path, "r", encoding="utf-16-le") as file:
+                        logs = file.read()
 
-                if "Error:" in logs:
-                    error_messages.add("Error was mentioned in {} log".format(args.execution_type))
+                    # convert utf-2 le bom to utf-8
+                    logs = logs.decode("utf-16-le").encode("utf-8", "ignore")
 
-                    execution_time = time.time() - case_start_time
-                    save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
+                    if "Error:" in logs:
+                        error_messages.add("Error was mentioned in {} log".format(args.execution_type))
 
-                with open(log_destination_path, "a") as file:
-                    file.write("\n---------- Try #{} ----------\n\n".format(current_try))
-                    file.write(logs)
+                        execution_time = time.time() - case_start_time
+                        save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
+
+                    with open(log_destination_path, "a", encoding="utf-8") as file:
+                        file.write("\n---------- Try #{} ----------\n\n".format(current_try))
+                        file.write(logs)
+                except Exception as e:
+                    main_logger.error("Failed during logs saving. Exception: {}".format(str(e)))
+                    main_logger.error("Traceback: {}".format(traceback.format_exc()))
                     
                 if args.execution_type == "server":
                     global SECONDS_TO_CLOSE
