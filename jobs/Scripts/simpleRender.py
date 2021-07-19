@@ -319,20 +319,14 @@ def execute_tests(args, current_conf):
                     log_source_path = tool_path + ".log"
                     log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + "_{}".format(args.execution_type) + ".log")
 
-                    with open(log_source_path, "r", encoding="utf-16-le") as file:
+                    with open(log_source_path, "rb") as file:
                         logs = file.read()
 
-                    # convert utf-2 le bom to utf-8
-                    logs = logs.decode("utf-16-le").encode("utf-8", "ignore")
+                    # Firstly, convert utf-2 le bom to utf-8 with BOM. Secondly, remove BOM
+                    logs = logs.decode("utf-16-le").encode("utf-8").decode("utf-8-sig").encode("utf-8")
 
-                    if "Error:" in logs:
-                        error_messages.add("Error was mentioned in {} log".format(args.execution_type))
-
-                        execution_time = time.time() - case_start_time
-                        save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
-
-                    with open(log_destination_path, "a", encoding="utf-8") as file:
-                        file.write("\n---------- Try #{} ----------\n\n".format(current_try))
+                    with open(log_destination_path, "ab") as file:
+                        file.write("\n---------- Try #{} ----------\n\n".format(current_try).encode("utf-8"))
                         file.write(logs)
                 except Exception as e:
                     main_logger.error("Failed during logs saving. Exception: {}".format(str(e)))
