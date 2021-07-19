@@ -46,15 +46,16 @@ class Action(ABC):
 
         if analyze_answer:
             self.state.prev_action_done = (response == "done")
-
-            if response == "abort":
-                self.state.is_aborted_server = True
-                raise ServerActionException("Server sent abort status")
-            elif response == "failed":
-                if abort_if_fail:
-                    raise ServerActionException("Action failed on server side")
-            else:
-                raise ServerActionException("Unknown server status: {}".format(response))
+            
+            if not self.state.prev_action_done:
+                if response == "abort":
+                    self.state.is_aborted_server = True
+                    raise ServerActionException("Server sent abort status")
+                elif response == "failed":
+                    if abort_if_fail:
+                        raise ServerActionException("Action failed on server side")
+                else:
+                    raise ServerActionException("Unknown server status: {}".format(response))
 
 
     def server_action_decorator(func):
