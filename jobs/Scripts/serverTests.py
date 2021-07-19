@@ -108,6 +108,9 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                 params["arguments_line"] = arguments_line
 
                 if command in ACTIONS_MAPPING:
+                    if command == "start_test_actions_server":
+                        connection.send("done".encode("utf-8"))
+
                     command_object = ACTIONS_MAPPING[command](connection, params, instance_state, main_logger)
                     command_object.do_action()
                 else:

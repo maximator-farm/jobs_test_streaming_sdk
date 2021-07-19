@@ -126,7 +126,7 @@ def start_client_side_tests(args, case, is_workable_condition, current_try):
 
             for action in actions:
                 main_logger.info("\nCurrent action: {}".format(action))
-                main_logger.info("Current state: {}".format(instance_state.format_current_state()))
+                main_logger.info("Current state:\n{}".format(instance_state.format_current_state()))
 
                 parts = action.split(" ", 1)
                 command = parts[0]
