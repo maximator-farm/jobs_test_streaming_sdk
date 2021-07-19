@@ -133,8 +133,10 @@ def prepare_empty_reports(args, current_conf):
 
             for i in range(len(test_case_report["script_info"])):
                 if "Client keys" in test_case_report["script_info"][i]:
-                    test_case_report["script_info"][i] = "{base}".format(
-                        base=test_case_report["script_info"][i]
+                    test_case_report["script_info"][i] = "{base} -connectionurl {transport_protocol}://{ip_address}:1235".format(
+                        base=test_case_report["script_info"][i],
+                        transport_protocol=case["transport_protocol"],
+                        ip_address=args.ip_address
                     )
 
                 elif "Server keys" in test_case_report["script_info"][i]:
@@ -263,9 +265,11 @@ def execute_tests(args, current_conf):
 
                     execution_script = execution_script.replace("<resolution>", args.screen_resolution.replace("x", ","))
                 else:
-                    execution_script = "{tool} {keys}".format(
+                    execution_script = "{tool} {keys} -connectionurl {transport_protocol}://{ip_address}:1235".format(
                         tool=tool_path,
-                        keys=keys
+                        keys=keys,
+                        transport_protocol=case["transport_protocol"],
+                        ip_address=args.ip_address
                     )
 
                 execution_script_path = os.path.join(args.output, "{}.bat".format(case["case"]))
