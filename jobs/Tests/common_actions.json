@@ -10,7 +10,7 @@
         "click",
         "sleep 3",
         "make_screen borderlands_menu",
-        "press_keys_server \"down down enter   enter   c c   down enter\"",
+        "press_keys_server \"down down down enter   enter   c c   down enter\"",
         "sleep 30",
         "make_screen borderlands_benchmark",
         "sleep 5",
