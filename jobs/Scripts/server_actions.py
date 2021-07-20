@@ -50,12 +50,7 @@ class CheckWindow(Action):
             self.logger.info("Window {} was succesfully found".format(self.window_name))
 
             if self.is_game:
-                try:
-                    win32gui.ShowWindow(window, 4)
-                    win32gui.SetForegroundWindow(window)
-                except Exception as e1:
-                    self.logger.error("Failed to make window foreground: {}".format(str(e1)))
-                    self.logger.error("Traceback: {}".format(traceback.format_exc()))
+                make_window_foreground(window, self.logger)
         else:
             self.logger.error("Window {} wasn't found at all".format(self.window_name))
             return False
@@ -85,6 +80,15 @@ def close_processes(processes, logger):
             result = False
 
     return result
+
+
+def make_window_foreground(window, logger):
+    try:
+        win32gui.ShowWindow(window, 4)
+        win32gui.SetForegroundWindow(window)
+    except Exception as e:
+        logger.error("Failed to make window foreground: {}".format(str(e)))
+        logger.error("Traceback: {}".format(traceback.format_exc()))
 
 
 # press some sequence of keys on server
@@ -295,13 +299,23 @@ class GPUView(Action):
         self.collect_traces = self.params["args"].collect_traces
         self.archive_path = self.params["archive_path"]
         self.archive_name = self.params["case"]["case"]
+        self.processes = self.params["processes"]
 
     def execute(self):
         if self.collect_traces == "True":
             self.sock.send("start".encode("utf-8"))
 
             try:
-                collect_traces(self.archive_path, self.archive_name + "_server.zip")
+                # start collecting of gpuview traces in new thread
+                gpu_view_thread = Thread(target=collect_traces, args=(self.archive_path, self.archive_name + "_server.zip"))
+                gpu_view_thread.daemon = True
+                gpu_view_thread.start()
+
+                sleep(3)
+
+                # make game/benchmark process foreground
+                window = win32gui.FindWindow(None, self.processes[-1])
+                make_window_foreground(window)
             except Exception as e:
                 self.logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
                 self.logger.warning("Traceback: {}".format(traceback.format_exc()))

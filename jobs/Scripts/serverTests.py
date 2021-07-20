@@ -44,6 +44,68 @@ ACTIONS_MAPPING = {
 }
 
 
+def close_game(game_name):
+    edge_x = win32api.GetSystemMetrics(0)
+    edge_y = win32api.GetSystemMetrics(1)
+    center_x = edge_x / 2
+    center_y = edge_y / 2
+
+    if self.game_name == "valorant":
+        pydirectinput.keyDown("esc")
+        sleep(0.1)
+        pydirectinput.keyUp("esc")
+
+        sleep(1)
+
+        pyautogui.moveTo(edge_x - 20, 20)
+        sleep(0.2)
+        pyautogui.click()
+
+        pyautogui.moveTo(edge_x - 20, 80)
+        sleep(0.2)
+        pyautogui.click()
+
+        sleep(1)
+
+        pyautogui.moveTo(center_x, center_y + 210)
+        sleep(0.2)
+        pyautogui.click()
+
+        pyautogui.moveTo(center_x, center_y + 150)
+        sleep(0.2)
+        pyautogui.click()
+
+        sleep(1)
+
+        pyautogui.moveTo(center_x - 160, center_y + 135)
+        sleep(0.2)
+        pyautogui.click()
+
+        pyautogui.moveTo(center_x - 160, center_y + 75)
+        sleep(0.2)
+        pyautogui.click()
+
+        sleep(3)
+    elif self.game_name == "lol":
+        pydirectinput.keyDown("esc")
+        sleep(0.1)
+        pydirectinput.keyUp("esc")
+
+        sleep(1)
+
+        pyautogui.moveTo(center_x - 340, center_y + 300)
+        sleep(0.2)
+        pyautogui.click()
+
+        sleep(1)
+
+        pyautogui.moveTo(center_x - 130, center_y - 50)
+        sleep(0.2)
+        pyautogui.click()
+
+        sleep(3)
+
+
 # Server receives commands from client and executes them
 # Server doesn't decide to retry case or do next test case. Exception: fail on server side which generates abort on server side
 def start_server_side_tests(args, case, is_workable_condition, current_try):
@@ -99,8 +161,10 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
             while instance_state.wait_next_command:
                 try:
                     request = connection.recv(1024).decode("utf-8")
-                    # if new command received server must stop to execute test actions execution
-                    instance_state.executing_test_actions = False
+
+                    if not request.startswith("gpuview"):
+                        # if new command received server must stop to execute test actions execution. Exception: gpuview command
+                        instance_state.executing_test_actions = False
                 except Exception as e:
                     # execute test actions if it's requested by client and new command doesn't received
                     if instance_state.executing_test_actions:
@@ -162,6 +226,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
         else:
             main_logger.info("Time left from the latest restart of game: {}".format(time() - state["restart_time"]))
             if args.game_name.lower() in SECONDS_TO_CLOSE and (time() - state["restart_time"]) > SECONDS_TO_CLOSE[args.game_name.lower()]:
+                close_game(game_name.lower())
                 result = close_processes(processes, main_logger)
                 main_logger.info("Processes were closed with status: {}".format(result))
                 state["restart_time"] = time()

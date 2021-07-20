@@ -22,8 +22,7 @@
 
     "valorant_actions": [
         "check_game \"VALORANT  \" \"VALORANT-Win64-Shipping.exe\"",
-        "skip_if_done 26",
-        "sleep 180",
+        "skip_if_done 25",
         "execute_cmd \"C:\\JN\\VALORANT.exe - Shortcut.lnk\"",
         "sleep 15",
         "click_server center_0 center_0",
@@ -105,8 +104,7 @@
     "lol_actions": [
         "check_window \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
-        "skip_if_done 21",
-        "sleep 300",
+        "skip_if_done 20",
         "execute_cmd \"C:\\JN\\League of Legends.lnk\"",
         "sleep 45",
         "click_server center_-520 center_-340",
