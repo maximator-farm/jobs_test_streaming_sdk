@@ -125,6 +125,10 @@ def start_client_side_tests(args, case, is_workable_condition, current_try):
             params["game_name"] = game_name
 
             for action in actions:
+                if instance_state.commands_to_skip > 0:
+                    instance_state.commands_to_skip -= 1
+                    continue
+
                 main_logger.info("\nCurrent action: {}".format(action))
                 main_logger.info("Current state:\n{}".format(instance_state.format_current_state()))
 
