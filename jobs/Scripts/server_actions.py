@@ -94,7 +94,9 @@ class PressKeysServer(Action):
     def execute(self):
         keys = self.keys_string.split()
 
-        for key in keys:
+        for i in range(len(keys)):
+            key = keys[i]
+
             duration = 0
 
             if "_" in key:
@@ -135,10 +137,12 @@ class PressKeysServer(Action):
                 for key_to_press in keys_to_press:
                     pydirectinput.keyUp(key_to_press)
 
-            if "enter" in key:
-                sleep(2)
-            else:
-                sleep(1)
+            # if it isn't the last key - make a delay
+            if i != len(keys) - 1:
+                if "enter" in key:
+                    sleep(2)
+                else:
+                    sleep(1)
 
         return True
 
@@ -208,7 +212,7 @@ class ClickServer(Action):
         self.logger.info("Click at x = {}, y = {}".format(x, y))
 
         pyautogui.moveTo(x, y)
-        sleep(1)
+        sleep(0.2)
         pyautogui.click()
 
         return True
@@ -282,7 +286,7 @@ class GPUView(Action):
             self.sock.send("start".encode("utf-8"))
 
             try:
-                collect_traces(archive_path, archive_name + "_server.zip")
+                collect_traces(self.archive_path, self.archive_name + "_server.zip")
             except Exception as e:
                 self.logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
                 self.logger.warning("Traceback: {}".format(traceback.format_exc()))

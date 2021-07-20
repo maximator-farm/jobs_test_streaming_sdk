@@ -150,7 +150,6 @@ class Move(Action):
 class Click(Action):
     def execute(self):
         pyautogui.click()
-        sleep(1)
 
 
 class DoSleep(Action):
@@ -169,15 +168,19 @@ class PressKeys(Action):
     def execute(self):
         keys = self.keys_string.split()
 
-        for key in keys:
+        for i in range(len(keys)):
+            key = keys[i]
+
             self.logger.info("Press: {}".format(key))
             pyautogui.press(key)
 
-            # pressing of enter can require more long delay (e.g. opening of new tab/window)
-            if "enter" in key:
-                sleep(2)
-            else:
-                sleep(1)
+            # if it isn't the last key - make a delay
+            if i != len(keys) - 1:
+                # pressing of enter can require more long delay (e.g. opening of new tab/window)
+                if "enter" in key:
+                    sleep(2)
+                else:
+                    sleep(1)
 
 
 class SleepAndScreen(Action):
