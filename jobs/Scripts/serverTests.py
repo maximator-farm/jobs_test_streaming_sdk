@@ -55,35 +55,47 @@ def close_game(game_name):
         sleep(0.1)
         pydirectinput.keyUp("esc")
 
-        sleep(1)
+        sleep(2)
 
         pyautogui.moveTo(edge_x - 20, 20)
+        sleep(2)
+        pyautogui.mouseDown()
         sleep(0.2)
-        pyautogui.click()
+        pyautogui.mouseUp()
 
         pyautogui.moveTo(edge_x - 20, 80)
+        sleep(2)
+        pyautogui.mouseDown()
         sleep(0.2)
-        pyautogui.click()
+        pyautogui.mouseUp()
 
         sleep(1)
 
         pyautogui.moveTo(center_x, center_y + 210)
+        sleep(2)
+        pyautogui.mouseDown()
         sleep(0.2)
-        pyautogui.click()
+        pyautogui.mouseUp()
 
         pyautogui.moveTo(center_x, center_y + 150)
         sleep(0.2)
-        pyautogui.click()
+        pyautogui.mouseDown()
+        sleep(0.2)
+        pyautogui.mouseUp()
 
         sleep(1)
 
         pyautogui.moveTo(center_x - 160, center_y + 135)
+        sleep(2)
+        pyautogui.mouseDown()
         sleep(0.2)
-        pyautogui.click()
+        pyautogui.mouseUp()
 
         pyautogui.moveTo(center_x - 160, center_y + 75)
+        sleep(2)
+        pyautogui.mouseDown()
         sleep(0.2)
-        pyautogui.click()
+        pyautogui.mouseUp()
 
         sleep(3)
     elif game_name == "lol":
@@ -91,17 +103,25 @@ def close_game(game_name):
         sleep(0.1)
         pydirectinput.keyUp("esc")
 
-        sleep(1)
+        sleep(2)
 
-        pyautogui.moveTo(center_x - 350, center_y + 320)
+        pyautogui.moveTo(center_x - 360, center_y + 335)
         sleep(0.2)
-        pyautogui.click()
+        pyautogui.mouseDown()
+        sleep(0.2)
+        pyautogui.mouseUp()
+        sleep(0.2)
+        pyautogui.mouseDown()
+        sleep(0.2)
+        pyautogui.mouseUp()
 
         sleep(1)
 
         pyautogui.moveTo(center_x - 130, center_y - 50)
         sleep(0.2)
-        pyautogui.click()
+        pyautogui.mouseDown()
+        sleep(0.2)
+        pyautogui.mouseUp()
 
         sleep(3)
 
@@ -162,7 +182,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                 try:
                     request = connection.recv(1024).decode("utf-8")
 
-                    if not request.startswith("gpuview"):
+                    if "gpuview" not in request:
                         # if new command received server must stop to execute test actions execution. Exception: gpuview command
                         instance_state.executing_test_actions = False
                 except Exception as e:

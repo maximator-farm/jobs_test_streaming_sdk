@@ -49,6 +49,8 @@ class CheckWindow(Action):
         if window is not None and window != 0:
             self.logger.info("Window {} was succesfully found".format(self.window_name))
 
+            self.params["last_window"] = self.window_name
+
             if self.is_game:
                 make_window_foreground(window, self.logger)
         else:
@@ -292,6 +294,9 @@ class DoTestActions(Action):
             self.logger.error("Failed to do test actions: {}".format(str(e)))
             self.logger.error("Traceback: {}".format(traceback.format_exc()))
 
+    def analyze_result(self):
+        self.state.executing_test_actions = True
+
 
 # collect gpuview traces on server side
 class GPUView(Action):
@@ -300,6 +305,7 @@ class GPUView(Action):
         self.archive_path = self.params["archive_path"]
         self.archive_name = self.params["case"]["case"]
         self.processes = self.params["processes"]
+        self.last_window = self.params["last_window"]
 
     def execute(self):
         if self.collect_traces == "True":
@@ -314,7 +320,7 @@ class GPUView(Action):
                 sleep(3)
 
                 # make game/benchmark process foreground
-                window = win32gui.FindWindow(None, self.processes[-1])
+                window = win32gui.FindWindow(None, self.processes[self.last_window])
                 make_window_foreground(window)
             except Exception as e:
                 self.logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
