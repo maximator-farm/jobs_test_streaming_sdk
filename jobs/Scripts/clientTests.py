@@ -66,6 +66,8 @@ def start_client_side_tests(args, case, is_workable_condition, audio_device_name
             main_logger.info("Could not connect to server. Try it again")
             sleep(1)
 
+    params = {}
+
     try:
         # create state object
         instance_state = ClientInstanceState()
@@ -96,7 +98,6 @@ def start_client_side_tests(args, case, is_workable_condition, audio_device_name
                     actions = json.load(common_actions_file)[actions_key]
 
             # build params dict with all necessary variables for test actions
-            params = {}
             params["output_path"] = output_path
             params["screen_path"] = screen_path
             params["archive_path"] = archive_path

@@ -93,7 +93,7 @@ def close_game(game_name):
 
         sleep(1)
 
-        pyautogui.moveTo(center_x - 340, center_y + 300)
+        pyautogui.moveTo(center_x - 350, center_y + 320)
         sleep(0.2)
         pyautogui.click()
 
@@ -122,15 +122,16 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
 
     request = connection.recv(1024).decode("utf-8")
 
-    game_name = args.game_name
+    game_name = args.game_name.lower()
 
     global GAMES_WITH_TIMEOUTS
 
     # some games can kick by AFK reason
     # press each space before each test case to prevent it
-    if game_name.lower() in GAMES_WITH_TIMEOUTS:
+    if game_name in GAMES_WITH_TIMEOUTS:
         pydirectinput.press("space")
 
+    params = {}
     processes = {}
 
     try:
@@ -149,7 +150,6 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
             connection.setblocking(False)
 
             # build params dict with all necessary variables for test actions
-            params = {}
             params["archive_path"] = archive_path
             params["current_try"] = current_try
             params["args"] = args
