@@ -145,11 +145,13 @@ class Move(Action):
     def execute(self):
         self.logger.info("Move to x = {}, y = {}".format(self.x, self.y))
         pyautogui.moveTo(int(self.x), int(self.y))
+        sleep(0.2)
 
 
 class Click(Action):
     def execute(self):
         pyautogui.click()
+        sleep(0.2)
 
 
 class DoSleep(Action):

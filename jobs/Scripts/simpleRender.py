@@ -13,6 +13,7 @@ from serverTests import start_server_side_tests
 from queue import Queue
 from subprocess import PIPE, STDOUT
 from threading import Thread
+from pyffmpeg import FFmpeg
 import copy
 import traceback
 import time
@@ -27,6 +28,36 @@ from jobs_launcher.core.system_info import get_gpu
 
 # process of Streaming SDK client / server
 PROCESS = None
+
+
+def get_audio_device_name():
+    try:
+        ff = FFmpeg()
+        ffmpeg_exe = ff.get_ffmpeg_bin()
+
+        ffmpeg_command = "{} -list_devices true -f dshow -i dummy".format(ffmpeg_exe)
+
+        ffmpeg_process = psutil.Popen(ffmpeg_command, stdout=PIPE, stderr=STDOUT, shell=True)
+
+        audio_device = None
+
+        for line in ffmpeg_process.stdout:
+            line = line.decode("utf8")
+            if "Stereo Mix" in line:
+                audio_device = line.split("\"")[1]
+                break
+        else:
+            raise Exception("Audio device wasn't found")
+
+        main_logger.info("Found audio device: {}".format(audio_device))
+
+        return audio_device
+    except Exception as e:
+        main_logger.error("Can't get audio device name. Use default name instead")
+        main_logger.error(str(e))
+        main_logger.error("Traceback:\n{}".format(traceback.format_exc()))
+
+        return "Stereo Mix (Realtek High Definition Audio)"
 
 
 def copy_test_cases(args):
@@ -187,6 +218,8 @@ def execute_tests(args, current_conf):
 
     tool_path = os.path.abspath(tool_path)
 
+    audio_device_name = get_audio_device_name()
+
     for case in [x for x in cases if not is_case_skipped(x, current_conf)]:
 
         case_start_time = time.time()
@@ -248,7 +281,7 @@ def execute_tests(args, current_conf):
                 if args.execution_type == "server":
                     start_server_side_tests(args, case, is_workable_condition, current_try)
                 else:
-                    start_client_side_tests(args, case, is_workable_condition, current_try)
+                    start_client_side_tests(args, case, is_workable_condition, audio_device_name, current_try)
 
                 execution_time = time.time() - case_start_time
                 save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
