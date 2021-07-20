@@ -14,14 +14,18 @@ from utils import close_process, collect_traces
 from threading import Thread
 from instance_state import ServerInstanceState
 from server_actions import *
-sys.path.append(os.path.abspath(os.path.join(
-    os.path.dirname(__file__), os.path.pardir, os.path.pardir)))
+
+ROOT_PATH = os.path.abspath(os.path.join(
+    os.path.dirname(__file__), os.path.pardir, os.path.pardir))
+sys.path.append(ROOT_PATH)
 from jobs_launcher.core.config import *
 
 pyautogui.FAILSAFE = False
 
-
 GAMES_WITH_TIMEOUTS = ['apexlegends']
+
+# some games should be rebooted sometimes
+SECONDS_TO_CLOSE = {"valorant": 3000, "lol": 3000}
 
 
 ACTIONS_MAPPING = {
@@ -59,6 +63,8 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
     if game_name.lower() in GAMES_WITH_TIMEOUTS:
         pydirectinput.press("space")
 
+    processes = {}
+
     try:
         instance_state = ServerInstanceState()
 
@@ -79,7 +85,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
             params["args"] = args
             params["case"] = case
             params["game_name"] = game_name
-            params["processes"] = {}
+            params["processes"] = processes
 
             while instance_state.wait_next_command:
                 try:
@@ -127,4 +133,22 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
 
         raise e
     finally:
+        global SECONDS_TO_CLOSE
+        
+        with open(os.path.join(ROOT_PATH, "state.py"), "r") as json_file:
+            state = json.load(json_file)
+
+        if state["restart_time"] == 0:
+            state["restart_time"] = time.time()
+            main_logger.info("Reboot time was set")
+        else:
+            main_logger.info("Time left from the latest restart of game: {}".format(time.time() - state["restart_time"]))
+            if args.game_name.lower() in SECONDS_TO_CLOSE and (time.time() - state["restart_time"]) > SECONDS_TO_CLOSE[args.game_name.lower()]:
+                result = close_processes(processes, main_logger)
+                main_logger.info("Processes were closed with status: {}".format(result))
+                state["restart_time"] = time.time()
+                
+        with open(os.path.join(ROOT_PATH, "state.py"), "w+") as json_file:
+            json.dump(state, json_file, indent=4)
+
         connection.close()

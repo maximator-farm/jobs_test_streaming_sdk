@@ -163,7 +163,8 @@ class DoSleep(Action):
 
 class PressKeys(Action):
     def parse(self):
-        self.keys_string = self.params["arguments_line"]
+        parsed_arguments = parse_arguments(self.params["arguments_line"])
+        self.keys_string = parsed_arguments[0]
 
     def execute(self):
         keys = self.keys_string.split()

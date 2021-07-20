@@ -87,7 +87,8 @@ def close_processes(processes, logger):
 
 class PressKeysServer(Action):
     def parse(self):
-        self.keys_string = self.params["arguments_line"]
+        parsed_arguments = parse_arguments(self.params["arguments_line"])
+        self.keys_string = parsed_arguments[0]
 
     @Action.server_action_decorator
     def execute(self):

@@ -9,7 +9,7 @@ from shutil import copyfile, move, which
 import sys
 from utils import is_case_skipped, close_process
 from clientTests import start_client_side_tests
-from serverTests import start_server_side_tests, close_processes
+from serverTests import start_server_side_tests
 from queue import Queue
 from subprocess import PIPE, STDOUT
 from threading import Thread
@@ -25,10 +25,8 @@ from jobs_launcher.core.config import *
 from jobs_launcher.core.system_info import get_gpu
 
 
-# port throuth which client and server communicate to synchronize execution of tests
+# process of Streaming SDK client / server
 PROCESS = None
-# some games should be rebooted sometimes
-SECONDS_TO_CLOSE = {"valorant": 3000, "lol": 3000}
 
 
 def copy_test_cases(args):
@@ -293,25 +291,6 @@ def execute_tests(args, current_conf):
                 except Exception as e:
                     main_logger.error("Failed during logs saving. Exception: {}".format(str(e)))
                     main_logger.error("Traceback: {}".format(traceback.format_exc()))
-                    
-                if args.execution_type == "server":
-                    global SECONDS_TO_CLOSE
-                    
-                    with open(os.path.join(ROOT_PATH, "state.py"), "r") as json_file:
-                        state = json.load(json_file)
-
-                    if state["restart_time"] == 0:
-                        state["restart_time"] = time.time()
-                        main_logger.info("Reboot time was set")
-                    else:
-                        main_logger.info("Time left from the latest restart of game: {}".format(time.time() - state["restart_time"]))
-                        if args.game_name.lower() in SECONDS_TO_CLOSE and (time.time() - state["restart_time"]) > SECONDS_TO_CLOSE[args.game_name.lower()]:
-                            result = close_processes()
-                            main_logger.info("Processes were closed with status: {}".format(result))
-                            state["restart_time"] = time.time()
-                            
-                    with open(os.path.join(ROOT_PATH, "state.py"), "w+") as json_file:
-                        json.dump(state, json_file, indent=4)  
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1
