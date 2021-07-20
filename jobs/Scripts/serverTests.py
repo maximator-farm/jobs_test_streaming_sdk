@@ -100,7 +100,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                         sleep(1)
                     continue
 
-                main_logger.info("\nReceived action: {}".format(request))
+                main_logger.info("Received action: {}".format(request))
                 main_logger.info("Current state:\n{}".format(instance_state.format_current_state()))
 
                 parts = request.split(" ", 1)
@@ -122,6 +122,8 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                     command_object.do_action()
                 else:
                     raise ServerActionException("Unknown server command: {}".format(command))
+
+                main_logger.info("Finish action execution\n")
 
         else:
             raise Exception("Unknown client request: {}".format(request))

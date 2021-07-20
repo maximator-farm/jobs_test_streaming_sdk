@@ -58,7 +58,7 @@ def start_client_side_tests(args, case, is_workable_condition, audio_device_name
             break
         except Exception:
             main_logger.info("Could not connect to server. Try it again")
-            sleep(5)
+            sleep(1)
 
     try:
         instance_state = ClientInstanceState()
@@ -97,7 +97,7 @@ def start_client_side_tests(args, case, is_workable_condition, audio_device_name
                     instance_state.commands_to_skip -= 1
                     continue
 
-                main_logger.info("\nCurrent action: {}".format(action))
+                main_logger.info("Current action: {}".format(action))
                 main_logger.info("Current state:\n{}".format(instance_state.format_current_state()))
 
                 parts = action.split(" ", 1)
@@ -116,6 +116,8 @@ def start_client_side_tests(args, case, is_workable_condition, audio_device_name
                     command_object.do_action()
                 else:
                     raise ClientActionException("Unknown client command: {}".format(command))
+
+                main_logger.info("Finish action execution\n")
 
         elif response == "fail":
             instance_state.non_workable_server = True

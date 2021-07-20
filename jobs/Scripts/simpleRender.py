@@ -218,7 +218,10 @@ def execute_tests(args, current_conf):
 
     tool_path = os.path.abspath(tool_path)
 
-    audio_device_name = get_audio_device_name()
+    if args.execution_type == "client":
+        audio_device_name = get_audio_device_name()
+    else:
+        audio_device_name = None
 
     for case in [x for x in cases if not is_case_skipped(x, current_conf)]:
 
@@ -274,7 +277,7 @@ def execute_tests(args, current_conf):
                 main_logger.info("Start execution_type depended script")
 
                 # Wait a bit to launch streaming SDK client/server
-                time.sleep(5)
+                time.sleep(3)
 
                 main_logger.info("Screen resolution: width = {}, height = {}".format(win32api.GetSystemMetrics(0), win32api.GetSystemMetrics(1)))
 
