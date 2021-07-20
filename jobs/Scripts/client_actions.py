@@ -226,26 +226,6 @@ class SleepAndScreen(Action):
         self.current_try = self.params["current_try"]
 
     def execute(self):
-        try:
-            self.sock.send("gpuview".encode("utf-8"))
-            response = self.sock.recv(1024).decode("utf-8")
-            self.logger.info("Server response for 'gpuview' action: {}".format(response))
-
-            if self.start_collect_traces == "True":
-                # start collecting of gpuview traces in new thread
-                gpu_view_thread = Thread(target=collect_traces, args=(self.archive_path, self.archive_name + "_client.zip"))
-                gpu_view_thread.daemon = True
-                gpu_view_thread.start()
-
-                sleep(3)
-
-                pyautogui.moveTo(1000, 800)
-                sleep(0.2)
-                pyautogui.click()
-        except Exception as e:
-            self.logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
-            self.logger.warning("Traceback: {}".format(traceback.format_exc()))
-
         sleep(int(self.initial_delay))
 
         screen_number = 1
@@ -260,6 +240,17 @@ class SleepAndScreen(Action):
                 break
             else:
                 sleep(int(self.delay))
+                
+        try:
+            self.sock.send("gpuview".encode("utf-8"))
+            response = self.sock.recv(1024).decode("utf-8")
+            self.logger.info("Server response for 'gpuview' action: {}".format(response))
+
+            if self.start_collect_traces == "True":
+                collect_traces(self.archive_path, self.archive_name + "_client.zip")
+        except Exception as e:
+            self.logger.warning("Failed to collect GPUView traces: {}".format(str(e)))
+            self.logger.warning("Traceback: {}".format(traceback.format_exc()))
 
 
 def do_test_actions(game_name, logger):
