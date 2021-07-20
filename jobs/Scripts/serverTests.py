@@ -26,7 +26,7 @@ pyautogui.FAILSAFE = False
 GAMES_WITH_TIMEOUTS = ['apexlegends']
 
 # some games should be rebooted sometimes
-SECONDS_TO_CLOSE = {"valorant": 3000, "lol": 3000}
+SECONDS_TO_CLOSE = {"valorant": 1, "lol": 1}
 
 
 # mapping of commands and their implementations
