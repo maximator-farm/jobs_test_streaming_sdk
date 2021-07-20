@@ -13,6 +13,8 @@ from actions import *
 pyautogui.FAILSAFE = False
 
 
+# [Server action] send request to execute some cmd command on server
+# [Result] wait answer from server. Answer must be 'done'
 class ExecuteCMD(Action):
     def parse(self):
         self.action = self.params["action_line"]
@@ -24,6 +26,8 @@ class ExecuteCMD(Action):
         self.wait_server_answer(analyze_answer = True, abort_if_fail = True)
 
 
+# [Server action] send request to check what some window exists
+# [Result] wait answer from server. Answer can be any
 class CheckWindow(Action):
     def parse(self):
         self.action = self.params["action_line"]
@@ -35,6 +39,8 @@ class CheckWindow(Action):
         self.wait_server_answer(analyze_answer = True, abort_if_fail = False)
 
 
+# [Server action] send request to press some sequence of keys on server
+# [Result] wait answer from server. Answer must be 'done'
 class PressKeysServer(Action):
     def parse(self):
         self.action = self.params["action_line"]
@@ -46,6 +52,8 @@ class PressKeysServer(Action):
         self.wait_server_answer(analyze_answer = True, abort_if_fail = True)
 
 
+# [Server action] send request to abort the current case execution
+# [Result] wait answer from server. Answer can be any
 class Abort(Action):
     def execute(self):
         self.sock.send("abort".encode("utf-8"))
@@ -54,6 +62,8 @@ class Abort(Action):
         self.wait_server_answer(analyze_answer = False, abort_if_fail = False)
 
 
+# [Server action] send request to retry the current case execution
+# [Result] wait answer from server. Answer can be any
 class Retry(Action):
     def execute(self):
         self.sock.send("retry".encode("utf-8"))
@@ -62,6 +72,8 @@ class Retry(Action):
         self.wait_server_answer(analyze_answer = False, abort_if_fail = False)
 
 
+# [Server action] send request to start the next test case
+# [Result] wait answer from server. Answer can be any
 class NextCase(Action):
     def execute(self):
         self.sock.send("next_case".encode("utf-8"))
@@ -70,6 +82,8 @@ class NextCase(Action):
         self.wait_server_answer(analyze_answer = False, abort_if_fail = False)
 
 
+# [Server action] send request to do click on server side
+# [Result] wait answer from server. Answer must be 'done'
 class ClickServer(Action):
     def parse(self):
         self.action = self.params["action_line"]
@@ -81,6 +95,8 @@ class ClickServer(Action):
         self.wait_server_answer(analyze_answer = True, abort_if_fail = True)
 
 
+# [Server action] send request to start doing test actions on server side
+# [Result] wait answer from server. Answer must be 'done'
 class StartTestActionsServer(Action):
     def parse(self):
         self.action = self.params["action_line"]
@@ -92,6 +108,7 @@ class StartTestActionsServer(Action):
         self.wait_server_answer(analyze_answer = True, abort_if_fail = True)
 
 
+# [Client action] do screenshot
 class MakeScreen(Action):
     def parse(self):
         self.screen_path = self.params["screen_path"]
@@ -115,6 +132,7 @@ def make_screen(screen_path, current_try, screen_name = "", current_image_num = 
         screen.save(os.path.join(screen_path, "{:03}_{}_try_{:02}.jpg".format(current_image_num, screen_name, current_try + 1)))
 
 
+# [Client action] record video
 class RecordVideo(Action):
     def parse(self):
         self.audio_device_name = self.params["audio_device_name"]
@@ -136,6 +154,7 @@ class RecordVideo(Action):
         self.logger.info("Finish to record video")
 
 
+# [Client action] move mouse to the specified position
 class Move(Action):
     def parse(self):
         parsed_arguments = parse_arguments(self.params["arguments_line"])
@@ -148,12 +167,14 @@ class Move(Action):
         sleep(0.2)
 
 
+# [Client action] do click on client side
 class Click(Action):
     def execute(self):
         pyautogui.click()
         sleep(0.2)
 
 
+# [Client action] execute sleep on client side
 class DoSleep(Action):
     def parse(self):
         self.seconds = self.params["arguments_line"]
@@ -162,6 +183,7 @@ class DoSleep(Action):
         sleep(int(self.seconds))
 
 
+# [Client action] press some sequence of keys on client
 class PressKeys(Action):
     def parse(self):
         parsed_arguments = parse_arguments(self.params["arguments_line"])
@@ -185,6 +207,8 @@ class PressKeys(Action):
                     sleep(1)
 
 
+# [Client action] make sequence of screens with delay. It supports initial delay before the first test case
+# Starts collecting of the traces if it's required
 class SleepAndScreen(Action):
     def parse(self):
         parsed_arguments = parse_arguments(self.params["arguments_line"])
@@ -263,6 +287,7 @@ def do_test_actions(game_name, logger):
         logger.error("Traceback: {}".format(traceback.format_exc()))
 
 
+# [Client action] start doing test actions on client side
 class StartTestActionsClient(Action):
     def parse(self):
         self.game_name = self.params["game_name"]
@@ -273,6 +298,7 @@ class StartTestActionsClient(Action):
         gpu_view_thread.start()
 
 
+# [Client action] skip N next cases if the previous action was successfully done (e.g. skip actions to open game / benchmark if it's already opened)
 class SkipIfDone(Action):
     def parse(self):
         self.commands_to_skip = self.params["arguments_line"]

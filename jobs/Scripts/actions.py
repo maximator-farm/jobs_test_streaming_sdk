@@ -34,11 +34,13 @@ class Action(ABC):
     def analyze_result(self):
         pass
 
+    # call parse, execute and analyze_result functions one by one
     def do_action(self):
         self.parse()
         self.execute()
         self.analyze_result()
 
+    # default function to analyze answer of server
     def wait_server_answer(self, analyze_answer = True, abort_if_fail = True):
         response = self.sock.recv(1024).decode("utf-8")
 
@@ -58,6 +60,7 @@ class Action(ABC):
                     raise ServerActionException("Unknown server status: {}".format(response))
 
 
+    # decorator to send answer to client
     def server_action_decorator(func):
         def server_action_decorator_impl(self):
             try:

@@ -29,6 +29,7 @@ GAMES_WITH_TIMEOUTS = ['apexlegends']
 SECONDS_TO_CLOSE = {"valorant": 3000, "lol": 3000}
 
 
+# mapping of commands and their implementations
 ACTIONS_MAPPING = {
     "execute_cmd": ExecuteCMD,
     "check_window": CheckWindow,
@@ -43,6 +44,8 @@ ACTIONS_MAPPING = {
 }
 
 
+# Server receives commands from client and executes them
+# Server doesn't decide to retry case or do next test case. Exception: fail on server side which generates abort on server side
 def start_server_side_tests(args, case, is_workable_condition, current_try):
     archive_path = os.path.join(args.output, "gpuview")
     if not os.path.exists(archive_path):
@@ -61,14 +64,18 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
 
     global GAMES_WITH_TIMEOUTS
 
+    # some games can kick by AFK reason
+    # press each space before each test case to prevent it
     if game_name.lower() in GAMES_WITH_TIMEOUTS:
         pydirectinput.press("space")
 
     processes = {}
 
     try:
+        # create state object
         instance_state = ServerInstanceState()
 
+        # server waits ready from client
         if request == "ready":
 
             if is_workable_condition():
@@ -88,11 +95,14 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
             params["game_name"] = game_name
             params["processes"] = processes
 
+            # while client doesn't sent 'next_case' command server waits next command
             while instance_state.wait_next_command:
                 try:
                     request = connection.recv(1024).decode("utf-8")
+                    # if new command received server must stop to execute test actions execution
                     instance_state.executing_test_actions = False
                 except Exception as e:
+                    # execute test actions if it's requested by client and new command doesn't received
                     if instance_state.executing_test_actions:
                         command_object = DoTestActions(sock, params, instance_state, main_logger)
                         command_object.do_action()
@@ -103,6 +113,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                 main_logger.info("Received action: {}".format(request))
                 main_logger.info("Current state:\n{}".format(instance_state.format_current_state()))
 
+                # split action to command and arguments
                 parts = request.split(" ", 1)
                 command = parts[0]
                 if len(parts) > 1:
@@ -114,7 +125,9 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                 params["command"] = command
                 params["arguments_line"] = arguments_line
 
+                # find necessary command and execute it
                 if command in ACTIONS_MAPPING:
+                    # if client requests to start doing test actions server must answer immediately and starts to execute them
                     if command == "start_test_actions_server":
                         connection.send("done".encode("utf-8"))
 
@@ -128,6 +141,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
         else:
             raise Exception("Unknown client request: {}".format(request))
     except Exception as e:
+        # Unexpected exception. Generate abort status on server side
         main_logger.error("Fatal error. Case will be aborted:".format(str(e)))
         main_logger.error("Traceback: {}".format(traceback.format_exc()))
 
@@ -136,6 +150,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
 
         raise e
     finally:
+        # restart game if it's required
         global SECONDS_TO_CLOSE
         
         with open(os.path.join(ROOT_PATH, "state.py"), "r") as json_file:

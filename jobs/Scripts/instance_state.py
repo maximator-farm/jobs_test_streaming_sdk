@@ -1,4 +1,5 @@
 class ClientInstanceState:
+    # client stores state of the both client and server
     def __init__(self):
         self.prev_action_done = True
         self.non_workable_client = False
@@ -19,6 +20,7 @@ class ClientInstanceState:
 
 
 class ServerInstanceState:
+    # server stores only its state
     def __init__(self):
         self.wait_next_command = True
         self.is_aborted = False

@@ -16,6 +16,7 @@ from actions import *
 pyautogui.FAILSAFE = False
 
 
+# execute some cmd command on server (e.g. open game/benchmark)
 class ExecuteCMD(Action):
     def parse(self):
         self.processes = self.params["processes"]
@@ -30,6 +31,7 @@ class ExecuteCMD(Action):
         return True
 
 
+# check what some window exists (it allows to check that some game/benchmark is opened)
 class CheckWindow(Action):
     def parse(self):
         self.processes = self.params["processes"]
@@ -85,6 +87,7 @@ def close_processes(processes, logger):
     return result
 
 
+# press some sequence of keys on server
 class PressKeysServer(Action):
     def parse(self):
         parsed_arguments = parse_arguments(self.params["arguments_line"])
@@ -94,6 +97,12 @@ class PressKeysServer(Action):
     def execute(self):
         keys = self.keys_string.split()
 
+        # press keys one by one
+        # possible formats
+        # * space - press space
+        # * space_10 - press space down for 10 seconds
+        # * space+shift - press space and shift
+        # * space+shift:10 - press space and shift 10 times
         for i in range(len(keys)):
             key = keys[i]
 
@@ -147,6 +156,7 @@ class PressKeysServer(Action):
         return True
 
 
+# abort the current case execution (all opened processes of game/benchmark will be closed)
 class Abort(Action):
     def parse(self):
         self.processes = self.params["processes"]
@@ -168,6 +178,7 @@ class Abort(Action):
         raise ClientActionException("Client sent abort command")
 
 
+# retry the current case execution (all opened processes of game/benchmark won't be closed)
 class Retry(Action):
     @Action.server_action_decorator
     def execute(self):
@@ -178,6 +189,7 @@ class Retry(Action):
         raise ClientActionException("Client sent abort command")
 
 
+# start the next test case (it stops waiting of the next command)
 class NextCase(Action):
     @Action.server_action_decorator
     def execute(self):
@@ -187,6 +199,7 @@ class NextCase(Action):
         self.state.wait_next_command = False
 
 
+# do click on server side
 class ClickServer(Action):
     def parse(self):
         parsed_arguments = parse_arguments(self.params["arguments_line"])
@@ -218,6 +231,7 @@ class ClickServer(Action):
         return True
 
 
+# start doing test actions on server side
 class DoTestActions(Action):
     def parse(self):
         self.game_name = self.params["game_name"]
@@ -275,6 +289,7 @@ class DoTestActions(Action):
             self.logger.error("Traceback: {}".format(traceback.format_exc()))
 
 
+# collect gpuview traces on server side
 class GPUView(Action):
     def parse(self):
         self.collect_traces = self.params["args"].collect_traces

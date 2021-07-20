@@ -35,6 +35,7 @@ def get_audio_device_name():
         ff = FFmpeg()
         ffmpeg_exe = ff.get_ffmpeg_bin()
 
+        # list all existing audio devices
         ffmpeg_command = "{} -list_devices true -f dshow -i dummy".format(ffmpeg_exe)
 
         ffmpeg_process = psutil.Popen(ffmpeg_command, stdout=PIPE, stderr=STDOUT, shell=True)
@@ -129,6 +130,7 @@ def prepare_empty_reports(args, current_conf):
             test_case_report["server_configuration"] = args.server_gpu_name + " " + args.server_os_name
             test_case_report["message"] = []
 
+            # update script info using current params (e.g. ip and communication port, resolution)
             for i in range(len(test_case_report["script_info"])):
                 if "Client keys" in test_case_report["script_info"][i]:
                     test_case_report["script_info"][i] = "{base}".format(
@@ -196,6 +198,7 @@ def save_results(args, case, cases, execution_time = 0.0, test_case_status = "",
 
 
 def is_workable_condition():
+    # is process with Streaming SDK alive
     try:
         global PROCESS
         PROCESS.wait(timeout=0)
@@ -219,6 +222,7 @@ def execute_tests(args, current_conf):
     tool_path = os.path.abspath(tool_path)
 
     if args.execution_type == "client":
+        # name of Stereo mix device can be different on different machines
         audio_device_name = get_audio_device_name()
     else:
         audio_device_name = None
@@ -227,6 +231,7 @@ def execute_tests(args, current_conf):
 
         case_start_time = time.time()
 
+        # take tool keys based on type of the instance (server/client)
         keys = case["server_keys"] if args.execution_type == "server" else case["client_keys"]
 
         current_try = 0
@@ -238,6 +243,7 @@ def execute_tests(args, current_conf):
 
             try:
                 if args.execution_type == "server":
+                    # copy settings.json to update transport protocol using by server instance
                     settings_json_path = os.path.join(os.getenv("APPDATA"), "..", "Local", "AMD", "RemoteGameServer", "settings", "settings.json")
 
                     copyfile(
@@ -258,6 +264,8 @@ def execute_tests(args, current_conf):
 
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
 
+                    # replace 'x' in resolution by ',' (1920x1080 -> 1920,1080)
+                    # place the current screen resolution in keys of the server instance
                     execution_script = execution_script.replace("<resolution>", args.screen_resolution.replace("x", ","))
                 else:
                     execution_script = "{tool} {keys}".format(
@@ -272,6 +280,7 @@ def execute_tests(args, current_conf):
 
                 main_logger.info("Start StreamingSDK {}".format(args.execution_type))
 
+                # start Streaming SDK process
                 PROCESS = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
 
                 main_logger.info("Start execution_type depended script")
@@ -296,8 +305,11 @@ def execute_tests(args, current_conf):
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
+                # close the current Streaming SDK process
                 if PROCESS is not None:
                     close_process(PROCESS)
+
+                # additional try to kill Streaming SDK server/client (to be sure that all processes are closed)
 
                 status = 0
 
@@ -371,6 +383,7 @@ if __name__ == '__main__':
         if not os.path.exists(os.path.join(args.output, "tool_logs")):
             os.makedirs(os.path.join(args.output, "tool_logs"))
 
+        # use OS name and GPU name from server (to skip and merge cases correctly)
         render_device = args.server_gpu_name
         system_pl = args.server_os_name
         current_conf = set(system_pl) if not render_device else {system_pl, render_device}
