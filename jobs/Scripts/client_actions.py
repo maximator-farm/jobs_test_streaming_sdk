@@ -8,6 +8,7 @@ import pydirectinput
 from pyffmpeg import FFmpeg
 from threading import Thread
 from utils import collect_traces, parse_arguments
+import win32api
 from actions import *
 
 pyautogui.FAILSAFE = False

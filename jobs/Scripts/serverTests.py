@@ -50,7 +50,7 @@ def close_game(game_name):
     center_x = edge_x / 2
     center_y = edge_y / 2
 
-    if self.game_name == "valorant":
+    if game_name == "valorant":
         pydirectinput.keyDown("esc")
         sleep(0.1)
         pydirectinput.keyUp("esc")
@@ -86,7 +86,7 @@ def close_game(game_name):
         pyautogui.click()
 
         sleep(3)
-    elif self.game_name == "lol":
+    elif game_name == "lol":
         pydirectinput.keyDown("esc")
         sleep(0.1)
         pydirectinput.keyUp("esc")
@@ -200,7 +200,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                 else:
                     raise ServerActionException("Unknown server command: {}".format(command))
 
-                main_logger.info("Finish action execution\n")
+                main_logger.info("Finish action execution\n\n\n")
 
         else:
             raise Exception("Unknown client request: {}".format(request))

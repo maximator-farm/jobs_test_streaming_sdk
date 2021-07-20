@@ -136,7 +136,7 @@ def start_client_side_tests(args, case, is_workable_condition, audio_device_name
                 else:
                     raise ClientActionException("Unknown client command: {}".format(command))
 
-                main_logger.info("Finish action execution\n")
+                main_logger.info("Finish action execution\n\n\n")
 
         elif response == "fail":
             instance_state.non_workable_server = True
