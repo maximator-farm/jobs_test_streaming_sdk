@@ -26,7 +26,7 @@ pyautogui.FAILSAFE = False
 GAMES_WITH_TIMEOUTS = ['apexlegends']
 
 # some games should be rebooted sometimes
-SECONDS_TO_CLOSE = {"valorant": 1, "lol": 1}
+REBOOTING_GAMES = {"valorant": {"time_to_reboot": 3000, "delay": 120}, "lol": {"time_to_reboot": 3000}}
 
 
 # mapping of commands and their implementations
@@ -50,55 +50,7 @@ def close_game(game_name):
     center_x = edge_x / 2
     center_y = edge_y / 2
 
-    if game_name == "valorant":
-        pydirectinput.keyDown("esc")
-        sleep(0.1)
-        pydirectinput.keyUp("esc")
-
-        sleep(2)
-
-        pyautogui.moveTo(edge_x - 20, 20)
-        sleep(2)
-        pyautogui.mouseDown()
-        sleep(0.2)
-        pyautogui.mouseUp()
-
-        pyautogui.moveTo(edge_x - 20, 80)
-        sleep(2)
-        pyautogui.mouseDown()
-        sleep(0.2)
-        pyautogui.mouseUp()
-
-        sleep(1)
-
-        pyautogui.moveTo(center_x, center_y + 210)
-        sleep(2)
-        pyautogui.mouseDown()
-        sleep(0.2)
-        pyautogui.mouseUp()
-
-        pyautogui.moveTo(center_x, center_y + 150)
-        sleep(0.2)
-        pyautogui.mouseDown()
-        sleep(0.2)
-        pyautogui.mouseUp()
-
-        sleep(1)
-
-        pyautogui.moveTo(center_x - 160, center_y + 135)
-        sleep(2)
-        pyautogui.mouseDown()
-        sleep(0.2)
-        pyautogui.mouseUp()
-
-        pyautogui.moveTo(center_x - 160, center_y + 75)
-        sleep(2)
-        pyautogui.mouseDown()
-        sleep(0.2)
-        pyautogui.mouseUp()
-
-        sleep(3)
-    elif game_name == "lol":
+    if game_name == "lol":
         pydirectinput.keyDown("esc")
         sleep(0.1)
         pydirectinput.keyUp("esc")
@@ -234,8 +186,10 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
 
         raise e
     finally:
+        connection.close()
+
         # restart game if it's required
-        global SECONDS_TO_CLOSE
+        global REBOOTING_GAMES
         
         with open(os.path.join(ROOT_PATH, "state.py"), "r") as json_file:
             state = json.load(json_file)
@@ -245,13 +199,16 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
             main_logger.info("Reboot time was set")
         else:
             main_logger.info("Time left from the latest restart of game: {}".format(time() - state["restart_time"]))
-            if args.game_name.lower() in SECONDS_TO_CLOSE and (time() - state["restart_time"]) > SECONDS_TO_CLOSE[args.game_name.lower()]:
+            if args.game_name.lower() in REBOOTING_GAMES and (time() - state["restart_time"]) > REBOOTING_GAMES[args.game_name.lower()]["time_to_reboot"]:
                 close_game(game_name.lower())
                 result = close_processes(processes, main_logger)
                 main_logger.info("Processes were closed with status: {}".format(result))
+
+                # sleep a bit if it's required (some games can open same lobby if restart game immediately)
+                if "delay" in REBOOTING_GAMES[args.game_name.lower()]:
+                    sleep(REBOOTING_GAMES[args.game_name.lower()]["delay"])
+
                 state["restart_time"] = time()
                 
         with open(os.path.join(ROOT_PATH, "state.py"), "w+") as json_file:
             json.dump(state, json_file, indent=4)
-
-        connection.close()
