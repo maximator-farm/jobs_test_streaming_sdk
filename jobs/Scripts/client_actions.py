@@ -226,7 +226,7 @@ class SleepAndScreen(Action):
         self.current_try = self.params["current_try"]
 
     def execute(self):
-        sleep(int(self.initial_delay))
+        sleep(float(self.initial_delay))
 
         screen_number = 1
 
@@ -239,7 +239,7 @@ class SleepAndScreen(Action):
             if screen_number > int(self.number_of_screens):
                 break
             else:
-                sleep(int(self.delay))
+                sleep(float(self.delay))
                 
         try:
             self.sock.send("gpuview".encode("utf-8"))
