@@ -156,7 +156,7 @@
         "press_keys_server \"f9\"",
         "sleep 1",
         "make_screen heaven_benchmark",
-        "sleep 4",
+        "sleep 3",
         "record_video 10",
         "sleep_and_screen 5 4 4 heaven_benchmark",
         "press_keys_server \"esc\""
@@ -181,7 +181,7 @@
         "press_keys_server \"f9\"",
         "sleep 1",
         "make_screen heaven_benchmark",
-        "sleep 4",
+        "sleep 3",
         "record_video 10",
         "sleep_and_screen 5 4 4 heaven_benchmark",
         "press_keys_server \"esc\""
