@@ -130,6 +130,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
             params["processes"] = processes
 
             test_action_command = DoTestActions(sock, params, instance_state, main_logger)
+            test_action_command.parse()
 
             # while client doesn't sent 'next_case' command server waits next command
             while instance_state.wait_next_command:
@@ -142,7 +143,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                 except Exception as e:
                     # execute test actions if it's requested by client and new command doesn't received
                     if instance_state.executing_test_actions:
-                        test_action_command.do_action()
+                        test_action_command.execute()
                     else:
                         sleep(1)
                     continue
@@ -167,6 +168,7 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
                     # if client requests to start doing test actions server must answer immediately and starts to execute them
                     if command == "start_test_actions_server":
                         connection.send("done".encode("utf-8"))
+                        instance_state.executing_test_actions = True
                         continue
 
                     command_object = ACTIONS_MAPPING[command](connection, params, instance_state, main_logger)
