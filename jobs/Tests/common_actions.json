@@ -112,7 +112,7 @@
         "skip_if_done 20",
         "sleep 300",
         "execute_cmd \"C:\\JN\\League of Legends.lnk\"",
-        "sleep 45",
+        "sleep 90",
         "click_server center_-520 center_-340",
         "sleep 1",
         "click_server center_-390 center_-280",
