@@ -239,6 +239,7 @@ class ClickServer(Action):
 class DoTestActions(Action):
     def parse(self):
         self.game_name = self.params["game_name"]
+        self.stage = 0
 
     def execute(self):
         try:
@@ -268,25 +269,35 @@ class DoTestActions(Action):
                 center_x = edge_x / 2
                 center_y = edge_y / 2
 
-                sleep(4)
+                # avoit to long cycle of test actions (split it to parts)
 
-                pyautogui.moveTo(center_x + 360, center_y - 360)
-                sleep(0.1)
-                pyautogui.click()
-                sleep(0.1)
-                pyautogui.moveTo(edge_x - 255, edge_y - 60)
-                sleep(0.1)
-                pyautogui.click(button="right")
-                sleep(1.5)
+                if self.stage == 0:
+                    sleep(2)
+                elif self.stage == 1:
+                    sleep(2)
+                elif self.stage == 2:
+                    pyautogui.moveTo(center_x + 360, center_y - 360)
+                    sleep(0.1)
+                    pyautogui.click()
+                    sleep(0.1)
+                    pyautogui.moveTo(edge_x - 255, edge_y - 60)
+                    sleep(0.1)
+                    pyautogui.click(button="right")
+                    sleep(1.5)
+                elif self.stage == 3:
+                    pyautogui.moveTo(edge_x - 290, edge_y - 20)
+                    sleep(0.1)
+                    pyautogui.click()
+                    sleep(0.1)
+                    pyautogui.moveTo(center_x, center_y)
+                    sleep(0.1)
+                    pyautogui.click(button="right")
+                    sleep(1.5)
 
-                pyautogui.moveTo(edge_x - 290, edge_y - 20)
-                sleep(0.1)
-                pyautogui.click()
-                sleep(0.1)
-                pyautogui.moveTo(center_x, center_y)
-                sleep(0.1)
-                pyautogui.click(button="right")
-                sleep(1.5)
+                self.stage += 1
+
+                if self.stage > 3:
+                    self.stage = 0
 
         except Exception as e:
             self.logger.error("Failed to do test actions: {}".format(str(e)))
