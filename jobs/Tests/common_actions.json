@@ -8,22 +8,21 @@
         "make_screen",
         "move 1000 800",
         "click",
-        "sleep 3",
+        "sleep 1",
         "make_screen borderlands_menu",
         "press_keys_server \"down down enter   enter   c c   down enter\"",
         "sleep 30",
         "make_screen borderlands_benchmark",
-        "sleep 5",
+        "sleep 4",
         "record_video 10",
-        "sleep_and_screen 5 4 5 borderlands_benchmark",
+        "sleep_and_screen 5 4 4 borderlands_benchmark",
         "press_keys_server \"esc\"",
         "sleep 10"
     ],
 
     "valorant_actions": [
         "check_game \"VALORANT  \" \"VALORANT-Win64-Shipping.exe\"",
-        "skip_if_done 26",
-        "sleep 180",
+        "skip_if_done 25",
         "execute_cmd \"C:\\JN\\VALORANT.exe - Shortcut.lnk\"",
         "sleep 15",
         "click_server center_0 center_0",
@@ -56,17 +55,16 @@
         "click_server center_0 edge_-460",
 
         "check_game \"VALORANT  \" \"VALORANT-Win64-Shipping.exe\"",
+
         "make_screen",
         "move 1000 800",
         "click",
-        "make_screen before_any_actions",
-        "sleep 5",
         "start_test_actions_server",
         "start_test_actions_client",
         "make_screen test_actions",
-        "sleep 5",
+        "sleep 4",
         "record_video 10",
-        "sleep_and_screen 5 4 5 test_actions"
+        "sleep_and_screen 5 4 4 test_actions"
     ],
 
     "apexlegends_actions": [
@@ -95,22 +93,18 @@
         "make_screen",
         "move 1000 800",
         "click",
-        "sleep 3",
-        "make_screen apex_legends_firerange",
-        "sleep 5",
         "start_test_actions_server",
         "start_test_actions_client",
         "make_screen test_actions",
-        "sleep 5",
+        "sleep 4",
         "record_video 10",
-        "sleep_and_screen 5 4 5 test_actions"
+        "sleep_and_screen 5 4 4 test_actions"
     ],
 
     "lol_actions": [
         "check_window \"League of Legends\" \"LeagueClient.exe\"",
         "check_game \"League of Legends (TM) Client\" \"League of Legends.exe\"",
         "skip_if_done 20",
-        "sleep 300",
         "execute_cmd \"C:\\JN\\League of Legends.lnk\"",
         "sleep 90",
         "click_server center_-520 center_-340",
@@ -135,21 +129,18 @@
         "make_screen",
         "move 1000 800",
         "click",
-        "sleep 3",
-        "make_screen lol_training",
-        "sleep 5",
         "start_test_actions_server",
         "start_test_actions_client",
         "make_screen test_actions",
-        "sleep 5",
+        "sleep 4",
         "record_video 10",
-        "sleep_and_screen 5 4 5 test_actions"
+        "sleep_and_screen 5 4 4 test_actions"
     ],
 
     "heavendx11_actions": [
         "check_window \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D11)\" \"Heaven.exe\"",
-        "skip_if_done 6",
+        "skip_if_done 8",
         "execute_cmd \"C:\\JN\\Heaven Benchmark 4.0.lnk\"",
         "sleep 5",
         "click_server center_290 center_-85",
@@ -162,23 +153,21 @@
         "make_screen",
         "move 1000 800",
         "click",
-        "sleep 2",
-        "make_screen before_benchmark",
         "press_keys_server \"f9\"",
         "sleep 1",
         "make_screen heaven_benchmark",
-        "sleep 5",
+        "sleep 4",
         "record_video 10",
-        "sleep_and_screen 5 4 5 heaven_benchmark",
+        "sleep_and_screen 6 4 4.7 heaven_benchmark",
         "press_keys_server \"esc\""
     ],
 
     "heavendx9_actions": [
         "check_window \"Unigine Heaven Benchmark 4.0 (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Heaven Benchmark 4.0 Basic (Direct3D9)\" \"Heaven.exe\"",
-        "skip_if_done 6",
+        "skip_if_done 8",
         "execute_cmd \"C:\\JN\\Heaven Benchmark 4.0.lnk\"",
-        "sleep 5",
+        "sleep 6",
         "click_server center_290 center_-85",
         "click_server center_290 center_-55",
         "click_server center_280 center_135",
@@ -189,21 +178,19 @@
         "make_screen",
         "move 1000 800",
         "click",
-        "sleep 2",
-        "make_screen before_benchmark",
         "press_keys_server \"f9\"",
         "sleep 1",
         "make_screen heaven_benchmark",
-        "sleep 5",
+        "sleep 3",
         "record_video 10",
-        "sleep_and_screen 5 4 5 heaven_benchmark",
+        "sleep_and_screen 6 4 4.7 heaven_benchmark",
         "press_keys_server \"esc\""
     ],
 
     "valleydx11_actions": [
         "check_window \"Unigine Valley Benchmark (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Valley Benchmark 1.0 Basic (Direct3D11)\" \"Valley.exe\"",
-        "skip_if_done 6",
+        "skip_if_done 8",
         "execute_cmd \"C:\\JN\\Valley Benchmark 1.0.lnk\"",
         "sleep 5",
         "click_server center_290 center_-70",
@@ -216,21 +203,19 @@
         "make_screen",
         "move 1000 800",
         "click",
-        "sleep 2",
-        "make_screen before_benchmark",
         "press_keys_server \"f9\"",
         "sleep 1",
         "make_screen valley_benchmark",
-        "sleep 5",
+        "sleep 4",
         "record_video 10",
-        "sleep_and_screen 5 4 5 valley_benchmark",
+        "sleep_and_screen 5 4 4 valley_benchmark",
         "press_keys_server \"esc\""
     ],
 
     "valleydx9_actions": [
         "check_window \"Unigine Valley Benchmark (Basic Edition)\" \"browser_x86.exe\"",
         "check_game \"Unigine Valley Benchmark 1.0 Basic (Direct3D9)\" \"Valley.exe\"",
-        "skip_if_done 6",
+        "skip_if_done 8",
         "execute_cmd \"C:\\JN\\Valley Benchmark 1.0.lnk\"",
         "sleep 5",
         "click_server center_290 center_-70",
@@ -243,14 +228,12 @@
         "make_screen",
         "move 1000 800",
         "click",
-        "sleep 2",
-        "make_screen before_benchmark",
         "press_keys_server \"f9\"",
         "sleep 1",
         "make_screen valley_benchmark",
-        "sleep 5",
+        "sleep 4",
         "record_video 10",
-        "sleep_and_screen 5 4 5 valley_benchmark",
+        "sleep_and_screen 5 4 4 valley_benchmark",
         "press_keys_server \"esc\""
     ],
 
@@ -271,7 +254,7 @@
         "make_screen superposition_benchmark",
         "sleep 5",
         "record_video 10",
-        "sleep_and_screen 5 4 5 superposition_benchmark",
+        "sleep_and_screen 5 4 4 superposition_benchmark",
         "press_keys_server \"esc\"",
         "sleep 5"
     ],
@@ -280,10 +263,10 @@
         "make_screen",
         "move 1000 800",
         "click",
-        "sleep 2",
+        "sleep 1",
         "make_screen before_any_actions",
-        "sleep 5",
+        "sleep 4",
         "record_video 10",
-        "sleep_and_screen 5 4 5 nothing"
+        "sleep_and_screen 5 4 4 nothing"
     ]
 }

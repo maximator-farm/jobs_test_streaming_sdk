@@ -9,14 +9,14 @@ from shutil import copyfile, move, which
 import sys
 from utils import is_case_skipped, close_process
 from clientTests import start_client_side_tests
-from serverTests import start_server_side_tests, close_processes
+from serverTests import start_server_side_tests
 from queue import Queue
 from subprocess import PIPE, STDOUT
 from threading import Thread
+from pyffmpeg import FFmpeg
 import copy
 import traceback
 import time
-from pyffmpeg import FFmpeg
 import win32api
 
 ROOT_PATH = os.path.abspath(os.path.join(
@@ -26,10 +26,8 @@ from jobs_launcher.core.config import *
 from jobs_launcher.core.system_info import get_gpu
 
 
-# port throuth which client and server communicate to synchronize execution of tests
+# process of Streaming SDK client / server
 PROCESS = None
-# some games should be rebooted sometimes
-SECONDS_TO_CLOSE = {"valorant": 3000, "lol": 3000}
 
 
 def get_audio_device_name():
@@ -37,6 +35,7 @@ def get_audio_device_name():
         ff = FFmpeg()
         ffmpeg_exe = ff.get_ffmpeg_bin()
 
+        # list all existing audio devices
         ffmpeg_command = "{} -list_devices true -f dshow -i dummy".format(ffmpeg_exe)
 
         ffmpeg_process = psutil.Popen(ffmpeg_command, stdout=PIPE, stderr=STDOUT, shell=True)
@@ -57,7 +56,7 @@ def get_audio_device_name():
     except Exception as e:
         main_logger.error("Can't get audio device name. Use default name instead")
         main_logger.error(str(e))
-        main_logger.error("Traceback: {}".format(traceback.format_exc()))
+        main_logger.error("Traceback:\n{}".format(traceback.format_exc()))
 
         return "Stereo Mix (Realtek High Definition Audio)"
 
@@ -131,6 +130,7 @@ def prepare_empty_reports(args, current_conf):
             test_case_report["server_configuration"] = args.server_gpu_name + " " + args.server_os_name
             test_case_report["message"] = []
 
+            # update script info using current params (e.g. ip and communication port, resolution)
             for i in range(len(test_case_report["script_info"])):
                 if "Client keys" in test_case_report["script_info"][i]:
                     test_case_report["script_info"][i] = "{base}".format(
@@ -138,7 +138,6 @@ def prepare_empty_reports(args, current_conf):
                     )
 
                 elif "Server keys" in test_case_report["script_info"][i]:
-
                     test_case_report["script_info"][i] = test_case_report["script_info"][i].replace("<resolution>", args.screen_resolution.replace("x", ","))
 
             if case['status'] == 'skipped':
@@ -178,8 +177,7 @@ def save_results(args, case, cases, execution_time = 0.0, test_case_status = "",
         test_case_report["testing_start"] = datetime.now().strftime("%m/%d/%Y %H:%M:%S")
         test_case_report["number_of_tries"] += 1
 
-        if test_case_status != "passed":
-            test_case_report["message"] = list(error_messages)
+        test_case_report["message"] = list(error_messages)
 
         if test_case_status == "passed" or test_case_status == "error":
             test_case_report["group_timeout_exceeded"] = False
@@ -200,6 +198,7 @@ def save_results(args, case, cases, execution_time = 0.0, test_case_status = "",
 
 
 def is_workable_condition():
+    # is process with Streaming SDK alive
     try:
         global PROCESS
         PROCESS.wait(timeout=0)
@@ -220,17 +219,20 @@ def execute_tests(args, current_conf):
 
     tool_path = args.server_tool if args.execution_type == "server" else args.client_tool
 
+    tool_path = os.path.abspath(tool_path)
+
+    if args.execution_type == "client":
+        # name of Stereo mix device can be different on different machines
+        audio_device_name = get_audio_device_name()
+    else:
+        audio_device_name = None
+
     for case in [x for x in cases if not is_case_skipped(x, current_conf)]:
 
         case_start_time = time.time()
 
+        # take tool keys based on type of the instance (server/client)
         keys = case["server_keys"] if args.execution_type == "server" else case["client_keys"]
-
-        output_path = os.path.join(args.output, "Color")
-        screens_path = os.path.join(output_path, case["case"])
-
-        if not os.path.exists(screens_path):
-            os.makedirs(screens_path)
 
         current_try = 0
 
@@ -241,6 +243,7 @@ def execute_tests(args, current_conf):
 
             try:
                 if args.execution_type == "server":
+                    # copy settings.json to update transport protocol using by server instance
                     settings_json_path = os.path.join(os.getenv("APPDATA"), "..", "Local", "AMD", "RemoteGameServer", "settings", "settings.json")
 
                     copyfile(
@@ -261,6 +264,8 @@ def execute_tests(args, current_conf):
 
                     execution_script = "{tool} {keys}".format(tool=tool_path, keys=keys)
 
+                    # replace 'x' in resolution by ',' (1920x1080 -> 1920,1080)
+                    # place the current screen resolution in keys of the server instance
                     execution_script = execution_script.replace("<resolution>", args.screen_resolution.replace("x", ","))
                 else:
                     execution_script = "{tool} {keys}".format(
@@ -275,20 +280,20 @@ def execute_tests(args, current_conf):
 
                 main_logger.info("Start StreamingSDK {}".format(args.execution_type))
 
+                # start Streaming SDK process
                 PROCESS = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
 
                 main_logger.info("Start execution_type depended script")
 
                 # Wait a bit to launch streaming SDK client/server
-                time.sleep(5)
+                time.sleep(3)
 
                 main_logger.info("Screen resolution: width = {}, height = {}".format(win32api.GetSystemMetrics(0), win32api.GetSystemMetrics(1)))
 
                 if args.execution_type == "server":
-                    start_server_side_tests(args, case, is_workable_condition, args.communication_port, current_try)
+                    start_server_side_tests(args, case, is_workable_condition, current_try)
                 else:
-                    audio_device_name = get_audio_device_name()
-                    start_client_side_tests(args, case, is_workable_condition, args.ip_address, args.communication_port, output_path, audio_device_name, current_try)
+                    start_client_side_tests(args, case, is_workable_condition, audio_device_name, current_try)
 
                 execution_time = time.time() - case_start_time
                 save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
@@ -300,55 +305,40 @@ def execute_tests(args, current_conf):
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
+                # close the current Streaming SDK process
                 if PROCESS is not None:
                     close_process(PROCESS)
 
-                status = 0
-
-                while status != 128:
-                    status = subprocess.call("taskkill /IM RemoteGameClient.exe")
+                # additional try to kill Streaming SDK server/client (to be sure that all processes are closed)
 
                 status = 0
 
                 while status != 128:
-                    status = subprocess.call("taskkill /IM RemoteGameServer.exe")
+                    status = subprocess.call("taskkill /f /im RemoteGameClient.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+                status = 0
+
+                while status != 128:
+                    status = subprocess.call("taskkill /f /im RemoteGameServer.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
                 current_try += 1
 
-                log_source_path = tool_path + ".log"
-                log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + "_{}".format(args.execution_type) + ".log")
+                try:
+                    log_source_path = tool_path + ".log"
+                    log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + "_{}".format(args.execution_type) + ".log")
 
-                with open(log_source_path, "r") as file:
-                    logs = file.read().replace('\0', '')
+                    with open(log_source_path, "rb") as file:
+                        logs = file.read()
 
-                if "Error:" in logs:
-                    error_messages.add("Error was mentioned in {} log".format(args.execution_type))
+                    # Firstly, convert utf-2 le bom to utf-8 with BOM. Secondly, remove BOM
+                    logs = logs.decode("utf-16-le").encode("utf-8").decode("utf-8-sig").encode("utf-8")
 
-                    execution_time = time.time() - case_start_time
-                    save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
-
-                with open(log_destination_path, "a") as file:
-                    file.write("\n---------- Try #{} ----------\n\n".format(current_try))
-                    file.write(logs)
-                    
-                if args.execution_type == "server":
-                    global SECONDS_TO_CLOSE
-                    
-                    with open(os.path.join(ROOT_PATH, "state.py"), "r") as json_file:
-                        state = json.load(json_file)
-
-                    if state["restart_time"] == 0:
-                        state["restart_time"] = time.time()
-                        main_logger.info("Reboot time was set")
-                    else:
-                        main_logger.info("Time left from the latest restart of game: {}".format(time.time() - state["restart_time"]))
-                        if args.game_name.lower() in SECONDS_TO_CLOSE and (time.time() - state["restart_time"]) > SECONDS_TO_CLOSE[args.game_name.lower()]:
-                            result = close_processes()
-                            main_logger.info("Processes were closed with status: {}".format(result))
-                            state["restart_time"] = time.time()
-                            
-                    with open(os.path.join(ROOT_PATH, "state.py"), "w+") as json_file:
-                        json.dump(state, json_file, indent=4)  
+                    with open(log_destination_path, "ab") as file:
+                        file.write("\n---------- Try #{} ----------\n\n".format(current_try).encode("utf-8"))
+                        file.write(logs)
+                except Exception as e:
+                    main_logger.error("Failed during logs saving. Exception: {}".format(str(e)))
+                    main_logger.error("Traceback: {}".format(traceback.format_exc()))
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1
@@ -393,6 +383,7 @@ if __name__ == '__main__':
         if not os.path.exists(os.path.join(args.output, "tool_logs")):
             os.makedirs(os.path.join(args.output, "tool_logs"))
 
+        # use OS name and GPU name from server (to skip and merge cases correctly)
         render_device = args.server_gpu_name
         system_pl = args.server_os_name
         current_conf = set(system_pl) if not render_device else {system_pl, render_device}
