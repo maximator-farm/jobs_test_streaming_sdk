@@ -8,7 +8,7 @@
         "start_first": "server",
         "script_info": [
             "Default settings with UDP",
-            "Connect server before client"
+            "Connect server before client",
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution <resolution> -extStats true",
             "Client keys: -Fullscreen true"
         ]
@@ -22,7 +22,7 @@
         "start_first": "client",
         "script_info": [
             "Default settings with UDP",
-            "Connect client before before"
+            "Connect client before before",
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution <resolution> -extStats true",
             "Client keys: -Fullscreen true"
         ]
@@ -36,7 +36,7 @@
         "start_first": "server",
         "script_info": [
             "Default settings with TCP",
-            "Connect server before client"
+            "Connect server before client",
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution <resolution> -extStats true",
             "Client keys: -Fullscreen true"
         ]
@@ -50,7 +50,7 @@
         "start_first": "client",
         "script_info": [
             "Default settings with TCP",
-            "Connect client before before"
+            "Connect client before before",
             "Server keys: -Capture amd -Framerate 30 -bitrate 50000000 -QoS true -Resolution <resolution> -extStats true",
             "Client keys: -Fullscreen true"
         ]
