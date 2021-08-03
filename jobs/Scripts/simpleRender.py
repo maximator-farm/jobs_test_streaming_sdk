@@ -29,7 +29,7 @@ from jobs_launcher.core.system_info import get_gpu
 # process of Streaming SDK client / server
 PROCESS = None
 # path to Streaming SDK client / server run script
-SCRIPT_PATH = NONE
+SCRIPT_PATH = None
 
 
 def get_audio_device_name():
