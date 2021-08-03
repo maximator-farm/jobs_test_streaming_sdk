@@ -15,6 +15,7 @@
         "Resolution":"",
         "Slices":"",
         "Smoke":"",
-        "VSync":""
+        "VSync":"",
+        "GeneralQoS":""
     }
 }
