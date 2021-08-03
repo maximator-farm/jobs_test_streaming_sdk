@@ -28,6 +28,8 @@ from jobs_launcher.core.system_info import get_gpu
 
 # process of Streaming SDK client / server
 PROCESS = None
+# path to Streaming SDK client / server run script
+SCRIPT_PATH = NONE
 
 
 def get_audio_device_name():
@@ -199,6 +201,22 @@ def save_results(args, case, cases, execution_time = 0.0, test_case_status = "",
         json.dump(cases, file, indent=4)
 
 
+def start_streaming(args):
+    global PROCESS, SCRIPT_PATH
+
+    main_logger.info("Start StreamingSDK {}".format(args.execution_type))
+
+    # start Streaming SDK process
+    PROCESS = psutil.Popen(SCRIPT_PATH, stdout=PIPE, stderr=PIPE, shell=True)
+
+    main_logger.info("Start execution_type depended script")
+
+    # Wait a bit to launch streaming SDK client/server
+    time.sleep(3)
+
+    main_logger.info("Screen resolution: width = {}, height = {}".format(win32api.GetSystemMetrics(0), win32api.GetSystemMetrics(1)))
+
+
 def is_workable_condition():
     # is process with Streaming SDK alive
     try:
@@ -239,7 +257,7 @@ def execute_tests(args, current_conf):
         current_try = 0
 
         while current_try < args.retries:
-            global PROCESS
+            global PROCESS, SCRIPT_PATH
 
             error_messages = set()
 
@@ -277,27 +295,15 @@ def execute_tests(args, current_conf):
                         ip_address=args.ip_address
                     )
 
-                execution_script_path = os.path.join(args.output, "{}.bat".format(case["case"]))
+                SCRIPT_PATH = os.path.join(args.output, "{}.bat".format(case["case"]))
        
-                with open(execution_script_path, "w") as f:
+                with open(SCRIPT_PATH, "w") as f:
                     f.write(execution_script)
 
-                main_logger.info("Start StreamingSDK {}".format(args.execution_type))
-
-                # start Streaming SDK process
-                PROCESS = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
-
-                main_logger.info("Start execution_type depended script")
-
-                # Wait a bit to launch streaming SDK client/server
-                time.sleep(3)
-
-                main_logger.info("Screen resolution: width = {}, height = {}".format(win32api.GetSystemMetrics(0), win32api.GetSystemMetrics(1)))
-
                 if args.execution_type == "server":
-                    start_server_side_tests(args, case, is_workable_condition, current_try)
+                    start_server_side_tests(args, case, start_streaming, is_workable_condition, current_try)
                 else:
-                    start_client_side_tests(args, case, is_workable_condition, audio_device_name, current_try)
+                    start_client_side_tests(args, case, start_streaming, is_workable_condition, audio_device_name, current_try)
 
                 execution_time = time.time() - case_start_time
                 save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])

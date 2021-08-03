@@ -42,7 +42,7 @@ ACTIONS_MAPPING = {
 # Client reads list of actions and executes them one by one.
 # It sends actions which must be executed on server to it.
 # Also client does screenshots and records video.
-def start_client_side_tests(args, case, is_workable_condition, audio_device_name, current_try):
+def start_client_side_tests(args, case, start_streaming, is_workable_condition, audio_device_name, current_try):
     output_path = os.path.join(args.output, "Color")
 
     screen_path = os.path.join(output_path, case["case"])
@@ -53,9 +53,17 @@ def start_client_side_tests(args, case, is_workable_condition, audio_device_name
     if not os.path.exists(archive_path):
         os.makedirs(archive_path)
 
+    # default launching of client and server (order doesn't matter)
+    if "start_first" not in case or (case["start_first"] != "client" and case["start_first"] != "server"):
+        start_streaming(args)
+
     sock = socket.socket()
 
     game_name = args.game_name
+
+    # start client before server
+    if "start_first" in case and case["start_first"] == "client":
+        start_streaming(args)
 
     # Connect to server to sync autotests
     while True:
@@ -83,6 +91,10 @@ def start_client_side_tests(args, case, is_workable_condition, audio_device_name
         response = sock.recv(1024).decode("utf-8")
 
         if response == "ready":
+
+            # start server before client
+            if "start_first" in case and case["start_first"] == "server":
+                start_streaming(args)
 
             if not is_workable_condition():
                 instance_state.non_workable_client = True

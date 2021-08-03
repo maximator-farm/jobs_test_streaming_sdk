@@ -80,10 +80,18 @@ def close_game(game_name):
 
 # Server receives commands from client and executes them
 # Server doesn't decide to retry case or do next test case. Exception: fail on server side which generates abort on server side
-def start_server_side_tests(args, case, is_workable_condition, current_try):
+def start_server_side_tests(args, case, start_streaming, is_workable_condition, current_try):
     archive_path = os.path.join(args.output, "gpuview")
     if not os.path.exists(archive_path):
         os.makedirs(archive_path)
+
+    # default launching of client and server (order doesn't matter)
+    if "start_first" not in case or (case["start_first"] != "client" and case["start_first"] != "server"):
+        start_streaming(args)
+
+    # start server before client
+    if "start_first" in case and case["start_first"] == "server":
+        start_streaming(args)
 
     # configure socket
     sock = socket.socket()
@@ -112,6 +120,10 @@ def start_server_side_tests(args, case, is_workable_condition, current_try):
 
         # server waits ready from client
         if request == "ready":
+
+            # start client before server
+            if "start_first" in case and case["start_first"] == "client":
+                start_streaming(args)
 
             if is_workable_condition():
                 connection.send("ready".encode("utf-8"))
