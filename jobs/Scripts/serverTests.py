@@ -87,11 +87,13 @@ def start_server_side_tests(args, case, start_streaming, is_workable_condition, 
 
     # default launching of client and server (order doesn't matter)
     if "start_first" not in case or (case["start_first"] != "client" and case["start_first"] != "server"):
-        start_streaming(args)
+        if start_streaming is not None:
+            start_streaming(args)
 
     # start server before client
     if "start_first" in case and case["start_first"] == "server":
-        start_streaming(args)
+        if start_streaming is not None:
+            start_streaming(args)
 
     # configure socket
     sock = socket.socket()
@@ -123,7 +125,8 @@ def start_server_side_tests(args, case, start_streaming, is_workable_condition, 
 
             # start client before server
             if "start_first" in case and case["start_first"] == "client":
-                start_streaming(args)
+                if start_streaming is not None:
+                    start_streaming(args)
 
             if is_workable_condition():
                 connection.send("ready".encode("utf-8"))

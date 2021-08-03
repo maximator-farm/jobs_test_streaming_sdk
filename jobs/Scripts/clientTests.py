@@ -55,7 +55,8 @@ def start_client_side_tests(args, case, start_streaming, is_workable_condition, 
 
     # default launching of client and server (order doesn't matter)
     if "start_first" not in case or (case["start_first"] != "client" and case["start_first"] != "server"):
-        start_streaming(args)
+        if start_streaming is not None:
+            start_streaming(args)
 
     sock = socket.socket()
 
@@ -63,7 +64,8 @@ def start_client_side_tests(args, case, start_streaming, is_workable_condition, 
 
     # start client before server
     if "start_first" in case and case["start_first"] == "client":
-        start_streaming(args)
+        if start_streaming is not None:
+            start_streaming(args)
 
     # Connect to server to sync autotests
     while True:
@@ -94,7 +96,8 @@ def start_client_side_tests(args, case, start_streaming, is_workable_condition, 
 
             # start server before client
             if "start_first" in case and case["start_first"] == "server":
-                start_streaming(args)
+                if start_streaming is not None:
+                    start_streaming(args)
 
             if not is_workable_condition():
                 instance_state.non_workable_client = True
