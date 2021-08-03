@@ -300,10 +300,16 @@ def execute_tests(args, current_conf):
                 with open(SCRIPT_PATH, "w") as f:
                     f.write(execution_script)
 
-                if args.execution_type == "server":
-                    start_server_side_tests(args, case, start_streaming, is_workable_condition, current_try)
+                # provide start Streaming SDK func if Streaming SDK was closed in previous case
+                if PROCESS is None:
+                    start_streaming_func = start_streaming
                 else:
-                    start_client_side_tests(args, case, start_streaming, is_workable_condition, audio_device_name, current_try)
+                    start_streaming_func = None
+
+                if args.execution_type == "server":
+                    start_server_side_tests(args, case, start_streaming_func, is_workable_condition, current_try)
+                else:
+                    start_client_side_tests(args, case, start_streaming_func, is_workable_condition, audio_device_name, current_try)
 
                 execution_time = time.time() - case_start_time
                 save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
@@ -315,21 +321,24 @@ def execute_tests(args, current_conf):
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
-                # close the current Streaming SDK process
-                if PROCESS is not None:
-                    close_process(PROCESS)
+                if "keep_{}".format(args.execution_type) not in case or not case["keep_{}".format(args.execution_type)]:
+                    # close the current Streaming SDK process
+                    if PROCESS is not None:
+                        close_process(PROCESS)
 
-                # additional try to kill Streaming SDK server/client (to be sure that all processes are closed)
+                    # additional try to kill Streaming SDK server/client (to be sure that all processes are closed)
 
-                status = 0
+                    status = 0
 
-                while status != 128:
-                    status = subprocess.call("taskkill /f /im RemoteGameClient.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    while status != 128:
+                        status = subprocess.call("taskkill /f /im RemoteGameClient.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-                status = 0
+                    status = 0
 
-                while status != 128:
-                    status = subprocess.call("taskkill /f /im RemoteGameServer.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    while status != 128:
+                        status = subprocess.call("taskkill /f /im RemoteGameServer.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+                    PROCESS = None
 
                 current_try += 1
 
