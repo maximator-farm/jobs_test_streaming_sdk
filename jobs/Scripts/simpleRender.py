@@ -349,6 +349,10 @@ def execute_tests(args, current_conf):
                     with open(log_source_path, "rb") as file:
                         logs = file.read()
 
+                    # clear log content
+                    with open(log_source_path, "w") as file:
+                        file.seek(0)
+
                     # Firstly, convert utf-2 le bom to utf-8 with BOM. Secondly, remove BOM
                     logs = logs.decode("utf-16-le").encode("utf-8").decode("utf-8-sig").encode("utf-8")
 

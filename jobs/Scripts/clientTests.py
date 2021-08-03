@@ -66,6 +66,7 @@ def start_client_side_tests(args, case, start_streaming, is_workable_condition, 
     if "start_first" in case and case["start_first"] == "client":
         if start_streaming is not None:
             start_streaming(args)
+            sleep(10)
 
     # Connect to server to sync autotests
     while True:

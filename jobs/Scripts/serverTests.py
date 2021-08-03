@@ -94,6 +94,7 @@ def start_server_side_tests(args, case, start_streaming, is_workable_condition, 
     if "start_first" in case and case["start_first"] == "server":
         if start_streaming is not None:
             start_streaming(args)
+            sleep(10)
 
     # configure socket
     sock = socket.socket()
