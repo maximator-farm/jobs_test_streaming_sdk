@@ -16,6 +16,7 @@
         "Slices":"",
         "Smoke":"",
         "VSync":"",
-        "GeneralQoS":""
+        "GeneralQoS":"",
+        "Connection":""
     }
 }
