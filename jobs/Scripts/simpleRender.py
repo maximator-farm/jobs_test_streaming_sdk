@@ -247,6 +247,9 @@ def execute_tests(args, current_conf):
     else:
         audio_device_name = None
 
+    # copy log from last log line (it's actual for groups without restarting of client / server)
+    last_log_line = None
+
     for case in [x for x in cases if not is_case_skipped(x, current_conf)]:
 
         case_start_time = time.time()
@@ -349,12 +352,26 @@ def execute_tests(args, current_conf):
                     with open(log_source_path, "rb") as file:
                         logs = file.read()
 
-                    # clear log content
-                    with open(log_source_path, "w") as file:
-                        file.seek(0)
-
                     # Firstly, convert utf-2 le bom to utf-8 with BOM. Secondly, remove BOM
                     logs = logs.decode("utf-16-le").encode("utf-8").decode("utf-8-sig").encode("utf-8")
+
+                    lines = logs.split("\n")
+
+                    # index of first line of the current log in whole log file
+                    first_log_line_index = 0
+
+                    for i in len(lines):
+                        if last_log_line is not None and last_log_line in lines[i]:
+                            first_log_line_index = i
+                            break
+
+                    # update last log line
+                    last_log_line = lines[-1]
+
+                    if first_log_line_index != 0:
+                        lines = lines[first_log_line_index:]
+
+                    logs = "\n".join(lines)
 
                     with open(log_destination_path, "ab") as file:
                         file.write("\n---------- Try #{} ----------\n\n".format(current_try).encode("utf-8"))
