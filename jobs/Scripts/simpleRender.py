@@ -355,23 +355,26 @@ def execute_tests(args, current_conf):
                     # Firstly, convert utf-2 le bom to utf-8 with BOM. Secondly, remove BOM
                     logs = logs.decode("utf-16-le").encode("utf-8").decode("utf-8-sig").encode("utf-8")
 
-                    lines = logs.split("\n")
+                    lines = logs.split(b"\n")
 
                     # index of first line of the current log in whole log file
                     first_log_line_index = 0
 
-                    for i in len(lines):
+                    for i in range(len(lines)):
                         if last_log_line is not None and last_log_line in lines[i]:
-                            first_log_line_index = i
+                            first_log_line_index = i + 1
                             break
 
                     # update last log line
-                    last_log_line = lines[-1]
+                    for i in range(len(lines) - 1, -1, -1):
+                        if lines[i] and lines[i] != b"\r":
+                            last_log_line = lines[i]
+                            break
 
                     if first_log_line_index != 0:
                         lines = lines[first_log_line_index:]
 
-                    logs = "\n".join(lines)
+                    logs = b"\n".join(lines)
 
                     with open(log_destination_path, "ab") as file:
                         file.write("\n---------- Try #{} ----------\n\n".format(current_try).encode("utf-8"))
