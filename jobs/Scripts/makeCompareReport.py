@@ -338,8 +338,6 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
                 if json_content["test_status"] != "error":
                     json_content["test_status"] = "failed"
 
-                break
-
         # rule №8: (sum of video bitrate - sum of average bandwidth tx) / sum of video bitrate > 0.25 -> issue with app
         if 'average_bandwidth_tx' in saved_values and 'video_bitrate' in saved_values:
             average_bandwidth_tx_sum = 0
