@@ -179,7 +179,7 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
             for encoder_value in saved_values['encoder_values']:
                 if avrg_encoder_value * 2 < encoder_value:
                     bad_avrg_encoder_values.append(avrg_encoder_value)
-                    bad_encoder_values.append(bad_encoder_values)
+                    bad_encoder_values.append(encoder_value)
 
                 else:
                     bad_avrg_encoder_values = []
