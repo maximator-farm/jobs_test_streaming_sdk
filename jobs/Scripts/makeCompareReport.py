@@ -110,7 +110,7 @@ def parse_block_line(args, line, saved_values):
         if 'average_bandwidth_tx' not in saved_values:
             saved_values['average_bandwidth_tx'] = []
 
-        average_bandwidth_tx = float(line.split('Tx:')[1].split('kbps')[0])
+        average_bandwidth_tx = float(line.split('user:')[1].split('/')[0])
         saved_values['average_bandwidth_tx'].append(average_bandwidth_tx)
 
     elif 'Send time (avg/worst)' in line:
@@ -156,20 +156,40 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
         if 'encoder_values' in saved_values:
             # rule №1.1: encoder >= framerate -> problem with app
-            for encoder_value in saved_values['encoder_values']:
-                if encoder_value >= framerate:
-                    json_content["message"].append("Application problem: Encoder is equal to or bigger than framerate. Encoder  {}. Framerate: {}".format(encoder_value, framerate))
-                    if json_content["test_status"] != "error":
-                        json_content["test_status"] = "failed"
+            bad_encoder_value = None
 
-                    break
+            for encoder_value in saved_values['encoder_values']:
+                # find the worst value
+                if encoder_value >= framerate:
+                    if bad_encoder_value is None or bad_encoder_value < encoder_value:
+                        bad_encoder_value = encoder_value
+
+            if bad_encoder_value:
+                json_content["message"].append("Application problem: Encoder is equal to or bigger than framerate. Encoder  {}. Framerate: {}".format(bad_encoder_value, framerate))
+                if json_content["test_status"] != "error":
+                    json_content["test_status"] = "failed"
 
             # rule №1.2: avrg encoder * 2 < encoder -> problem with app
             avrg_encoder_value = mean(saved_values['encoder_values'])
 
+            # catch 3 value in succession
+            bad_avrg_encoder_values = []
+            bad_encoder_values = []
+
             for encoder_value in saved_values['encoder_values']:
                 if avrg_encoder_value * 2 < encoder_value:
-                    json_content["message"].append("Application problem: Some encoder values is much bigger than average encoder value. Encoder  {}. Avrg encoder: {}".format(encoder_value, round(avrg_encoder_value, 2)))
+                    bad_avrg_encoder_values.append(avrg_encoder_value)
+                    bad_encoder_values.append(encoder_value)
+
+                else:
+                    bad_avrg_encoder_values = []
+                    bad_encoder_values = []
+
+                if len(bad_avrg_encoder_values) >= 3:
+                    formatted_avrg_encoder_values = "[{}, {}, {}]".format(round(bad_avrg_encoder_values[0], 2), round(bad_avrg_encoder_values[1], 2), round(bad_avrg_encoder_values[2], 2))
+                    formatted_encoder_values = "[{}, {}, {}]".format(round(bad_encoder_values[0], 2), round(bad_encoder_values[1], 2), round(bad_encoder_values[2], 2))
+
+                    json_content["message"].append("Application problem: At least 3 encoder values in sucession are much bigger than average encoder value. Encoder {}. Avrg encoder: {}".format(formatted_encoder_values, formatted_avrg_encoder_values))
                     if json_content["test_status"] != "error":
                         json_content["test_status"] = "failed"
 
@@ -178,21 +198,34 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
         # rule №2.1: tx rate - rx rate > 8 -> problem with network
         if 'rx_rates' in saved_values and 'tx_rates' in saved_values:
-            for i in range(len(saved_values['rx_rates'])):
-                if saved_values['tx_rates'][i] - saved_values['rx_rates'][i] > 8:
-                    json_content["message"].append("Network problem: TX Rate is much bigger than RX Rate. TX rate: {}. RX rate: {}".format(saved_values['tx_rates'][i], saved_values['rx_rates'][i]))
+            bad_rx_rate = None
+            bad_tx_rate = None
 
-                    break
+            for i in range(len(saved_values['rx_rates'])):
+                # find the worst value
+                if saved_values['tx_rates'][i] - saved_values['rx_rates'][i] > 8:
+                    if bad_rx_rate is None or (saved_values['tx_rates'][i] - saved_values['rx_rates'][i]) > (bad_tx_rate - bad_rx_rate):
+                        bad_rx_rate = saved_values['rx_rates'][i]
+                        bad_tx_rate = saved_values['tx_rates'][i]
+
+            if bad_rx_rate and bad_tx_rate:
+                json_content["message"].append("Network problem: TX Rate is much bigger than RX Rate. TX rate: {}. RX rate: {}".format(bad_tx_rate, bad_rx_rate))
 
         # rule №2.2: framerate - tx rate > 10 -> problem with app
         if 'tx_rates' in saved_values:
-            for tx_rate in saved_values['tx_rates']:
-                if framerate - tx_rate > 10:
-                    json_content["message"].append("Application problem: TX Rate is much less than framerate. Framerate: {}. TX rate: {} fps".format(framerate, tx_rate))
-                    if json_content["test_status"] != "error":
-                        json_content["test_status"] = "failed"
+            bad_tx_rate = None
 
-                    break
+            for tx_rate in saved_values['tx_rates']:
+                # find the worst value
+                if framerate - tx_rate > 10:
+                    if bad_tx_rate is None or tx_rate < bad_tx_rate:
+                        bad_tx_rate = tx_rate
+
+            if bad_tx_rate:
+                json_content["message"].append("Application problem: TX Rate is much less than framerate. Framerate: {}. TX rate: {} fps".format(framerate, bad_tx_rate))
+                if json_content["test_status"] != "error":
+                    json_content["test_status"] = "failed"
+
 
         # rule №4: encoder and decoder check. Problems with encoder -> warning. Problems with decoder -> issue with app
         # 0-0 -> skip
@@ -258,33 +291,52 @@ def update_status(args, json_content, saved_values, saved_errors, framerate):
 
         # rule №6.1: client latency <= decoder -> issue with app
         if 'client_latencies' in saved_values and 'decoder_values' in saved_values:
-            for i in range(len(saved_values['client_latencies'])):
-                if saved_values['client_latencies'][i] <= saved_values['decoder_values'][i]:
-                    json_content["message"].append("Application problem: client latency is less than decoder value. Client  {}. Decoder  {}".format(saved_values['client_latencies'][i], saved_values['decoder_values'][i]))
-                    if json_content["test_status"] != "error":
-                        json_content["test_status"] = "failed"
+            bad_client_latency = None
+            bad_decoder_value = None
 
-                    break
+            for i in range(len(saved_values['client_latencies'])):
+                # find the worst value
+                if saved_values['client_latencies'][i] <= saved_values['decoder_values'][i]:
+                    if bad_client_latency is None or (saved_values['decoder_values'][i] - saved_values['client_latencies'][i]) > (bad_decoder_value - bad_client_latency):
+                        bad_client_latency = saved_values['client_latencies'][i]
+                        bad_decoder_value = saved_values['decoder_values'][i]
+
+            if bad_client_latency and bad_decoder_value:
+                json_content["message"].append("Application problem: client latency is less than decoder value. Client  {}. Decoder  {}".format(bad_client_latency, bad_decoder_value))
+                if json_content["test_status"] != "error":
+                    json_content["test_status"] = "failed"
 
         # rule №6.2: server latency <= encoder -> issue with app
         if 'server_latencies' in saved_values and 'encoder_value' in saved_values:
-            for i in range(len(saved_values['server_latencies'])):
-                if saved_values['server_latencies'][i] <= saved_values['encoder_value'][i]:
-                    json_content["message"].append("Application problem: server latency is less than encoder value. Server  {}. Encoder  {}".format(saved_values['server_latencies'][i], saved_values['encoder_value'][i]))
-                    if json_content["test_status"] != "error":
-                        json_content["test_status"] = "failed"
+            bad_server_latency = None
+            bad_encoder_value = None
 
-                    break
+            for i in range(len(saved_values['server_latencies'])):
+                # find the worst value
+                if saved_values['server_latencies'][i] <= saved_values['encoder_value'][i]:
+                    if bad_server_latency is None or (saved_values['encoder_value'][i] - saved_values['server_latencies'][i]) > (bad_encoder_value - bad_server_latency):
+                        bad_server_latency = saved_values['server_latencies'][i]
+                        bad_encoder_value = saved_values['encoder_value'][i]
+
+            if bad_server_latency and bad_encoder_value:
+                json_content["message"].append("Application problem: server latency is less than encoder value. Server  {}. Encoder  {}".format(bad_server_latency, bad_encoder_value))
+                if json_content["test_status"] != "error":
+                    json_content["test_status"] = "failed"
 
         # rule №7: |decyns value| > 100ms -> issue with app
         if 'decyns_values' in saved_values:
-            for decyns_value in saved_values['decyns_values']:
-                if abs(decyns_value) > 100:
-                    json_content["message"].append("Application problem: Absolute value of A/V desync is more than 100 ms. A/V desync: {} ms".format(decyns_value))
-                    if json_content["test_status"] != "error":
-                        json_content["test_status"] = "failed"
+            bad_decyns_value = None
 
-                    break
+            for decyns_value in saved_values['decyns_values']:
+                # find the worst value
+                if abs(decyns_value) > 100:
+                    if bad_decyns_value is None or bad_decyns_value < abs(decyns_value):
+                        bad_decyns_value = abs(decyns_value)
+
+            if bad_decyns_value:
+                json_content["message"].append("Application problem: Absolute value of A/V desync is more than 100 ms. A/V desync: {} ms".format(bad_decyns_value))
+                if json_content["test_status"] != "error":
+                    json_content["test_status"] = "failed"
 
         # rule №8: (sum of video bitrate - sum of average bandwidth tx) / sum of video bitrate > 0.25 -> issue with app
         if 'average_bandwidth_tx' in saved_values and 'video_bitrate' in saved_values:
