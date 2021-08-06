@@ -28,6 +28,8 @@ from jobs_launcher.core.system_info import get_gpu
 
 # process of Streaming SDK client / server
 PROCESS = None
+# path to Streaming SDK client / server run script
+SCRIPT_PATH = None
 
 
 def get_audio_device_name():
@@ -199,6 +201,22 @@ def save_results(args, case, cases, execution_time = 0.0, test_case_status = "",
         json.dump(cases, file, indent=4)
 
 
+def start_streaming(args):
+    global PROCESS, SCRIPT_PATH
+
+    main_logger.info("Start StreamingSDK {}".format(args.execution_type))
+
+    # start Streaming SDK process
+    PROCESS = psutil.Popen(SCRIPT_PATH, stdout=PIPE, stderr=PIPE, shell=True)
+
+    main_logger.info("Start execution_type depended script")
+
+    # Wait a bit to launch streaming SDK client/server
+    time.sleep(3)
+
+    main_logger.info("Screen resolution: width = {}, height = {}".format(win32api.GetSystemMetrics(0), win32api.GetSystemMetrics(1)))
+
+
 def is_workable_condition():
     # is process with Streaming SDK alive
     try:
@@ -229,6 +247,9 @@ def execute_tests(args, current_conf):
     else:
         audio_device_name = None
 
+    # copy log from last log line (it's actual for groups without restarting of client / server)
+    last_log_line = None
+
     for case in [x for x in cases if not is_case_skipped(x, current_conf)]:
 
         case_start_time = time.time()
@@ -239,7 +260,7 @@ def execute_tests(args, current_conf):
         current_try = 0
 
         while current_try < args.retries:
-            global PROCESS
+            global PROCESS, SCRIPT_PATH
 
             error_messages = set()
 
@@ -277,27 +298,21 @@ def execute_tests(args, current_conf):
                         ip_address=args.ip_address
                     )
 
-                execution_script_path = os.path.join(args.output, "{}.bat".format(case["case"]))
+                SCRIPT_PATH = os.path.join(args.output, "{}.bat".format(case["case"]))
        
-                with open(execution_script_path, "w") as f:
+                with open(SCRIPT_PATH, "w") as f:
                     f.write(execution_script)
 
-                main_logger.info("Start StreamingSDK {}".format(args.execution_type))
-
-                # start Streaming SDK process
-                PROCESS = psutil.Popen(execution_script_path, stdout=PIPE, stderr=PIPE, shell=True)
-
-                main_logger.info("Start execution_type depended script")
-
-                # Wait a bit to launch streaming SDK client/server
-                time.sleep(3)
-
-                main_logger.info("Screen resolution: width = {}, height = {}".format(win32api.GetSystemMetrics(0), win32api.GetSystemMetrics(1)))
+                # provide start Streaming SDK func if Streaming SDK was closed in previous case
+                if PROCESS is None:
+                    start_streaming_func = start_streaming
+                else:
+                    start_streaming_func = None
 
                 if args.execution_type == "server":
-                    start_server_side_tests(args, case, is_workable_condition, current_try)
+                    start_server_side_tests(args, case, start_streaming_func, is_workable_condition, current_try)
                 else:
-                    start_client_side_tests(args, case, is_workable_condition, audio_device_name, current_try)
+                    start_client_side_tests(args, case, start_streaming_func, is_workable_condition, audio_device_name, current_try)
 
                 execution_time = time.time() - case_start_time
                 save_results(args, case, cases, execution_time = execution_time, test_case_status = "passed", error_messages = [])
@@ -309,21 +324,24 @@ def execute_tests(args, current_conf):
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
-                # close the current Streaming SDK process
-                if PROCESS is not None:
-                    close_process(PROCESS)
+                if "keep_{}".format(args.execution_type) not in case or not case["keep_{}".format(args.execution_type)]:
+                    # close the current Streaming SDK process
+                    if PROCESS is not None:
+                        close_process(PROCESS)
 
-                # additional try to kill Streaming SDK server/client (to be sure that all processes are closed)
+                    # additional try to kill Streaming SDK server/client (to be sure that all processes are closed)
 
-                status = 0
+                    status = 0
 
-                while status != 128:
-                    status = subprocess.call("taskkill /f /im RemoteGameClient.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    while status != 128:
+                        status = subprocess.call("taskkill /f /im RemoteGameClient.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
-                status = 0
+                    status = 0
 
-                while status != 128:
-                    status = subprocess.call("taskkill /f /im RemoteGameServer.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                    while status != 128:
+                        status = subprocess.call("taskkill /f /im RemoteGameServer.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+                    PROCESS = None
 
                 current_try += 1
 
@@ -336,6 +354,27 @@ def execute_tests(args, current_conf):
 
                     # Firstly, convert utf-2 le bom to utf-8 with BOM. Secondly, remove BOM
                     logs = logs.decode("utf-16-le").encode("utf-8").decode("utf-8-sig").encode("utf-8")
+
+                    lines = logs.split(b"\n")
+
+                    # index of first line of the current log in whole log file
+                    first_log_line_index = 0
+
+                    for i in range(len(lines)):
+                        if last_log_line is not None and last_log_line in lines[i]:
+                            first_log_line_index = i + 1
+                            break
+
+                    # update last log line
+                    for i in range(len(lines) - 1, -1, -1):
+                        if lines[i] and lines[i] != b"\r":
+                            last_log_line = lines[i]
+                            break
+
+                    if first_log_line_index != 0:
+                        lines = lines[first_log_line_index:]
+
+                    logs = b"\n".join(lines)
 
                     with open(log_destination_path, "ab") as file:
                         file.write("\n---------- Try #{} ----------\n\n".format(current_try).encode("utf-8"))
