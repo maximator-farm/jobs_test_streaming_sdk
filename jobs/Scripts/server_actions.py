@@ -209,6 +209,10 @@ class ClickServer(Action):
         parsed_arguments = parse_arguments(self.params["arguments_line"])
         self.x_description = parsed_arguments[0]
         self.y_description = parsed_arguments[1]
+        if len(parsed_arguments) > 2:
+            self.delay = float(parsed_arguments[2])
+        else:
+            self.delay = 0.2
 
     @Action.server_action_decorator
     def execute(self):
@@ -229,7 +233,7 @@ class ClickServer(Action):
         self.logger.info("Click at x = {}, y = {}".format(x, y))
 
         pyautogui.moveTo(x, y)
-        sleep(0.2)
+        sleep(self.delay)
         pyautogui.click()
 
         return True

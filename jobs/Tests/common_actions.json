@@ -78,7 +78,7 @@
         "sleep 3",
         "click_server 415 130",
         "sleep 3",
-        "click_server 230 1070",
+        "click_server 230 1070 3",
         "sleep 90",
         "click_server center_0 center_0",
         "press_keys_server \"w+shift_15\"",
