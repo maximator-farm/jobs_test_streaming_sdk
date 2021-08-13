@@ -7,7 +7,7 @@ import platform
 from datetime import datetime
 from shutil import copyfile, move, which
 import sys
-from utils import is_case_skipped, close_process
+from utils import *
 from clientTests import start_client_side_tests
 from serverTests import start_server_side_tests
 from queue import Queue
@@ -217,20 +217,6 @@ def start_streaming(args):
     main_logger.info("Screen resolution: width = {}, height = {}".format(win32api.GetSystemMetrics(0), win32api.GetSystemMetrics(1)))
 
 
-def is_workable_condition():
-    # is process with Streaming SDK alive
-    try:
-        global PROCESS
-        PROCESS.wait(timeout=0)
-        main_logger.error("StreamingSDK was down")
-
-        return False
-    except psutil.TimeoutExpired as e:
-        main_logger.info("StreamingSDK is alive") 
-
-        return True
-
-
 def execute_tests(args, current_conf):
     rc = 0
 
@@ -324,64 +310,12 @@ def execute_tests(args, current_conf):
                 main_logger.error("Failed to execute test case (try #{}): {}".format(current_try, str(e)))
                 main_logger.error("Traceback: {}".format(traceback.format_exc()))
             finally:
-                if "keep_{}".format(args.execution_type) not in case or not case["keep_{}".format(args.execution_type)]:
-                    # close the current Streaming SDK process
-                    if PROCESS is not None:
-                        close_process(PROCESS)
+                global PROCESS
 
-                    # additional try to kill Streaming SDK server/client (to be sure that all processes are closed)
-
-                    status = 0
-
-                    while status != 128:
-                        status = subprocess.call("taskkill /f /im RemoteGameClient.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
-                    status = 0
-
-                    while status != 128:
-                        status = subprocess.call("taskkill /f /im RemoteGameServer.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-
+                if should_case_be_closed(args, case):
                     PROCESS = None
 
                 current_try += 1
-
-                try:
-                    log_source_path = tool_path + ".log"
-                    log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + "_{}".format(args.execution_type) + ".log")
-
-                    with open(log_source_path, "rb") as file:
-                        logs = file.read()
-
-                    # Firstly, convert utf-2 le bom to utf-8 with BOM. Secondly, remove BOM
-                    logs = logs.decode("utf-16-le").encode("utf-8").decode("utf-8-sig").encode("utf-8")
-
-                    lines = logs.split(b"\n")
-
-                    # index of first line of the current log in whole log file
-                    first_log_line_index = 0
-
-                    for i in range(len(lines)):
-                        if last_log_line is not None and last_log_line in lines[i]:
-                            first_log_line_index = i + 1
-                            break
-
-                    # update last log line
-                    for i in range(len(lines) - 1, -1, -1):
-                        if lines[i] and lines[i] != b"\r":
-                            last_log_line = lines[i]
-                            break
-
-                    if first_log_line_index != 0:
-                        lines = lines[first_log_line_index:]
-
-                    logs = b"\n".join(lines)
-
-                    with open(log_destination_path, "ab") as file:
-                        file.write("\n---------- Try #{} ----------\n\n".format(current_try).encode("utf-8"))
-                        file.write(logs)
-                except Exception as e:
-                    main_logger.error("Failed during logs saving. Exception: {}".format(str(e)))
-                    main_logger.error("Traceback: {}".format(traceback.format_exc()))
         else:
             main_logger.error("Failed to execute case '{}' at all".format(case["case"]))
             rc = -1

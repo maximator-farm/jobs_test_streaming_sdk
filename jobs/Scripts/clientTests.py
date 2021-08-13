@@ -8,6 +8,7 @@ from instance_state import ClientInstanceState
 from actions import ClientActionException
 from client_actions import *
 import psutil
+from utils import *
 from subprocess import PIPE, STDOUT
 sys.path.append(os.path.abspath(os.path.join(
     os.path.dirname(__file__), os.path.pardir, os.path.pardir)))

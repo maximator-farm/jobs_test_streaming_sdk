@@ -82,3 +82,79 @@ def collect_traces(archive_path, archive_name):
 
 def parse_arguments(arguments):
     return shlex.split(arguments)
+
+
+def is_workable_condition(process):
+    # is process with Streaming SDK alive
+    try:
+        process.wait(timeout=0)
+        main_logger.error("StreamingSDK was down")
+
+        return False
+    except psutil.TimeoutExpired as e:
+        main_logger.info("StreamingSDK is alive") 
+
+        return True
+
+
+def should_case_be_closed(args, case):
+    return "keep_{}".format(args.execution_type) not in case or not case["keep_{}".format(args.execution_type)]
+
+
+def close_process(args, case, process):
+    if should_case_be_closed(args, case):
+        # close the current Streaming SDK process
+        if process is not None:
+            close_process(process)
+
+        # additional try to kill Streaming SDK server/client (to be sure that all processes are closed)
+
+        status = 0
+
+        while status != 128:
+            status = subprocess.call("taskkill /f /im RemoteGameClient.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+        status = 0
+
+        while status != 128:
+            status = subprocess.call("taskkill /f /im RemoteGameServer.exe", stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
+def save_logs():
+    try:
+        log_source_path = tool_path + ".log"
+        log_destination_path = os.path.join(args.output, "tool_logs", case["case"] + "_{}".format(args.execution_type) + ".log")
+
+        with open(log_source_path, "rb") as file:
+            logs = file.read()
+
+        # Firstly, convert utf-2 le bom to utf-8 with BOM. Secondly, remove BOM
+        logs = logs.decode("utf-16-le").encode("utf-8").decode("utf-8-sig").encode("utf-8")
+
+        lines = logs.split(b"\n")
+
+        # index of first line of the current log in whole log file
+        first_log_line_index = 0
+
+        for i in range(len(lines)):
+            if last_log_line is not None and last_log_line in lines[i]:
+                first_log_line_index = i + 1
+                break
+
+        # update last log line
+        for i in range(len(lines) - 1, -1, -1):
+            if lines[i] and lines[i] != b"\r":
+                last_log_line = lines[i]
+                break
+
+        if first_log_line_index != 0:
+            lines = lines[first_log_line_index:]
+
+        logs = b"\n".join(lines)
+
+        with open(log_destination_path, "ab") as file:
+            file.write("\n---------- Try #{} ----------\n\n".format(current_try).encode("utf-8"))
+            file.write(logs)
+    except Exception as e:
+        main_logger.error("Failed during logs saving. Exception: {}".format(str(e)))
+        main_logger.error("Traceback: {}".format(traceback.format_exc()))

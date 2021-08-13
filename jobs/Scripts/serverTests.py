@@ -11,7 +11,7 @@ import win32api
 import shlex
 import pyautogui
 import pydirectinput
-from utils import close_process, collect_traces
+from utils import *
 from threading import Thread
 from instance_state import ServerInstanceState
 from server_actions import *
