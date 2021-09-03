@@ -268,6 +268,9 @@ def execute_tests(args, current_conf):
                 if args.execution_type == "server":
                     # copy settings.json to update transport protocol using by server instance
                     settings_json_path = os.path.join(os.getenv("APPDATA"), "..", "Local", "AMD", "RemoteGameServer", "settings", "settings.json")
+                    
+                    if not os.path.exists(settings_json_path):
+                        os.makedirs(settings_json_path)
 
                     copyfile(
                         os.path.realpath(
