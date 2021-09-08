@@ -12,6 +12,7 @@ import win32api
 from actions import *
 
 pyautogui.FAILSAFE = False
+pydirectinput.FAILSAFE = False
 
 
 # [Server action] send request to execute some cmd command on server

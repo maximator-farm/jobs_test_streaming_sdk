@@ -14,6 +14,7 @@ from utils import close_process, collect_traces, parse_arguments
 from actions import *
 
 pyautogui.FAILSAFE = False
+pydirectinput.FAILSAFE = False
 
 
 # execute some cmd command on server (e.g. open game/benchmark)

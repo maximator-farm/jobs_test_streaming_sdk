@@ -22,6 +22,7 @@ sys.path.append(ROOT_PATH)
 from jobs_launcher.core.config import *
 
 pyautogui.FAILSAFE = False
+pydirectinput.FAILSAFE = False
 
 GAMES_WITH_TIMEOUTS = ['apexlegends']
 
