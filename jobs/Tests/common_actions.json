@@ -71,7 +71,7 @@
         "check_game \"Apex Legends\" \"r5apex.exe\"",
         "skip_if_done 26",
         "execute_cmd \"C:\\JN\\ApexLegends.exe - Shortcut.lnk\"",
-        "sleep 45",
+        "sleep 180",
         "click_server center_0 center_0",
         "sleep 20",
 
@@ -131,7 +131,7 @@
         "click_server center_230 center_-210",
         "sleep 1",
         "click_server center_0 center_230",
-        "sleep 60",
+        "sleep 210",
         "click_server center_0 center_0",
         "press_keys_server \"shift+x ctrl+shift+i shift+y:17 ctrl+e ctrl+r\"",
         "check_window \"League of Legends\" \"LeagueClient.exe\"",
